@@ -1,0 +1,246 @@
+---
+# Global macros
+
+# PARAMETERS
+- parameter:
+    name: agl-infra-parameters
+    parameters:
+      - string:
+          name: PROJECT
+          default: '{project}'
+          # yamllint disable rule:line-length
+          description: "JJB configured PROJECT parameter to identify a Gerrit project"
+          # yamllint enable
+      - string:
+          name: GERRIT_BRANCH
+          default: '{branch}'
+          description: "JJB configured GERRIT_BRANCH parameter"
+      - string:
+          name: GERRIT_PROJECT
+          default: '{project}'
+          description: "GERRIT_PROJECT parameter if not given by trigger"
+      - string:
+          name: GERRIT_REFSPEC
+          default: '{refspec}'
+          description: "GERRIT_REFSPEC parameter if not given by trigger"
+
+# SCMS
+- scm:
+    name: git-scm
+    scm:
+      - git:
+          credentials-id: 'agl-jenkins-gerrit-user'
+          url: '$GIT_BASE'
+          refspec: ''
+          branches:
+            - 'origin/${branch}'
+          skip-tag: true
+          wipe-workspace: true
+
+- scm:
+    name: gerrit-trigger-scm
+    scm:
+      - git:
+          credentials-id: 'agl-jenkins-gerrit-user'
+          url: '$GIT_BASE'
+          refspec: '{refspec}'
+          branches:
+            - 'origin/$GERRIT_BRANCH'
+          skip-tag: true
+          choosing-strategy: '{choosing-strategy}'
+
+- scm:
+    name: gerrit-trigger-scm-basedir
+    scm:
+      - git:
+          credentials-id: 'agl-jenkins-gerrit-user'
+          url: '$GIT_BASE'
+          refspec: '{refspec}'
+          branches:
+            - 'origin/$GERRIT_BRANCH'
+          skip-tag: true
+          choosing-strategy: '{choosing-strategy}'
+          basedir: '{basedir}'
+
+- scm:
+    name: git-branch-scm
+    scm:
+      - git:
+          credentials-id: 'agl-jenkins-gerrit-user'
+          url: '$GIT_BASE'
+          refspec: ''
+          branches:
+            - 'origin/{branch}'
+          skip-tag: true
+          wipe-workspace: true
+
+# TRIGGERS
+- trigger:
+    name: gerrit-trigger-patch-submitted
+    triggers:
+      - gerrit:
+          server-name: 'gerrit-new.automotivelinux.org'
+          trigger-on:
+            - patchset-created-event:
+                exclude-drafts: 'false'
+                exclude-trivial-rebase: 'false'
+                exclude-no-code-change: 'false'
+            - draft-published-event
+            - comment-added-contains-event:
+                comment-contains-value: 'recheck'
+            - comment-added-contains-event:
+                comment-contains-value: 'reverify'
+          projects:
+            - project-compare-type: 'ANT'
+              project-pattern: '{name}'
+              branches:
+                - branch-compare-type: 'ANT'
+                  branch-pattern: '**/{branch}'
+
+- trigger:
+    name: gerrit-trigger-patch-merged
+    triggers:
+      - gerrit:
+          server-name: 'gerrit-new.automotivelinux.org'
+          trigger-on:
+            - change-merged-event
+            - comment-added-contains-event:
+                comment-contains-value: 'remerge'
+          projects:
+            - project-compare-type: 'ANT'
+              project-pattern: '{name}'
+              branches:
+                - branch-compare-type: 'ANT'
+                  branch-pattern: '**/{branch}'
+
+- trigger:
+    name: gerrit-trigger-silent-patch-submitted
+    triggers:
+      - gerrit:
+          server-name: 'gerrit-new.automotivelinux.org'
+          trigger-on:
+            - patchset-created-event:
+                exclude-drafts: 'false'
+                exclude-trivial-rebase: 'false'
+                exclude-no-code-change: 'false'
+            - draft-published-event
+            - comment-added-contains-event:
+                comment-contains-value: 'recheck'
+            - comment-added-contains-event:
+                comment-contains-value: 'reverify'
+          projects:
+            - project-compare-type: 'ANT'
+              project-pattern: '{name}'
+              branches:
+                - branch-compare-type: 'ANT'
+                  branch-pattern: '**/{branch}'
+          silent-start: 'true'
+
+- trigger:
+    name: gerrit-trigger-silent-full-check
+    triggers:
+      - gerrit:
+          server-name: 'gerrit-new.automotivelinux.org'
+          trigger-on:
+            - comment-added-contains-event:
+                comment-contains-value: 'fullcheck'
+          projects:
+            - project-compare-type: 'ANT'
+              project-pattern: '{name}'
+              branches:
+                - branch-compare-type: 'ANT'
+                  branch-pattern: '**/{branch}'
+          silent-start: 'true'
+
+- trigger:
+    name: gerrit-trigger-silent-patch-merged
+    triggers:
+      - gerrit:
+          server-name: 'gerrit-net.automotivelinux.org'
+          trigger-on:
+            - change-merged-event
+            - comment-added-contains-event:
+                comment-contains-value: 'remerge'
+          projects:
+            - project-compare-type: 'ANT'
+              project-pattern: '{name}'
+              branches:
+                - branch-compare-type: 'ANT'
+                  branch-pattern: '**/{branch}'
+          silent-start: 'true'
+
+- trigger:
+    name: gerrit-trigger-tag
+    triggers:
+      - gerrit:
+          server-name: 'gerrit-new.automotivelinux.org'
+          trigger-on:
+            - ref-updated-event
+          projects:
+            - project-compare-type: 'ANT'
+              project-pattern: '{name}'
+              branches:
+                - branch-compare-type: 'ANT'
+                  branch-pattern: 'refs/tags/**'
+
+# Publishers
+- publisher:
+    name: archive-artifacts
+    publishers:
+      - archive:
+          artifacts: '{artifacts}'
+          allow-empty: true
+          fingerprint: true
+          latest-only: true
+
+- publisher:
+    name: email-notification
+    publishers:
+      - email-ext:
+          recipients: 'nobody@automotivelinux.org'
+          reply-to:
+          content-type: default
+          # yamllint disable rule:line-length
+          subject: '{email-prefix} $PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS!'
+          # yamllint enable
+          body: |
+            $PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS:
+
+            Check console output at $BUILD_URL to view the results.
+          unstable: true
+          fixed: true
+          send-to:
+            - developers
+            - recipients
+
+# BUILDERS
+- builder:
+    name: ci-management-check-unicode
+    builders:
+      - shell: |
+          $WORKSPACE/scripts/check-unicode.sh jjb/
+
+# WRAPPERS
+- wrapper:
+    name: build-timeout
+    wrappers:
+      - timeout:
+          type: absolute
+          timeout: 360
+          fail: true
+
+- wrapper:
+    # This wrapper is required for all jobs as it configures the wrappers
+    # needed by the automotivelinux.org infra.
+    name: agl-infra-wrappers
+    wrappers:
+      - timeout:
+          type: absolute
+          timeout: '{build-timeout}'
+          timeout-var: 'BUILD_TIMEOUT'
+          fail: true
+      - ssh-agent-credentials:
+          users:
+            - 'agl-jenkins-ssh'
+      - jclouds:
+          single-use: True

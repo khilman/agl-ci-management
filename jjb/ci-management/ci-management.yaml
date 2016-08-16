@@ -1,0 +1,78 @@
+---
+- project:
+    name: ci-management-jobs
+    jobs:
+      - 'ci-management-verify-jjb'
+      - 'ci-management-merge'
+
+    project: 'ci-management'
+    branch: master
+
+- job-template:
+    name: ci-management-verify-jjb
+
+    project-type: freestyle
+    node: master
+    concurrent: true
+
+    parameters:
+      - agl-infra-parameters:
+          project: '{project}'
+          branch: 'master'
+          refspec: 'refs/heads/master'
+
+    scm:
+      - gerrit-trigger-scm:
+          refspec: '$GERRIT_REFSPEC'
+          choosing-strategy: 'gerrit'
+
+    wrappers:
+      - ssh-agent-credentials:
+          users:
+              - '{ssh-credentials}'
+
+    triggers:
+        - gerrit-trigger-patch-submitted:
+            name: '{project}'
+            branch: '{branch}'
+
+    builders:
+      - shell: |
+          ls -alh ; jenkins-jobs test --recursive jjb/
+      - ci-management-check-unicode
+
+- job-template:
+    name: 'ci-management-merge'
+
+    project-type: freestyle
+    node: master
+
+    build-discarder:
+      days-to-keep: 30
+      num-to-keep: 40
+      artifact-days-to-keep: -1
+      artifact-num-to-keep: 5
+
+    parameters:
+      - agl-infra-parameters:
+          project: '{project}'
+          branch: 'master'
+          refspec: 'refs/heads/master'
+
+    scm:
+      - gerrit-trigger-scm:
+          refspec: ''
+          choosing-strategy: 'default'
+
+    wrappers:
+      - agl-infra-wrappers:
+          build-timeout: '{build-timeout}'
+
+    triggers:
+      - gerrit-trigger-patch-merged:
+            name: '{project}'
+            branch: '{branch}'
+
+    builders:
+      - shell:
+          !include-raw-escape: include-raw-jjb-update.sh

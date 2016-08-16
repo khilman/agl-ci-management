@@ -1,0 +1,4 @@
+[gerrit]
+host=gerrit-new.automotivelinux.org
+port=39418
+project=ci-management.git
