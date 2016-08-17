@@ -156,7 +156,7 @@
     name: gerrit-trigger-silent-patch-merged
     triggers:
       - gerrit:
-          server-name: 'gerrit-net.automotivelinux.org'
+          server-name: 'gerrit-new.automotivelinux.org'
           trigger-on:
             - change-merged-event
             - comment-added-contains-event:
@@ -239,3 +239,6 @@
           timeout: '{build-timeout}'
           timeout-var: 'BUILD_TIMEOUT'
           fail: true
+      - ssh-agent-credentials:
+          users:
+            - 'jenkins-gerrit-credentials'
