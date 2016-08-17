@@ -6,5 +6,5 @@ function submitJJB {
     git push origin HEAD:refs/for/master
 }
 
-gitdir=$(git rev-parse --git-dir); scp -p -P 39418 agl-jobbuilder@gerrit.automotievlinux.org.org:hooks/commit-msg ${gitdir}/hooks/
+gitdir=$(git rev-parse --git-dir); scp -p -P 39418 agl-jenkins-gerrit-user@gerrit.automotievlinux.org.org:hooks/commit-msg ${gitdir}/hooks/
 git diff --exit-code || submitJJB
