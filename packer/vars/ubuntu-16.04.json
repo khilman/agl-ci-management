@@ -1,5 +1,5 @@
 {
-  "base_image": "Ubuntu 16.04 LTS (2016-07-22) - LF upload",
+  "base_image": "Ubuntu 16.04 LTS (2016-06-10)",
   "cloud_user": "ubuntu",
 
   "distro": "Ubuntu 16.04",
