@@ -239,8 +239,3 @@
           timeout: '{build-timeout}'
           timeout-var: 'BUILD_TIMEOUT'
           fail: true
-      - ssh-agent-credentials:
-          users:
-            - 'agl-jenkins-ssh'
-      - jclouds:
-          single-use: True
