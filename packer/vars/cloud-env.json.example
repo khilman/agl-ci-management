@@ -2,5 +2,5 @@
   "stack_tenant": "TENANTID",
   "stack_user": "USERID",
   "stack_pass": "PASSWD",
-  "stack_network": "NETID",
+  "stack_network": "NETID"
 }
