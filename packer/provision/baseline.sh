@@ -109,17 +109,8 @@ EOF
 
     # install Java 7
     echo "---> Configuring OpenJDK"
-    apt-get install -qq openjdk-7-jdk > /dev/null
+    apt-get install -qq default-jre-headless default-jdk-headless > /dev/null
 
-    # make jdk8 available
-    add-apt-repository -y ppa:openjdk-r/ppa > /dev/null
-    apt-get update -qq > /dev/null
-    # We need to force openjdk-8-jdk to install
-    apt-get install -qq openjdk-8-jdk > /dev/null
-
-    # make sure that we still default to openjdk 7
-    update-alternatives --set java /usr/lib/jvm/java-7-openjdk-amd64/jre/bin/java
-    update-alternatives --set javac /usr/lib/jvm/java-7-openjdk-amd64/bin/javac
 }
 
 all_systems() {
