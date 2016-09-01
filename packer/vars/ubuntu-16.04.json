@@ -1,7 +1,7 @@
 {
-  "base_image": "Ubuntu 16.04 LTS (2016-06-10)",
+  "base_image": "Ubuntu 16.04 (2016-08-31) - LF upload",
   "cloud_user": "ubuntu",
 
   "distro": "Ubuntu 16.04",
-  "cloud_user_data": "provision/agl_dependencies.sh"
+  "cloud_user_data": "null_data"
 }
