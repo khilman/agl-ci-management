@@ -99,6 +99,10 @@ Dpkg::Options {
 
 EOF
 
+    # Make sure that we aren't using the vexxhost mirrors as they have issues
+    echo "---> Removing Vexxhost Ubuntu mirrors"
+    sed -i 's/ubuntu.mirror.vexxhost.com/us.archive.ubuntu.com/g' /etc/apt/sources.list
+
     echo "---> Updating operating system"
     apt-get update -qq > /dev/null
     apt-get upgrade -qq > /dev/null

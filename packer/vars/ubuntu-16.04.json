@@ -3,5 +3,5 @@
   "cloud_user": "ubuntu",
 
   "distro": "Ubuntu 16.04",
-  "cloud_user_data": "null_data"
+  "cloud_user_data": "provision/null_data.sh"
 }
