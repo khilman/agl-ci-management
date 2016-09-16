@@ -1,0 +1,28 @@
+---
+- project:
+    name: release-blowfish
+    jobs:
+      - 'release-blowfish'
+
+    project: 'release-blowfish'
+    branch: master
+
+- job-template:
+    name: 'release-blowfish'
+
+    project-type: freestyle
+    node: agl-test-slave
+
+    build-discarder:
+      days-to-keep: -1
+      num-to-keep: -1
+      artifact-days-to-keep: -1
+      artifact-num-to-keep: -1
+
+    wrappers:
+      - agl-infra-wrappers:
+          build-timeout: '{build-timeout}'
+
+    builders:
+      - shell:
+            !include-raw-escape: include-release-blowfish.sh
