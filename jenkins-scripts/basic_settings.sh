@@ -38,10 +38,16 @@ Host *
 Host 10.30.72.*
   StrictHostKeyChecking no
   UserKnownHostsFile /dev/null
+
+Host vex-yul-agl-download.ci.codeaurora.org
+  StrictHostKeyChecking no
+  UserKnownHostsFile /dev/null
+
 EOSSH
 
 cat <<EOKNOWN >  /etc/ssh/ssh_known_hosts
 [gerrit.automotivelinux.org]:29418,[198.145.29.87]:29418 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAAgQC7mx+OxVdwr6s5M/JJn5DxxVu9n7dfIZrB+mS88m51oJmHCWDBGEncpUskrzAwI5uXYTeG4FamcxtrHumVL3oZ6F4m93DG486/LM/4ff8qbEjYNoYYqY004wW2kbg1ivZ/DWmIyAyw0JCOv+Ia39krT5Zv6LI68skimCE/6pRbsw==
+vex-yul-agl-download.ci,10.30.72.8 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBNaxEOWbShvqQWqS17c123Ct8tBLBVVOPTNYpZSmwd1UKVQi9cF0QMOU7Rc479bHwzuLscvmohpGh2kP0CmHvAo=
 EOKNOWN
 
 # vim: sw=2 ts=2 sts=2 et :
