@@ -35,7 +35,7 @@ Host *
   ServerAliveInterval 60
 
 # we don't want to do SSH host key checking on spin-up systems
-Host 10.30.96.* 10.30.97.*
+Host 10.30.72.*
   StrictHostKeyChecking no
   UserKnownHostsFile /dev/null
 EOSSH
