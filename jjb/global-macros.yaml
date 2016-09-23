@@ -29,7 +29,7 @@
     name: git-scm
     scm:
       - git:
-          credentials-id: 'jenkins-gerrit-credentials'
+          credentials-id: 'd28b1f3b-3603-49bc-b837-bb0a2e85d4b8'
           url: '$GIT_BASE'
           refspec: ''
           branches:
@@ -41,7 +41,7 @@
     name: gerrit-trigger-scm
     scm:
       - git:
-          credentials-id: 'jenkins-gerrit-credentials'
+          credentials-id: 'd28b1f3b-3603-49bc-b837-bb0a2e85d4b8'
           url: '$GIT_BASE'
           refspec: '{refspec}'
           branches:
@@ -53,7 +53,7 @@
     name: gerrit-trigger-scm-basedir
     scm:
       - git:
-          credentials-id: 'jenkins-gerrit-credentials'
+          credentials-id: 'd28b1f3b-3603-49bc-b837-bb0a2e85d4b8'
           url: '$GIT_BASE'
           refspec: '{refspec}'
           branches:
@@ -66,7 +66,7 @@
     name: git-branch-scm
     scm:
       - git:
-          credentials-id: 'jenkins-gerrit-credentials'
+          credentials-id: 'd28b1f3b-3603-49bc-b837-bb0a2e85d4b8'
           url: '$GIT_BASE'
           refspec: ''
           branches:
@@ -241,4 +241,4 @@
           fail: true
       - ssh-agent-credentials:
           users:
-            - 'jenkins-gerrit-credentials'
+            - 'd28b1f3b-3603-49bc-b837-bb0a2e85d4b8'

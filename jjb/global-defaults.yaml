@@ -10,5 +10,5 @@
     build-artifact-num-to-keep: 5
     # Timeout in minutes
     build-timeout: 360
-    build-node: ubuntu-16.04-basebuild-2c-1g
-    ssh-credentials: 'jenkins-gerrit-credentials'
+    #build-node: ubuntu-16.04-basebuild-2c-1g
+    ssh-credentials: 'agl-jobbuilder'
