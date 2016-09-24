@@ -57,4 +57,11 @@ none /tmp tmpfs defaults 0 0
 
 EOFSTAB
 
+cat <<EOFHOSTS >> /etc/hosts
+
+# workaround for download-new
+199.19.213.77 download-new.automotivelinux.org
+
+EOFHOSTS
+
 # vim: sw=2 ts=2 sts=2 et :
