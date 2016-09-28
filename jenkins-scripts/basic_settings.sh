@@ -50,12 +50,4 @@ cat <<EOKNOWN >  /etc/ssh/ssh_known_hosts
 vex-yul-agl-download.ci,10.30.72.8 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBNaxEOWbShvqQWqS17c123Ct8tBLBVVOPTNYpZSmwd1UKVQi9cF0QMOU7Rc479bHwzuLscvmohpGh2kP0CmHvAo=
 EOKNOWN
 
-
-cat <<EOFHOSTS >> /etc/hosts
-
-# workaround for download-new
-199.19.213.77 download-new.automotivelinux.org
-
-EOFHOSTS
-
 # vim: sw=2 ts=2 sts=2 et :
