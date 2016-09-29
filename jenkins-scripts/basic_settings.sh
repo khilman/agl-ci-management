@@ -24,6 +24,12 @@ FQDN=$(facter fqdn)
 
 echo "${IPADDR} ${HOSTNAME} ${FQDN}" >> /etc/hosts
 
+cat <<EOFHOSTS >> /etc/hosts
+# workaround for download-new
+199.19.213.77 download-new.automotivelinux.org
+EOFHOSTS
+
+
 #Increase limits
 cat <<EOF > /etc/security/limits.d/jenkins.conf
 jenkins         soft    nofile          16000
