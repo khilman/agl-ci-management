@@ -113,14 +113,8 @@ EOF
     cat /etc/resolv.conf || true
     echo "---> printing resolv.conf <---"
 
-    ping -c 2 8.8.8.8
-
-    echo "nameserver 8.8.8.8" >> /etc/resolv.conf
-
-    echo "---> printing resolv.conf <---"
-    cat /etc/resolv.conf || true
-    echo "---> printing resolv.conf <---"
-
+    ping -c 2 172.30.0.254
+    ping -c 2 172.30.0.253
 
     echo "---> Updating operating system"
     apt-get update
