@@ -45,6 +45,7 @@
         "provision/baseline.sh",
         "provision/basebuild.sh",
         "provision/agl_dependencies.sh",
+        "provision/agl_mirror.sh",
         "provision/system_reseal.sh"
       ],
       "execute_command": "chmod +x {{ .Path }}; if [ \"$UID\" == \"0\" ]; then {{ .Vars }} '{{ .Path }}'; else {{ .Vars }} sudo -E '{{ .Path }}'; fi"
