@@ -16,3 +16,7 @@ target/
 # IntelliJ
 .idea/
 *.iml
+
+# packer local run
+packer/output_ubuntu
+packer/packer_cache

@@ -1,0 +1,85 @@
+{
+  "variables": {
+    "stack_tenant": null,
+    "stack_user": null,
+    "stack_pass": null,
+    "stack_network": null,
+
+    "base_image": null,
+    "cloud_user": null,
+    "distro": null,
+    "cloud_user_data": null
+  },
+  "builders": [
+{
+      "type": "qemu",
+      "iso_url": "http://releases.ubuntu.com/16.04/ubuntu-16.04-server-amd64.iso",
+      "iso_checksum": "23e97cd5d4145d4105fbf29878534049",
+      "iso_checksum_type": "md5",
+
+      "output_directory": "output_ubuntu",
+
+      "shutdown_command": "echo '{{user `password`}}'|sudo -S shutdown -P now",
+
+      "disk_size": 20000,
+      "format": "qcow2",
+      "headless": false,
+      "accelerator": "kvm",
+
+      "http_directory": "httpdir",
+      "http_port_min": 10082,
+      "http_port_max": 10089,
+      "ssh_host_port_min": 2222,
+      "ssh_host_port_max": 2229,
+      "ssh_username": "ubuntu",
+      "ssh_password": "ubuntu",
+      "ssh_port": 22,
+      "ssh_wait_timeout": "11m",
+
+      "vm_name": "jenkins-new-test",
+      "net_device": "virtio-net",
+      "disk_interface": "virtio",
+      "boot_wait": "5s",
+
+      "boot_command": [
+                "<enter><wait><f6><esc><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+                "/install/vmlinuz url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg ",
+                "debian-installer=en_US auto locale=en_US kbd-chooser/method=us ",
+                "hostname=jenkinstest ",
+
+                "keyboard-configuration/modelcode=SKIP ",
+                "keyboard-configuration/layout=USA ",
+                "keyboard-configuration/variant=USA ",
+
+                "passwd/user-fullname=ubuntu ",
+                "passwd/user-password-again=ubuntu ",
+                "passwd/user-password=ubuntu ",
+                "passwd/username=ubuntu ",
+
+                "initrd=/install/initrd.gz -- <enter>"
+      ]
+
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": ["mkdir -p /tmp/packer"]
+    },
+    {
+      "type": "file",
+      "source": "provision/basebuild/",
+      "destination": "/tmp/packer"
+    },
+    {
+      "type": "shell",
+      "scripts": [
+        "provision/baseline.sh",
+        "provision/basebuild.sh",
+        "provision/agl_dependencies.sh",
+        "provision/system_reseal.sh"
+      ],
+      "execute_command": "chmod +x {{ .Path }}; if [ \"$UID\" == \"0\" ]; then {{ .Vars }} '{{ .Path }}'; else echo 'ubuntu' | {{ .Vars }} sudo -S -E sh '{{ .Path }}'; fi"
+    }
+  ]
+}
