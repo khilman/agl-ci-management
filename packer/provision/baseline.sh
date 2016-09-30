@@ -109,17 +109,30 @@ EOF
     cat /etc/apt/sources.list
     echo "---> printing sources.list <---"
 
+    echo "---> printing resolv.conf <---"
+    cat /etc/resolv.conf || true
+    echo "---> printing resolv.conf <---"
+
+    ping -c 2 8.8.8.8
+
+    echo "nameserver 8.8.8.8" >> /etc/resolv.conf
+
+    echo "---> printing resolv.conf <---"
+    cat /etc/resolv.conf || true
+    echo "---> printing resolv.conf <---"
+
+
     echo "---> Updating operating system"
-    apt-get update -qq > /dev/null
-    apt-get upgrade -qq > /dev/null
+    apt-get update
+    apt-get dist-upgrade -y
 
     # add in stuff we know we need
     echo "---> Installing base packages"
-    apt-get install -qq unzip xz-utils puppet git libxml-xpath-perl make wget > /dev/null
+    apt-get install -y unzip xz-utils puppet git libxml-xpath-perl make wget
 
     # install Java 7
     echo "---> Configuring OpenJDK"
-    apt-get install -qq default-jre-headless default-jdk-headless > /dev/null
+    apt-get install -y default-jre-headless default-jdk-headless
 
 }
 

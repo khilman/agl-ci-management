@@ -1,12 +1,12 @@
 {
   "variables": {
-    "stack_tenant": null,
-    "stack_user": null,
-    "stack_pass": null,
-    "stack_network": null,
+    "stack_tenant": "ubuntu",
+    "stack_user": "ubuntu",
+    "stack_pass": "ubuntu",
+    "stack_network": "none",
 
     "base_image": null,
-    "cloud_user": null,
+    "cloud_user": "ubuntu",
     "distro": null,
     "cloud_user_data": null
   },
