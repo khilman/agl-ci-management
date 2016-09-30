@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -x
+
 DEBIAN_FRONTEND=noninteractive apt-get update && apt-get -y -u dist-upgrade
 
 DEBIAN_FRONTEND=noninteractive apt-get update && \

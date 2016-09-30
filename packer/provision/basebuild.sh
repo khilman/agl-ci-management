@@ -3,6 +3,8 @@
 
 # Presently nothing to do
 
+set -x
+
 cat <<EOFSTAB >> /etc/fstab
 
 # tmp should be tmpfs so gcc tmpfiles do not hit the disk

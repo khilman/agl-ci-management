@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -x
+
 # Preclone the gerrit repos for speed (use with --reference=/opt/AGL/preclone)
 mkdir -p /opt/AGL/preclone
 cd /opt/AGL/preclone
