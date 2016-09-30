@@ -105,6 +105,10 @@ EOF
     echo "---> Removing Vexxhost Ubuntu mirrors"
     sed -i 's/ubuntu.mirror.vexxhost.com/us.archive.ubuntu.com/g' /etc/apt/sources.list
 
+    echo "---> printing sources.list <---"
+    cat /etc/apt/sources.list
+    echo "---> printing sources.list <---"
+
     echo "---> Updating operating system"
     apt-get update -qq > /dev/null
     apt-get upgrade -qq > /dev/null
