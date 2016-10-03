@@ -77,6 +77,11 @@
         "provision/agl_dependencies.sh",
         "provision/system_reseal.sh"
       ],
+      "environment_vars": [
+        "LAVAHOST={{user `lavahost`}}",
+        "LAVAUSER={{user `lavauser`}}",
+        "LAVATOKEN={{user `lavatoken`}}"
+      ],
       "execute_command": "chmod +x {{ .Path }}; if [ \"$UID\" == \"0\" ]; then {{ .Vars }} '{{ .Path }}'; else echo 'ubuntu' | {{ .Vars }} sudo -S -E sh '{{ .Path }}'; fi"
     }
   ]

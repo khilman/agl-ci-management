@@ -13,7 +13,11 @@ cd
 mkdir -p /opt/AGL/sstate-mirror
 cd /opt/AGL/sstate-mirror
 wget --mirror -np -nH --convert-links "https://download-new.automotivelinux.org/sstate-mirror/" -A siginfo -A tgz --cut-dirs=1
-ls
-ls *
 cd
+
+#mirror downloads into /opt/AGL/premirror
+#mkdir -p /opt/AGL/premirror
+#cd /opt/AGL/premirror
+#wget --mirror -r -l1 -np -nH --convert-links "https://download-new.automotivelinux.org/AGL/mirror/" -R 'done'  -R 'O=A,O=D' --cut-dirs=2
+#cd
 
