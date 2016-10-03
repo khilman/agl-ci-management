@@ -28,7 +28,7 @@ cat <<EOFHOSTS >> /etc/hosts
 
 # workaround for download-new
 199.19.213.77 download-new.automotivelinux.org
-199.19.213.77 download-internal.automotivelinux.org
+10.30.72.8 download-internal.automotivelinux.org
 
 EOFHOSTS
 
