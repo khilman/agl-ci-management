@@ -41,6 +41,11 @@
     },
     {
       "type": "shell",
+      "environment_vars": [
+        "LAVAHOST={{user `lavahost`}}",
+        "LAVAUSER={{user `lavauser`}}",
+        "LAVATOKEN={{user `lavatoken`}}"
+      ],
       "scripts": [
         "provision/baseline.sh",
         "provision/basebuild.sh",
