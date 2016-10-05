@@ -33,6 +33,15 @@ cat <<EOFHOSTS >> /etc/hosts
 EOFHOSTS
 
 
+cat <<EOFSYSCTL >> /etc/sysctl.conf
+# we have a lot of make jobs, this helps a lot
+kernel.sched_child_runs_first = 1
+# smooth over a lot of I/O requests and do less blocking
+vm.dirty_background_ratio = 5
+vm.dirty_ratio = 80
+
+EOFSYSCTL
+
 # clone lava-boot to /opt/AGL/
 mkdir -p /opt/AGL/
 cd /opt/AGL/
@@ -41,7 +50,8 @@ cd lava-boot
 sed -i '16iimport ssl' lava-boot
 sed -i '17issl._create_default_https_context = ssl._create_unverified_context' lava-boot
 
-
+# AGL specific lab integration. To be moved into git repo and cloned or the like.
+#################################################################################
 mkdir -p /opt/AGL/lava-agl/
 cat <<EOFBR >> /opt/AGL/lava-agl/boardready.py
 #!/usr/bin/python
