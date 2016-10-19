@@ -17,7 +17,7 @@ rm -rf repoclone2 || true
 mkdir -p repoclone
 cd repoclone
 
-repo init -u https://gerrit.automotivelinux.org/gerrit/AGL/AGL-repo.git
+repo init --reference=/opt/AGL/preclone -u https://gerrit.automotivelinux.org/gerrit/AGL/AGL-repo.git
 repo sync -j8
 
 for i in $BOARDS ; do
