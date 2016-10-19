@@ -7,7 +7,7 @@
     name: 'pre-fetch-mirror-weekly'
     project-type: freestyle
     concurrent: false
-    node: master
+    node: agl-test-slave
 
     build-discarder:
       days-to-keep: 30
