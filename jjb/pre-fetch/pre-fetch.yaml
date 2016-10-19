@@ -1,0 +1,30 @@
+- project:
+    name: pre-fetch-mirror
+    jobs:
+        - pre-fetch-mirror-weekly
+
+- job-template:
+    name: 'pre-fetch-mirror-weekly'
+    project-type: freestyle
+    concurrent: false
+    node: master
+
+    build-discarder:
+      days-to-keep: 30
+      num-to-keep: 40
+      artifact-days-to-keep: -1
+      artifact-num-to-keep: 5
+
+    triggers:
+      - timed: '@weekly'
+
+    wrappers:
+      - agl-infra-wrappers:
+          build-timeout: '{build-timeout}'
+
+    builders:
+      - shell:
+            !include-raw-escape: include-prefetch.sh
+      - shell:
+            !include-raw-escape: include-rsync-prefetch.sh
+
