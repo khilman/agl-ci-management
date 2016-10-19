@@ -3,11 +3,12 @@
 #set -x
 set -e
 #
-export BOARDS="qemux86-64 qemux86 raspberrypi3 dra7xx-evm dragonboard-410c intel-corei7-64 wandboard"
+export BOARDS="qemux86-64 qemux86 raspberrypi3 intel-corei7-64 porter-nogfx"
+# check: dra7xx-evm dragonboard-410c wandboard
 export FEATURES="agl-demo agl-appfw-smack agl-netboot agl-sota agl-devel"
 export FEATURES_nogfx="agl-appfw-smack agl-netboot agl-sota agl-devel"
 export TARGETIMAGE="agl-demo-platform"
-export TARGETIMAGE_nogfx="agl-image-ivi-qa"
+export TARGETIMAGE_nogfx="core-image-minimal"
 
 mkdir -p mirror
 mkdir -p sstate
