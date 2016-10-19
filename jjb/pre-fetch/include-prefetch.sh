@@ -1,8 +1,8 @@
 #!/bin/bash
 
-set -x
+#set -x
 set -e
-# 
+#
 export BOARDS="qemux86-64 qemux86 raspberrypi3 dra7xx-evm dragonboard-410c intel-corei7-64 wandboard"
 export FEATURES="agl-demo agl-appfw-smack agl-netboot agl-sota agl-devel"
 export FEATURES_nogfx="agl-appfw-smack agl-netboot agl-sota agl-devel"
@@ -37,4 +37,4 @@ for i in $BOARDS ; do
     popd
 done
 
-ls mirror
+#ls ../mirror || true
