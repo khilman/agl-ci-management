@@ -13,6 +13,10 @@ export TARGETIMAGE_nogfx="core-image-minimal"
 mkdir -p mirror
 mkdir -p sstate
 
+#echo "AGL DISTRO MIRROR" >> mirror/index.html
+#echo "-----------------" >> mirror/index.html
+#date >> mirror/index.html
+
 mv repoclone repoclone2 > /dev/null 2>&1 || true
 rm -rf repoclone2 || true
 mkdir -p repoclone
@@ -23,7 +27,6 @@ repo sync -j8
 
 for i in $BOARDS ; do
     pushd .
-
     if test x"porter-nogfx" = x"$i" ; then
 	FEATURES="${FEATURES_nogfx}"
 	TARGETIMAGE="${TARGETIMAGE_nogfx}"
@@ -37,5 +40,11 @@ for i in $BOARDS ; do
     bitbake -c fetchall ${TARGETIMAGE}
     popd
 done
+
+pushd ../mirror
+rm -f *.done
+find . -type d -delete
+ls -alh
+popd
 
 #ls ../mirror || true
