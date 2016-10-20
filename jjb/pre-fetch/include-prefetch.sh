@@ -43,7 +43,8 @@ done
 
 pushd ../mirror
 rm -f *.done
-find . -type d -delete
+find .  -maxdepth 1 -type d | grep -v uninative | xargs rm -rf
+rm -f *bad-checksum*
 ls -alh
 popd
 
