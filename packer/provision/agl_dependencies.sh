@@ -37,8 +37,14 @@ cat <<EOFSYSCTL >> /etc/sysctl.conf
 # we have a lot of make jobs, this helps a lot
 kernel.sched_child_runs_first = 1
 # smooth over a lot of I/O requests and do less blocking
-vm.dirty_background_ratio = 5
+vm.dirty_background_bytes = 0
+vm.dirty_background_ratio = 20
+vm.dirty_expire_centisecs = 4320000
+vm.dirtytime_expire_seconds = 432000
+vm.dirty_bytes = 0
 vm.dirty_ratio = 80
+vm.dirty_writeback_centisecs = 0
+
 
 EOFSYSCTL
 
