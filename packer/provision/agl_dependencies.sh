@@ -167,7 +167,7 @@ actions:
     - command: lava_command_run
       parameters:
           commands:
-              - "export NR=`grep processor /proc/cpuinfo | wc -l` ; export MEM=`cat /proc/meminfo | grep MemTotal | sed -e \"s/MemTotal: *//\" -e \"s/ kB//\"` ; stress -v -t 120 -c \$NR -m \$MEM -i \$NR "
+              - "export NR=`grep processor /proc/cpuinfo | wc -l` ; stress -v -t 120 -c \$NR -m \$NR -i \$NR "
           timeout: 300
 device_type: 'renesas-porter'
 logging_level: INFO
@@ -214,7 +214,7 @@ actions:
     - command: lava_command_run
       parameters:
           commands:
-              - "export NR=`grep processor /proc/cpuinfo | wc -l` ; export MEM=`cat /proc/meminfo | grep MemTotal | sed -e \"s/MemTotal: *//\" -e \"s/ kB//\"` ; stress -v -t 120 -c \$NR -m \$MEM -i \$NR "
+              - "export NR=`grep processor /proc/cpuinfo | wc -l` ; stress -v -t 120 -c \$NR -m \$NR -i \$NR "
           timeout: 300
 device_type: 'renesas-porter'
 logging_level: INFO
