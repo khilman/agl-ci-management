@@ -17,7 +17,7 @@ DEBIAN_FRONTEND=noninteractive apt-get update && \
     apt-get -y install gawk wget git-core diffstat unzip texinfo gcc-multilib build-essential chrpath socat \
                        libsdl1.2-dev xterm make xsltproc docbook-utils fop dblatex xmlto autoconf automake \
                        libtool libglib2.0-dev libarchive-dev python-git git python python-minimal repo mc \
-                       tree rsync python-yaml python-requests curl
+                       tree rsync python-yaml python-requests curl tar docker
 
 # we have a build blocker wrt useradd - I assume it is caused by /bin/sh being dash
 # systemd: Performing useradd with
@@ -152,6 +152,30 @@ timeout: 22600
 
 EOFPORTERUPLOADYAML
 
+cat <<EOFPORTERUPLOADYAML1 > /opt/AGL/lava-agl/porter_nbd_upload_stress.yaml
+actions:
+    - command: deploy_linaro_kernel
+      parameters:
+          kernel: 'http://localhost/porter/upload/uImage+dtb'
+          nbdroot: 'http://localhost/porter/upload/agl-demo-platform-porter.ext4'
+          ramdisk: 'http://localhost/porter/upload/initramfs-netboot-image-porter.ext4.gz.u-boot'
+          login_prompt: 'porter login:'
+          username: 'root'
+    - command: boot_linaro_image
+      parameters:
+          test_image_prompt: 'root@porter:~#'
+    - command: lava_command_run
+      parameters:
+          commands:
+              - "export NR=`grep processor /proc/cpuinfo | wc -l` ; export MEM=`cat /proc/meminfo | grep MemTotal | sed -e \"s/MemTotal: *//\" -e \"s/ kB//\"` ; stress -v -t 120 -c \$NR -m \$MEM -i \$NR "
+          timeout: 300
+device_type: 'renesas-porter'
+logging_level: INFO
+job_name: '\${JOB_NAME}'
+timeout: 22600
+
+EOFPORTERUPLOADYAML1
+
 cat <<EOFPORTERSNAPYAML > /opt/AGL/lava-agl/porter_nbd_snapshot.yaml
 actions:
     - command: deploy_linaro_kernel
@@ -174,6 +198,30 @@ logging_level: INFO
 job_name: '\${JOB_NAME}'
 timeout: 22600
 EOFPORTERSNAPYAML
+
+cat <<EOFPORTERSNAPYAML1 > /opt/AGL/lava-agl/porter_nbd_snapshot_stress.yaml
+actions:
+    - command: deploy_linaro_kernel
+      parameters:
+          kernel: 'https://download.automotivelinux.org/AGL/snapshots/master/latest/porter-nogfx/deploy/images/porter/uImage+dtb'
+          nbdroot: 'https://download.automotivelinux.org/AGL/snapshots/master/latest/porter-nogfx/deploy/images/porter/core-image-minimal-porter.ext4'
+          ramdisk: 'https://download.automotivelinux.org/AGL/snapshots/master/latest/porter-nogfx/deploy/images/porter/initramfs-netboot-image-porter.ext4.gz.u-boot'
+          login_prompt: 'porter login:'
+          username: 'root'
+    - command: boot_linaro_image
+      parameters:
+          test_image_prompt: 'root@porter:~#'
+    - command: lava_command_run
+      parameters:
+          commands:
+              - "export NR=`grep processor /proc/cpuinfo | wc -l` ; export MEM=`cat /proc/meminfo | grep MemTotal | sed -e \"s/MemTotal: *//\" -e \"s/ kB//\"` ; stress -v -t 120 -c \$NR -m \$MEM -i \$NR "
+          timeout: 300
+device_type: 'renesas-porter'
+logging_level: INFO
+job_name: '\${JOB_NAME}'
+timeout: 22600
+EOFPORTERSNAPYAML1
+
 
 cat <<EOFUPLOAD > /opt/AGL/lava-agl/upload4lava.sh
 #!/bin/bash
