@@ -162,10 +162,10 @@
             - comment-added-contains-event:
                 comment-contains-value: 'remerge'
           projects:
-            - project-compare-type: 'ANT'
+            - project-compare-type: 'Plain'
               project-pattern: '{name}'
               branches:
-                - branch-compare-type: 'ANT'
+                - branch-compare-type: 'Path'
                   branch-pattern: '**/{branch}'
           silent-start: 'true'
 
@@ -177,10 +177,10 @@
           trigger-on:
             - ref-updated-event
           projects:
-            - project-compare-type: 'ANT'
+            - project-compare-type: 'Plain'
               project-pattern: '{name}'
               branches:
-                - branch-compare-type: 'ANT'
+                - branch-compare-type: 'Path'
                   branch-pattern: 'refs/tags/**'
 
 # Publishers
@@ -197,7 +197,7 @@
     name: email-notification
     publishers:
       - email-ext:
-          recipients: 'nobody@automotivelinux.org'
+          recipients: 'jsmoeller@linuxfoundation.org'
           reply-to:
           content-type: default
           # yamllint disable rule:line-length

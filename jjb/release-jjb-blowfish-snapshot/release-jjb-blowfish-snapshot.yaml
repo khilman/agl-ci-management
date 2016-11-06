@@ -1,0 +1,41 @@
+- project:
+    name: release-jjb-blowfish-snapshot
+    jobs:
+        - release-jjb-blowfish-snapshot
+
+- job-template:
+    name: 'release-jjb-blowfish-snapshot'
+    project-type: matrix
+    concurrent: false
+    node: master
+
+    axes:
+      - axis:
+          type: label-expression
+          name: MACHINE
+          values:
+            - qemux86
+            - porter-nogfx
+            - intel-corei7-64
+      - axis:
+          type: slave
+          name: label
+          values:
+            - agl-test-slave
+
+    build-discarder:
+      days-to-keep: 30
+      num-to-keep: 40
+      artifact-days-to-keep: -1
+      artifact-num-to-keep: 5
+
+    wrappers:
+      - agl-infra-wrappers:
+          build-timeout: '{build-timeout}'
+
+    builders:
+      - shell:
+            !include-raw-escape: include-release-jjb-blowfish-snapshot-build.sh
+      - shell:
+            !include-raw-escape: include-release-jjb-blowfish-snapshot-rsync.sh
+
