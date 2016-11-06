@@ -11,7 +11,7 @@
 
     axes:
       - axis:
-          type: label-expression
+          type: user-defined
           name: MACHINE
           values:
             - qemux86
