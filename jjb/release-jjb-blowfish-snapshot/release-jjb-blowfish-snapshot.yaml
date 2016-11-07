@@ -9,6 +9,23 @@
     concurrent: false
     node: master
 
+    parameters:
+      - string:
+          name: GERRIT_PROJECT
+          default: AGL/AGL-repo
+          description: "Project to build"
+      - string:
+          name: GERRIT_BRANCH
+          default: blowfish
+          description: "branch to build"
+      - string:
+          name: GERRIT_REFSPEC
+          default: refs/heads/blowfish
+          description: "refspec to build"
+      - string:
+          name: UPLOAD
+          default: false
+          description: "Upload?"
     axes:
       - axis:
           type: user-defined

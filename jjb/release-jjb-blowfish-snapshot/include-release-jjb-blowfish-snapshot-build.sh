@@ -1,7 +1,1 @@
-#!/bin/bash
-
-set -e
-set -x
-
-set
-
+../common/include-agl-build.sh
