@@ -44,13 +44,8 @@
       artifact-days-to-keep: -1
       artifact-num-to-keep: 5
 
-    scm:
-      - gerrit-trigger-scm:
-          refspec: ''
-          choosing-strategy: 'default'
-
     triggers:
-      - gerrit-trigger-patch-merged:
+      - gerrit-trigger-patch-submitted-silent:
             name: 'AGL/**'
             branch: '**'
 
