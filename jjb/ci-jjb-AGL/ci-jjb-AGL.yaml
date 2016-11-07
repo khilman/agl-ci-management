@@ -1,0 +1,70 @@
+- project:
+    name: ci-jjb-AGL
+    jobs:
+        - ci-jjb-AGL
+
+- job-template:
+    name: 'ci-jjb-AGL'
+    project-type: matrix
+    concurrent: true
+    node: master
+    disabled: true
+
+    parameters:
+      - string:
+          name: GERRIT_PROJECT
+          default: AGL/AGL-repo
+          description: "Project to build"
+      - string:
+          name: GERRIT_BRANCH
+          default: blowfish
+          description: "branch to build"
+      - string:
+          name: GERRIT_REFSPEC
+          default: refs/heads/blowfish
+          description: "refspec to build"
+
+    axes:
+      - axis:
+          type: user-defined
+          name: MACHINE
+          values:
+            - qemux86
+            - porter-nogfx
+            - intel-corei7-64
+      - axis:
+          type: slave
+          name: label
+          values:
+            - agl-test-slave
+
+    build-discarder:
+      days-to-keep: 30
+      num-to-keep: 40
+      artifact-days-to-keep: -1
+      artifact-num-to-keep: 5
+
+    scm:
+      - gerrit-trigger-scm:
+          refspec: ''
+          choosing-strategy: 'default'
+
+    triggers:
+      - gerrit-trigger-patch-merged:
+            name: 'AGL/**'
+            branch: '**'
+
+    wrappers:
+      - agl-infra-wrappers:
+          build-timeout: '{build-timeout}'
+
+    builders:
+      - shell:
+            !include-raw-escape: 
+                - ../common/include-agl-header.sh
+                - ../common/include-agl-repo.sh
+                - ../common/include-agl-select.sh
+                - ../common/include-agl-source-aglsetup.sh
+                - ../common/include-agl-auto-conf.sh
+                - ../common/include-agl-bitbake-image.sh
+                - ../common/include-agl-test-nbd-short.sh

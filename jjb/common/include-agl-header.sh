@@ -5,6 +5,11 @@
 # debugging purposes
 set -e
 
+################################################################################
+## HEADER
+################################################################################
+
+
 # VARIABLES
 OPTIND=1
 export DLHOST="https://download-new.automotivelinux.org/"
@@ -28,7 +33,9 @@ export TARGETFEATURES="agl-demo ${TARGETFEATURESnogfx}"
 
 export TARGETQA=""
 export TARGETIMAGE="agl-demo-platform\${TARGETQA}"
-export TARGETIMAGEnogfx="core-image-minimal"
+export TARGETIMAGEnogfx="agl-image-ivi\${TARGETQA}"
+
+export TARGETSDK="populate_sdk"
 
 # apply GERRIT_*
 if test -n "${GERRIT_PROJECT}"; then
@@ -111,92 +118,15 @@ eval TARGETIMAGE="$TARGETIMAGE"
 eval TARGETIMAGEnogfx="$TARGETIMAGEnogfx"
 
 if $NOGFX; then
-    export TARGETIMAGE="${TARGETIMAGEnogfx}"
-    export TARGETFEATURES="${TARGETFEATURESnogfx}"
+    export TARGETIMAGE=${TARGETIMAGEnogfx}
 fi
 if test x"porter-nogfx" = x"$MACHINE"; then
-    export TARGETIMAGE="${TARGETIMAGEnogfx}"
-    export TARGETFEATURES="${TARGETFEATURESnogfx}"
+    export TARGETIMAGE=${TARGETIMAGEnogfx}
 fi
 
-if $DEBUG; then
+#if $DEBUG; then
 set | grep ^TARGET || true
 set | grep ^GERRIT || true
 set | grep ^MACHINE || true
-fi
+#fi
 
-
-# create shared downloads and sstate-cache directory
-mkdir -p downloads
-mkdir -p sstate-cache
-
-# remove old files, we want to test a fresh clone
-export XTMP="$$"
-mv repoclone repoclone$XTMP || true
-( rm -rf repoclone$XTMP & ) || true
-mkdir -p repoclone
-cd repoclone
-
-repo init --reference=/opt/AGL/preclone -q -b $TARGETBRANCH -u https://gerrit.automotivelinux.org/gerrit/AGL/AGL-repo
-
-# next: repo sync and dump manifest
-repo sync --force-sync --detach --no-clone-bundle
-
-# fix up this branch
-MYPROJECT=`echo $TARGETPROJECT | sed -e "s#AGL/##g"`
-
-
-if test -n "${GERRIT_CHANGE_NUMBER}" -a -n "${GERRIT_PATCHSET_NUMBER}"  ; then
-    repo download $MYPROJECT ${GERRIT_CHANGE_NUMBER}/${GERRIT_PATCHSET_NUMBER}
-else
-    if test x"AGL-repo" = x"$MYPROJECT" ; then
-	cd .repo/manifests
-        MYREMOTE=`git remote | head -1`
-        git fetch ${MYREMOTE} ${TARGETREFSPEC}
-        git reset --hard FETCH_HEAD
-	cd ../../
-	repo sync --force-sync -d
-    else
-	cd $MYPROJECT
-	MYREMOTE=`git remote | head -1`
-	git fetch ${MYREMOTE} ${TARGETREFSPEC}
-	git reset --hard FETCH_HEAD
-	cd ..
-    fi
-fi
-
-repo manifest -r
-repo manifest -r > ../current_default.xml
-
-# source the env
-source meta-agl/scripts/aglsetup.sh -m ${MACHINE} -b output ${TARGETFEATURES}
-
-# link the shared downloads and sstate-cache
-ln -sf ../../downloads
-ln -sf ../../sstate-cache
-
-echo "" >> conf/local.conf
-
-#limit parallel number of bitbake jobs and parallel jobs in make
-cat << EOF > conf/auto.conf
-PREMIRRORS = "\
-git://.*/.* ${DLHOST}/AGL/mirror/   \n \
-ftp://.*/.* ${DLHOST}/AGL/mirror/   \n \
-http://.*/.* ${DLHOST}/AGL/mirror/  \n \
-https://.*/.* ${DLHOST}/AGL/mirror/ \n \
-             "
-
-SSTATE_MIRRORS = "\
-file://.* file:///opt/AGL/sstate-mirror/\${MACHINE}/PATH    \n \
-file://.* ${DLHOST}/sstate-mirror/\${MACHINE}/PATH \n \
-                 "
-
-SSTATE_DIR = "\${TOPDIR}/sstate-cache/\${MACHINE}/"
-EOF
-
-cat conf/auto.conf
-
-# finally, build the agl-demo-platform
-bitbake $TARGETIMAGE
-
-du -hs tmp/deploy/*

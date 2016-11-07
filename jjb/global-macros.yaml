@@ -83,18 +83,26 @@
           trigger-on:
             - patchset-created-event:
                 exclude-drafts: 'false'
-                exclude-trivial-rebase: 'false'
-                exclude-no-code-change: 'false'
+                exclude-trivial-rebase: 'true'
+                exclude-no-code-change: 'true'
             - draft-published-event
             - comment-added-contains-event:
                 comment-contains-value: 'recheck'
             - comment-added-contains-event:
+                comment-contains-value: 'rebuild'
+            - comment-added-contains-event:
                 comment-contains-value: 'reverify'
+            - comment-added-contains-event:
+                comment-contains-value: 'RECHECK'
+            - comment-added-contains-event:
+                comment-contains-value: 'REBUILD'
+            - comment-added-contains-event:
+                comment-contains-value: 'REVERIFY'
           projects:
-            - project-compare-type: 'ANT'
+            - project-compare-type: 'PLAIN'
               project-pattern: '{name}'
               branches:
-                - branch-compare-type: 'ANT'
+                - branch-compare-type: 'PLAIN'
                   branch-pattern: '**/{branch}'
 
 - trigger:
@@ -107,10 +115,10 @@
             - comment-added-contains-event:
                 comment-contains-value: 'remerge'
           projects:
-            - project-compare-type: 'ANT'
+            - project-compare-type: 'PLAIN'
               project-pattern: '{name}'
               branches:
-                - branch-compare-type: 'ANT'
+                - branch-compare-type: 'PLAIN'
                   branch-pattern: '**/{branch}'
 
 - trigger:
@@ -129,10 +137,10 @@
             - comment-added-contains-event:
                 comment-contains-value: 'reverify'
           projects:
-            - project-compare-type: 'ANT'
+            - project-compare-type: 'PLAIN'
               project-pattern: '{name}'
               branches:
-                - branch-compare-type: 'ANT'
+                - branch-compare-type: 'PLAIN'
                   branch-pattern: '**/{branch}'
           silent-start: 'true'
 
@@ -145,10 +153,10 @@
             - comment-added-contains-event:
                 comment-contains-value: 'fullcheck'
           projects:
-            - project-compare-type: 'ANT'
+            - project-compare-type: 'PLAIN'
               project-pattern: '{name}'
               branches:
-                - branch-compare-type: 'ANT'
+                - branch-compare-type: 'PLAIN'
                   branch-pattern: '**/{branch}'
           silent-start: 'true'
 
@@ -162,10 +170,10 @@
             - comment-added-contains-event:
                 comment-contains-value: 'remerge'
           projects:
-            - project-compare-type: 'Plain'
+            - project-compare-type: 'PLAIN'
               project-pattern: '{name}'
               branches:
-                - branch-compare-type: 'Path'
+                - branch-compare-type: 'PLAIN'
                   branch-pattern: '**/{branch}'
           silent-start: 'true'
 
@@ -177,10 +185,10 @@
           trigger-on:
             - ref-updated-event
           projects:
-            - project-compare-type: 'Plain'
+            - project-compare-type: 'PLAIN'
               project-pattern: '{name}'
               branches:
-                - branch-compare-type: 'Path'
+                - branch-compare-type: 'PLAIN'
                   branch-pattern: 'refs/tags/**'
 
 # Publishers
