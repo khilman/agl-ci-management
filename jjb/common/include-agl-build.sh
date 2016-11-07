@@ -111,7 +111,10 @@ eval TARGETIMAGE="$TARGETIMAGE"
 eval TARGETIMAGEnogfx="$TARGETIMAGEnogfx"
 
 if $NOGFX; then
-TARGETIMAGE=${TARGETIMAGEnogfx}
+    export TARGETIMAGE=${TARGETIMAGEnogfx}
+fi
+if test x"porter-nogfx" = x"$MACHINE"; then
+    export TARGETIMAGE=${TARGETIMAGEnogfx}
 fi
 
 if $DEBUG; then
