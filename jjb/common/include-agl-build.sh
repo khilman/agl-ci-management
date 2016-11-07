@@ -111,10 +111,12 @@ eval TARGETIMAGE="$TARGETIMAGE"
 eval TARGETIMAGEnogfx="$TARGETIMAGEnogfx"
 
 if $NOGFX; then
-    export TARGETIMAGE=${TARGETIMAGEnogfx}
+    export TARGETIMAGE="${TARGETIMAGEnogfx}"
+    export TARGETFEATURES="${TARGETFEATURESnogfx}"
 fi
 if test x"porter-nogfx" = x"$MACHINE"; then
-    export TARGETIMAGE=${TARGETIMAGEnogfx}
+    export TARGETIMAGE="${TARGETIMAGEnogfx}"
+    export TARGETFEATURES="${TARGETFEATURESnogfx}"
 fi
 
 if $DEBUG; then

@@ -24,7 +24,7 @@
           description: "refspec to build"
       - string:
           name: UPLOAD
-          default: false
+          default: NO
           description: "Upload?"
     axes:
       - axis:
