@@ -73,7 +73,7 @@ fi
 
 function maketmpfile() {
     DFILE=`mktemp -u -p ./ | sed -e "s#./##g"`
-    eval cp \$$1 $DFILE
+    eval cp -L \$$1 $DFILE
     export $1="$DFILE"
 }
 
@@ -114,8 +114,11 @@ timeout: 1800
 
 EOF
 
+cat /opt/AGL/lava-boot/lava-boot | sed -e 's#"~/.lava.yaml"#"/opt/AGL/lava-agl/lava.yaml"#' > ~/lava-boot
+chmod a+x ~/lava-boot
+
 logfile=$(mktemp)
-/opt/AGL/lava-boot/lava-boot porter.automotivelinux.org -j ./porterboot_nbd.yaml -v ROOTFSTOBOOT="${ROOTFSTOBOOT}" -v KERNELIMAGE=${KERNELIMAGE} -v NETBOOTIMAGE=${NETBOOTIMAGE} 2>&1 | tee $logfile
+~/lava-boot porter.automotivelinux.org -j ./porterboot_nbd.yaml -v ROOTFSTOBOOT="${ROOTFSTOBOOT}" -v KERNELIMAGE=${KERNELIMAGE} -v NETBOOTIMAGE=${NETBOOTIMAGE} 2>&1 | tee $logfile
 
 
 popd

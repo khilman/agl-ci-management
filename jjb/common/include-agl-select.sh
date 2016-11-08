@@ -5,11 +5,11 @@
 ## Select what to build / inject the rev from the gerrit env variable
 ################################################################################
 
-HANDLED=false
+HANDLED="no"
 
 # Projects in AGL/*
 ###################
-if test !$HANDLED -a $(echo "$TARGETPROJECT" | grep -q "^AGL/"); then
+if [[ ! x"yes" = x"$HANDLED" ]] && $(echo "$TARGETPROJECT" | grep -q "^AGL/"); then
 
     MYPROJECT=`echo $TARGETPROJECT | sed -e "s#AGL/##g"`
 
@@ -31,13 +31,13 @@ if test !$HANDLED -a $(echo "$TARGETPROJECT" | grep -q "^AGL/"); then
             cd ..
         fi
     fi
-    HANDLED=true
+    HANDLED="yes"
 fi
 
 
 # Projects in src/*
 ###################
-if test !$HANDLED -a $(echo "$TARGETPROJECT" | grep -q "^src/"); then
+if [[ ! x"yes" = x"$HANDLED" ]] && $(echo "$TARGETPROJECT" | grep -q "^src/"); then
 
 MYPROJECT=`echo $TARGETPROJECT | sed -e "s#src/##g"`
 
@@ -57,7 +57,7 @@ fi
 
 # Projects in staging/*
 #######################
-if test !$HANDLED -a $(echo "$TARGETPROJECT" | grep -q "^staging/"); then
+if [[ ! x"yes" = x"$HANDLED" ]] && $(echo "$TARGETPROJECT" | grep -q "^staging/"); then
 
 MYPROJECT=`echo $TARGETPROJECT | sed -e "s#staging/##g"`
 
@@ -75,7 +75,7 @@ exit 0
 
 fi
 
-if !$HANDLED; then
+if [[ ! x"yes" = x"$HANDLED" ]] ; then
     echo "COULD NOT SELECT PROJECT, something is wrong!"
     echo "$TARGETPROJECT"
     echo ""
