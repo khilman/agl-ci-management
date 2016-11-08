@@ -2,7 +2,7 @@
 # License GPLv2
 
 ################################################################################
-## Main
+## bitbake the sdk
 ################################################################################
 
 # finally, build the agl-demo-platform (we retry to catch the tar-native bug)

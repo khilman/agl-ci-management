@@ -2,11 +2,11 @@
 # License GPLv2
 
 ################################################################################
-## Main
+## auto.conf inclusion of mirrors
 ################################################################################
 
 #limit parallel number of bitbake jobs and parallel jobs in make
-cat << EOF > conf/auto.conf
+cat << EOF >> conf/auto.conf
 PREMIRRORS = "\
 git://.*/.* ${DLHOST}/AGL/mirror/   \n \
 ftp://.*/.* ${DLHOST}/AGL/mirror/   \n \
@@ -22,4 +22,4 @@ file://.* ${DLHOST}/sstate-mirror/\${MACHINE}/PATH \n \
 SSTATE_DIR = "\${TOPDIR}/sstate-cache/\${MACHINE}/"
 EOF
 
-cat conf/auto.conf
+#cat conf/auto.conf

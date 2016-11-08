@@ -2,9 +2,10 @@
 # License GPLv2
 
 ################################################################################
-## Main
+## Add archiver
 ################################################################################
 
 # archive sources within  tmp/deploy/
+echo '' >> conf/local.conf
 echo 'INHERIT += "archiver"' >> conf/local.conf
 echo 'ARCHIVER_MODE[src] = "original"' >> conf/local.conf

@@ -6,7 +6,7 @@
 set -e
 
 ################################################################################
-## HEADER
+## Header
 ################################################################################
 
 
@@ -33,7 +33,7 @@ export TARGETFEATURES="agl-demo ${TARGETFEATURESnogfx}"
 
 export TARGETQA=""
 export TARGETIMAGE="agl-demo-platform\${TARGETQA}"
-export TARGETIMAGEnogfx="agl-image-ivi\${TARGETQA}"
+export TARGETIMAGEnogfx="core-image-minimal"
 
 export TARGETSDK="populate_sdk"
 

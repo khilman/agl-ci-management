@@ -2,7 +2,7 @@
 # License GPLv2
 
 ################################################################################
-## Main
+## Select what to build / inject the rev from the gerrit env variable
 ################################################################################
 
 HANDLED=false
