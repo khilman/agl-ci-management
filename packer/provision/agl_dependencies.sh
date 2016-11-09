@@ -55,6 +55,8 @@ git clone http://git.linaro.org/people/riku.voipio/lava-boot.git
 cd lava-boot
 sed -i '16iimport ssl' lava-boot
 sed -i '17issl._create_default_https_context = ssl._create_unverified_context' lava-boot
+sed -i -e 's#"~/.lava.yaml"#"/opt/AGL/lava-agl/lava.yaml"#' lava-boot
+
 
 # AGL specific lab integration. To be moved into git repo and cloned or the like.
 #################################################################################
@@ -132,9 +134,9 @@ cat <<EOFPORTERUPLOADYAML > /opt/AGL/lava-agl/porter_nbd_upload.yaml
 actions:
     - command: deploy_linaro_kernel
       parameters:
-          kernel: 'http://localhost/porter/upload/uImage+dtb'
-          nbdroot: 'http://localhost/porter/upload/agl-demo-platform-porter.ext4'
-          ramdisk: 'http://localhost/porter/upload/initramfs-netboot-image-porter.ext4.gz.u-boot'
+          kernel: 'http://localhost/porter/upload/\${KERNELIMAGE}'
+          nbdroot: 'http://localhost/porter/upload/\${ROOTFSTOBOOT}'
+          ramdisk: 'http://localhost/porter/upload/\${NETBOOTIMAGE}'
           login_prompt: 'porter login:'
           username: 'root'
     - command: boot_linaro_image
@@ -156,9 +158,9 @@ cat <<EOFPORTERUPLOADYAML1 > /opt/AGL/lava-agl/porter_nbd_upload_stress.yaml
 actions:
     - command: deploy_linaro_kernel
       parameters:
-          kernel: 'http://localhost/porter/upload/uImage+dtb'
-          nbdroot: 'http://localhost/porter/upload/agl-demo-platform-porter.ext4'
-          ramdisk: 'http://localhost/porter/upload/initramfs-netboot-image-porter.ext4.gz.u-boot'
+          kernel: 'http://localhost/porter/upload/\${KERNELIMAGE}'
+          nbdroot: 'http://localhost/porter/upload/\${ROOTFSTOBOOT}'
+          ramdisk: 'http://localhost/porter/upload/\${NETBOOTIMAGE}'
           login_prompt: 'porter login:'
           username: 'root'
     - command: boot_linaro_image
@@ -167,8 +169,27 @@ actions:
     - command: lava_command_run
       parameters:
           commands:
-              - "export NR=`grep processor /proc/cpuinfo | wc -l` ; stress -v -t 120 -c \$NR -m \$NR -i \$NR "
+              - "stress -v -t 120 -c 1 -m 1 -i 1 "
           timeout: 300
+device_type: 'renesas-porter'
+logging_level: INFO
+job_name: '\${JOB_NAME}'
+timeout: 22600
+
+EOFPORTERUPLOADYAML1
+
+cat <<EOFPORTERUPLOADYAML1 > /opt/AGL/lava-agl/porter_nbd_upload_simple.yaml
+actions:
+    - command: deploy_linaro_kernel
+      parameters:
+          kernel: 'http://localhost/porter/upload/\${KERNELIMAGE}'
+          nbdroot: 'http://localhost/porter/upload/\${ROOTFSTOBOOT}'
+          ramdisk: 'http://localhost/porter/upload/\${NETBOOTIMAGE}'
+          login_prompt: 'porter login:'
+          username: 'root'
+    - command: boot_linaro_image
+      parameters:
+          test_image_prompt: 'root@porter:~#'
 device_type: 'renesas-porter'
 logging_level: INFO
 job_name: '\${JOB_NAME}'
@@ -211,11 +232,24 @@ actions:
     - command: boot_linaro_image
       parameters:
           test_image_prompt: 'root@porter:~#'
-    - command: lava_command_run
+device_type: 'renesas-porter'
+logging_level: INFO
+job_name: '\${JOB_NAME}'
+timeout: 22600
+EOFPORTERSNAPYAML1
+
+cat <<EOFPORTERSNAPYAML1 > /opt/AGL/lava-agl/porter_nbd_snapshot_simple.yaml
+actions:
+    - command: deploy_linaro_kernel
       parameters:
-          commands:
-              - "export NR=`grep processor /proc/cpuinfo | wc -l` ; stress -v -t 120 -c \$NR -m \$NR -i \$NR "
-          timeout: 300
+          kernel: 'https://download.automotivelinux.org/AGL/snapshots/master/latest/porter-nogfx/deploy/images/porter/uImage+dtb'
+          nbdroot: 'https://download.automotivelinux.org/AGL/snapshots/master/latest/porter-nogfx/deploy/images/porter/core-image-minimal-porter.ext4'
+          ramdisk: 'https://download.automotivelinux.org/AGL/snapshots/master/latest/porter-nogfx/deploy/images/porter/initramfs-netboot-image-porter.ext4.gz.u-boot'
+          login_prompt: 'porter login:'
+          username: 'root'
+    - command: boot_linaro_image
+      parameters:
+          test_image_prompt: 'root@porter:~#'
 device_type: 'renesas-porter'
 logging_level: INFO
 job_name: '\${JOB_NAME}'
@@ -229,12 +263,25 @@ cat <<EOFUPLOAD > /opt/AGL/lava-agl/upload4lava.sh
 
 if test x"" != x"\$1"; then
 Y=\$(echo "\$1" | sed -e "s#\.\.##g" -e "s#/##g")
-curl -T "\$Y" https://porter.automotivelinux.org/porter/upload/jta/\$Y --insecure
+curl -T "\$Y" https://porter.automotivelinux.org/porter/upload/\$Y --insecure
 else
 echo "Help: \$0 file"
 fi
 
 EOFUPLOAD
+
+cat <<EOFDELETE > /opt/AGL/lava-agl/delete4lava.sh
+#!/bin/bash
+#set -x
+
+if test x"" != x"\$1"; then
+Y=\$(echo "\$1" | sed -e "s#\.\.##g" -e "s#/##g")
+curl -X DELETE https://porter.automotivelinux.org/porter/upload/\$Y --insecure
+else
+echo "Help: \$0 file"
+fi
+
+EOFDELETE
 
 cat <<EOFDEPLOY > /opt/AGL/lava-agl/deploy.sh
 #!/bin/bash
