@@ -17,7 +17,9 @@ DEBIAN_FRONTEND=noninteractive apt-get update && \
     apt-get -y install gawk wget git-core diffstat unzip texinfo gcc-multilib build-essential chrpath socat \
                        libsdl1.2-dev xterm make xsltproc docbook-utils fop dblatex xmlto autoconf automake \
                        libtool libglib2.0-dev libarchive-dev python-git git python python-minimal repo \
-                       tree rsync python-yaml python-requests curl tar docker pandoc python3
+                       tree rsync python-yaml python-requests curl tar docker pandoc python3 \
+                       ruby-all-dev ruby-ffi ruby-ffi-* jekyll ruby-redcarpet npm mkdocs
+
 
 # we have a build blocker wrt useradd - I assume it is caused by /bin/sh being dash
 # systemd: Performing useradd with
@@ -47,6 +49,18 @@ vm.dirty_writeback_centisecs = 0
 
 
 EOFSYSCTL
+
+### webdocs
+mkdir -p /opt/AGL
+cd /opt/AGL/
+mkdir webdocs
+cd webdocs
+git clone http://github.com/iotbzh/webdocs-tools
+git clone http://github.com/iotbzh/webdocs-sample
+cd ./webdocs-tools
+npm install
+
+### hope that is enough
 
 # clone lava-boot to /opt/AGL/
 mkdir -p /opt/AGL/
