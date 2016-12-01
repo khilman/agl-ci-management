@@ -18,7 +18,7 @@ DEBIAN_FRONTEND=noninteractive apt-get update && \
                        libsdl1.2-dev xterm make xsltproc docbook-utils fop dblatex xmlto autoconf automake \
                        libtool libglib2.0-dev libarchive-dev python-git git python python-minimal repo \
                        tree rsync python-yaml python-requests curl tar docker pandoc python3 \
-                       ruby-all-dev ruby-ffi ruby-ffi-* jekyll ruby-redcarpet npm mkdocs
+                       ruby-all-dev ruby-ffi ruby-ffi-* jekyll ruby-redcarpet npm mkdocs nodejs
 
 
 # we have a build blocker wrt useradd - I assume it is caused by /bin/sh being dash
