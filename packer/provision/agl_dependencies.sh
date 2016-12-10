@@ -59,6 +59,7 @@ git clone http://github.com/iotbzh/webdocs-tools
 git clone http://github.com/iotbzh/webdocs-sample
 cd ./webdocs-tools
 npm install
+gem install --no-user-install -V kramdown
 
 ### hope that is enough
 
