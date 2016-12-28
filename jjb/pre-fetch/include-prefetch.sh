@@ -3,7 +3,7 @@
 #set -x
 set -e
 #
-export BOARDS="qemux86-64 qemux86 raspberrypi3 intel-corei7-64 porter-nogfx"
+export BOARDS="qemux86-64 qemux86 raspberrypi3 intel-corei7-64 porter-nogfx dra7xx-evm"
 # check: dra7xx-evm dragonboard-410c wandboard
 export FEATURES="agl-demo agl-appfw-smack agl-netboot agl-sota agl-devel"
 export FEATURES_nogfx="agl-appfw-smack agl-netboot agl-sota agl-devel"
