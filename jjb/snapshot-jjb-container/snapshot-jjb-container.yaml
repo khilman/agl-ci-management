@@ -1,0 +1,30 @@
+- project:
+    name: snapshot-jjb-container
+    jobs:
+        - snapshot-jjb-container-weekly
+
+- job-template:
+    name: 'snapshot-jjb-container-weekly'
+    project-type: freestyle
+    concurrent: false
+    node: agl-test-slave
+
+    build-discarder:
+      days-to-keep: 30
+      num-to-keep: 40
+      artifact-days-to-keep: -1
+      artifact-num-to-keep: 5
+
+    triggers:
+      - timed: '@weekly'
+
+    wrappers:
+      - agl-infra-wrappers:
+          build-timeout: '{build-timeout}'
+
+    builders:
+      - shell:
+            !include-raw-escape: include-createcontainer.sh
+      - shell:
+            !include-raw-escape: include-rsync-container.sh
+
