@@ -1,0 +1,58 @@
+- project:
+    name: release-jjb-chinook-snapshot
+    jobs:
+        - release-jjb-chinook-snapshot
+
+- job-template:
+    name: 'release-jjb-chinook-snapshot'
+    project-type: matrix
+    concurrent: false
+    node: master
+
+    parameters:
+      - string:
+          name: GERRIT_PROJECT
+          default: AGL/AGL-repo
+          description: "Project to build"
+      - string:
+          name: GERRIT_BRANCH
+          default: chinook
+          description: "branch to build"
+      - string:
+          name: GERRIT_REFSPEC
+          default: refs/heads/chinook
+          description: "refspec to build"
+      - string:
+          name: UPLOAD
+          default: NO
+          description: "Upload?"
+    axes:
+      - axis:
+          type: user-defined
+          name: MACHINE
+          values:
+            - qemux86
+            - porter-nogfx
+            - intel-corei7-64
+      - axis:
+          type: slave
+          name: label
+          values:
+            - agl-test-slave
+
+    build-discarder:
+      days-to-keep: 30
+      num-to-keep: 40
+      artifact-days-to-keep: -1
+      artifact-num-to-keep: 5
+
+    wrappers:
+      - agl-infra-wrappers:
+          build-timeout: '{build-timeout}'
+
+    builders:
+      - shell:
+            !include-raw-escape: include-release-jjb-chinook-snapshot-build.sh
+      - shell:
+            !include-raw-escape: include-release-jjb-chinook-snapshot-rsync.sh
+
