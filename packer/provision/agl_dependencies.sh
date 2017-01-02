@@ -17,7 +17,7 @@ DEBIAN_FRONTEND=noninteractive apt-get update && \
     apt-get -y install gawk wget git-core diffstat unzip texinfo gcc-multilib build-essential chrpath socat \
                        libsdl1.2-dev xterm make xsltproc docbook-utils fop dblatex xmlto autoconf automake \
                        libtool libglib2.0-dev libarchive-dev python-git git python python-minimal repo \
-                       tree rsync python-yaml python-requests curl tar docker pandoc python3 \
+                       tree rsync python-yaml python-requests curl tar docker.io pandoc python3 \
                        ruby-all-dev ruby-ffi ruby-ffi-* jekyll ruby-redcarpet npm mkdocs nodejs
 
 
@@ -53,11 +53,13 @@ EOFSYSCTL
 ### webdocs
 mkdir -p /opt/AGL
 cd /opt/AGL/
-mkdir webdocs
-cd webdocs
-git clone http://github.com/iotbzh/webdocs-tools
-git clone http://github.com/iotbzh/webdocs-sample
-cd ./webdocs-tools
+#mkdir webdocs
+#cd webdocs
+#git clone http://github.com/iotbzh/webdocs-tools
+#git clone http://github.com/iotbzh/webdocs-sample
+git clone https://github.com/automotive-grade-linux/docs-agl
+
+cd ./docs-agl/doctools/webdocs/
 npm install
 gem install --no-user-install -V kramdown
 
@@ -71,6 +73,23 @@ cd lava-boot
 sed -i '16iimport ssl' lava-boot
 sed -i '17issl._create_default_https_context = ssl._create_unverified_context' lava-boot
 sed -i -e 's#"~/.lava.yaml"#"/opt/AGL/lava-agl/lava.yaml"#' lava-boot
+
+cat <<EOFLAVAYAML > /opt/AGL/lava-agl/.lava.yaml
+server: ${LAVAHOST}
+user: ${LAVAUSER}
+token: ${LAVATOKEN}
+https: true
+EOFLAVAYAML
+
+
+
+
+
+exit 0
+
+if false ; then
+
+# ATTIC
 
 
 # AGL specific lab integration. To be moved into git repo and cloned or the like.
@@ -138,12 +157,6 @@ while True:
 # end
 EOFBR
 
-cat <<EOFLAVAYAML > /opt/AGL/lava-agl/.lava.yaml
-server: ${LAVAHOST}
-user: ${LAVAUSER}
-token: ${LAVATOKEN}
-https: true
-EOFLAVAYAML
 
 cat <<EOFPORTERUPLOADYAML > /opt/AGL/lava-agl/porter_nbd_upload.yaml
 actions:
@@ -316,3 +329,6 @@ fi
 EOFDEPLOY
 
 chmod a+x /opt/AGL/lava-agl/*
+
+
+fi
