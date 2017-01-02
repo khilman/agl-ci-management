@@ -18,13 +18,17 @@ DEBIAN_FRONTEND=noninteractive apt-get update && \
                        libsdl1.2-dev xterm make xsltproc docbook-utils fop dblatex xmlto autoconf automake \
                        libtool libglib2.0-dev libarchive-dev python-git git python python-minimal repo \
                        tree rsync python-yaml python-requests curl tar docker.io pandoc python3 \
-                       ruby-all-dev ruby-ffi ruby-ffi-* jekyll ruby-redcarpet npm mkdocs nodejs
+                       ruby-all-dev ruby-ffi ruby-ffi-* jekyll ruby-redcarpet npm mkdocs nodejs \
+                       lava-tool
 
 
 # we have a build blocker wrt useradd - I assume it is caused by /bin/sh being dash
 # systemd: Performing useradd with
 echo "dash dash/sh boolean false" | debconf-set-selections
 DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash
+
+# add user ubuntu to docker group:
+sudo usermod -a -G docker ubuntu
 
 cat <<EOFHOSTS >> /etc/hosts
 
