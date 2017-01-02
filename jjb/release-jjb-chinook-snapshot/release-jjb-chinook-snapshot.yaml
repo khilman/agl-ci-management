@@ -31,9 +31,11 @@
           type: user-defined
           name: MACHINE
           values:
-            - qemux86
+            - qemux86-64
             - porter-nogfx
             - intel-corei7-64
+            - raspberrypi3
+            - dra7xx-evm
       - axis:
           type: slave
           name: label

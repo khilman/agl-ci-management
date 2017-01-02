@@ -2,15 +2,27 @@
 
 #set -x
 set -e
+echo "#######################################"
+echo "#######################################"
+ls -alh
+echo "#######################################"
+echo "#######################################"
+tree -L 2
+echo "#######################################"
+echo "#######################################"
+set | grep MACHINE
+echo "#######################################"
+echo "#######################################"
+set
+echo "#######################################"
+echo "#######################################"
 
-#ls -alh
-
-export RSYNCSRC="$(pwd)/mirror/"
-export RSYNCDST="jenkins-slave@10.30.72.8:/srv/download/AGL/mirror/"
+export RSYNCSRC="$(pwd)/tmp/deploy/images/"
+export RSYNCDST="jenkins-slave@10.30.72.8:/srv/download/AGL/release/chinook/"
 
 echo "would do rsync -avr -e \"ssh -o StrictHostKeyChecking=no\" $RSYNCSRC $RSYNCDST "
 
-if x"yes" = x"$UPLOAD" ; then
+if test x"yes" = x"$UPLOAD" ; then
 echo upload
 fi
 
