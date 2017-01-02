@@ -24,7 +24,7 @@
           description: "refspec to build"
       - string:
           name: UPLOAD
-          default: NO
+          default: yes_or_no
           description: "Upload?"
     axes:
       - axis:
@@ -45,6 +45,11 @@
       num-to-keep: 40
       artifact-days-to-keep: -1
       artifact-num-to-keep: 5
+
+    triggers:
+      - gerrit-trigger-patch-submitted-silent:
+            name: 'AGL/AGL-repo'
+            branch: 'refs/tags/**'
 
     wrappers:
       - agl-infra-wrappers:
