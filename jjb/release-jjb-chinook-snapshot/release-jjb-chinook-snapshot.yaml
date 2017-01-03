@@ -23,6 +23,14 @@
           default: refs/heads/chinook
           description: "refspec to build"
       - string:
+          name: RELEASE_VERSION
+          default: 2.99.3
+          description: "release version number for build"
+      - string:
+          name: RELEASE_BRANCH
+          default: chinook
+          description: "release branch to build"
+      - string:
           name: UPLOAD
           default: yes_or_no
           description: "Upload?"
@@ -51,7 +59,7 @@
     triggers:
       - gerrit-trigger-patch-submitted-silent:
             name: 'AGL/AGL-repo'
-            branch: 'refs/tags/**'
+            branch: 'refs/tags/chinook/**'
 
     wrappers:
       - agl-infra-wrappers:

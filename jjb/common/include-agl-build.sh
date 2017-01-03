@@ -30,6 +30,9 @@ export TARGETQA=""
 export TARGETIMAGE="agl-demo-platform\${TARGETQA}"
 export TARGETIMAGEnogfx="core-image-minimal"
 
+export TARGETRELEASEVERSION=""
+export TARGETRELEASEBRANCH=""
+
 # apply GERRIT_*
 if test -n "${GERRIT_PROJECT}"; then
 export TARGETPROJECT="${GERRIT_PROJECT}"
@@ -39,6 +42,16 @@ if test -n "${GERRIT_BRANCH}"; then
 fi
 if test -n "${GERRIT_REFSPEC}"; then
 export TARGETREFSPEC="${GERRIT_REFSPEC}"
+fi
+
+if test -n "${RELEASE_VERSION}"; then
+export TARGETRELEASEVERSION="${RELEASE_VERSION}"
+fi
+
+if test -n "${RELEASE_BRANCH}"; then
+export TARGETRELEASEBRANCH="${RELEASE_BRANCH}"
+export TARGETBRANCH="${RELEASE_BRANCH}"
+export TARGETREFSPEC="refs/heads/${RELEASE_BRANCH}"
 fi
 
 if test x"" = x"${MACHINE}"; then
@@ -119,6 +132,12 @@ if test x"porter-nogfx" = x"$MACHINE"; then
     export TARGETFEATURES="${TARGETFEATURESnogfx}"
 fi
 
+if test ! x"" = x"$TARGETRELEASEVERSION"; then
+MANIFESTMOD="-m ${TARGETRELEASEBRANCH}_${TARGETRELEASEVERSION}"
+else
+MANIFESTMOD=""
+fi
+
 if $DEBUG; then
 set | grep ^TARGET || true
 set | grep ^GERRIT || true
@@ -137,7 +156,7 @@ mv repoclone repoclone$XTMP || true
 mkdir -p repoclone
 cd repoclone
 
-repo init --reference=/opt/AGL/preclone -q -b $TARGETBRANCH -u https://gerrit.automotivelinux.org/gerrit/AGL/AGL-repo
+repo init --reference=/opt/AGL/preclone -q -b $TARGETBRANCH $MANIFESTMOD -u https://gerrit.automotivelinux.org/gerrit/AGL/AGL-repo
 
 # next: repo sync and dump manifest
 repo sync --force-sync --detach --no-clone-bundle

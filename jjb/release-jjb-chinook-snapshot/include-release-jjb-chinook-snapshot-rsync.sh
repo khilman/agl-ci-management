@@ -18,7 +18,7 @@ echo "#######################################"
 echo "#######################################"
 
 export RSYNCSRC="$(pwd)/tmp/deploy/images/"
-export RSYNCDST="jenkins-slave@10.30.72.8:/srv/download/AGL/release/chinook/"
+export RSYNCDST="jenkins-slave@10.30.72.8:/srv/download/AGL/release/${RELEASE_BRANCH}/${RELEASE_VERSION}/"
 
 echo "would do rsync -avr -e \"ssh -o StrictHostKeyChecking=no\" $RSYNCSRC $RSYNCDST "
 
