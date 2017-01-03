@@ -12,7 +12,8 @@ set -e
 
 # VARIABLES
 OPTIND=1
-export DLHOST="https://download-new.automotivelinux.org/"
+#export DLHOST="http://download-new.automotivelinux.org/"
+# DLHOST in auto.conf
 export NOGFX=false
 export VERBOSE=false
 export DEBUG=false
