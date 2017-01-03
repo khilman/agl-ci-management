@@ -29,9 +29,11 @@
           type: user-defined
           name: MACHINE
           values:
-            - qemux86
             - porter-nogfx
             - intel-corei7-64
+            - raspberrypi3
+            - dra7xx-evm
+            - qemux86-64
       - axis:
           type: slave
           name: label
@@ -45,9 +47,12 @@
       artifact-num-to-keep: 5
 
     triggers:
-      - gerrit-trigger-patch-submitted-silent:
-            name: 'AGL/**'
-            branch: '**'
+      - gerrit-trigger-patch-submitted:
+            name: 'AGL/AGL-repo'
+            branch: '**/**'
+      - gerrit-trigger-patch-submitted:
+            name: 'AGL/meta-**'
+            branch: '**/**'
 
     wrappers:
       - agl-infra-wrappers:
