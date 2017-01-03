@@ -25,6 +25,8 @@ case ${MACHINE} in
 esac
 
 
+TESTRUN=false
+
 if ${TESTRUN}; then
 
 echo "#################################"
