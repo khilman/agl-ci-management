@@ -8,7 +8,6 @@
     project-type: matrix
     concurrent: true
     node: master
-    disabled: true
 
     parameters:
       - string:
