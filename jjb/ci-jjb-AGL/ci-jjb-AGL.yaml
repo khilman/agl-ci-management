@@ -66,5 +66,7 @@
                 - ../common/include-agl-select.sh
                 - ../common/include-agl-source-aglsetup.sh
                 - ../common/include-agl-auto-conf.sh
+                - ../common/include-agl-limit-parallelism.sh
+                - ../common/include-agl-cat-auto-conf.sh
                 - ../common/include-agl-bitbake-image.sh
                 - ../common/include-agl-test-nbd-short.sh
