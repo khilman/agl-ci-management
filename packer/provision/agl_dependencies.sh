@@ -19,7 +19,7 @@ DEBIAN_FRONTEND=noninteractive apt-get update && \
                        libtool libglib2.0-dev libarchive-dev python-git git python python-minimal repo \
                        tree rsync python-yaml python-requests curl tar docker.io pandoc python3 \
                        ruby-all-dev ruby-ffi ruby-ffi-* jekyll ruby-redcarpet npm mkdocs nodejs \
-                       lava-tool
+                       lava-tool python-pip
 
 
 # we have a build blocker wrt useradd - I assume it is caused by /bin/sh being dash
@@ -38,6 +38,8 @@ cat <<EOFHOSTS >> /etc/hosts
 
 EOFHOSTS
 
+# install newer version of jjb ... fixes issues with rendering
+pip install --upgrade jenkins-job-builder 
 
 cat <<EOFSYSCTL >> /etc/sysctl.conf
 # we have a lot of make jobs, this helps a lot
