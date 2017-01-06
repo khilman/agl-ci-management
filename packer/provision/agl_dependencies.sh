@@ -39,7 +39,7 @@ cat <<EOFHOSTS >> /etc/hosts
 EOFHOSTS
 
 # install newer version of jjb ... fixes issues with rendering
-pip install --upgrade jenkins-job-builder 
+sudo pip install --upgrade --force-reinstall -v jenkins-job-builder 
 
 cat <<EOFSYSCTL >> /etc/sysctl.conf
 # we have a lot of make jobs, this helps a lot
