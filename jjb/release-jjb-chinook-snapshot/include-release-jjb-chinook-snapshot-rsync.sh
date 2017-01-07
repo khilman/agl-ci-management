@@ -46,7 +46,7 @@ ls -alhR $DEST
 echo "would do rsync -avr -e \"ssh -o StrictHostKeyChecking=no\" $RSYNCSRC $RSYNCDST "
 
 if test x"yes" = x"$UPLOAD" ; then
-   rsync -avr --delete -e "ssh -o StrictHostKeyChecking=no" $RSYNCSRC $RSYNCDST
+   rsync -avr -e "ssh -o StrictHostKeyChecking=no" $RSYNCSRC $RSYNCDST
 fi
 
 exit 0
