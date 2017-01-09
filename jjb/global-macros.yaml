@@ -283,4 +283,5 @@
             - 'd28b1f3b-3603-49bc-b837-bb0a2e85d4b8'
             - '2d097b8f-bc4a-4222-b496-4ac6332015d7'
       - ansicolor
-
+      - openstack:
+          single-use: True
