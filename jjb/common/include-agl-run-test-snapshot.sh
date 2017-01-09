@@ -76,6 +76,32 @@ EOF
 
 #rm ~/.local/token
 
-lava-tool submit-job https://agl-jenkins-user@porter.automotivelinux.org testjob.yaml
+lava-tool submit-job https://agl-jenkins-user@porter.automotivelinux.org testjob.yaml | tee .myjob
+
+MYJOB=`cat .myjob | sed -e "s#submitted as job id: ##g"`
+
+echo $MYJOB
+
+lava-tool job-status https://agl-jenkins-user@porter.automotivelinux.org testjob.yaml $MYJOB
+lava-tool job-details https://agl-jenkins-user@porter.automotivelinux.org testjob.yaml $MYJOB
+lava-tool job-output https://agl-jenkins-user@porter.automotivelinux.org testjob.yaml $MYJOB
+sleep 10
+lava-tool job-status https://agl-jenkins-user@porter.automotivelinux.org testjob.yaml $MYJOB
+sleep 10
+lava-tool job-status https://agl-jenkins-user@porter.automotivelinux.org testjob.yaml $MYJOB
+sleep 10
+lava-tool job-status https://agl-jenkins-user@porter.automotivelinux.org testjob.yaml $MYJOB
+sleep 10
+lava-tool job-status https://agl-jenkins-user@porter.automotivelinux.org testjob.yaml $MYJOB
+sleep 10
+lava-tool job-status https://agl-jenkins-user@porter.automotivelinux.org testjob.yaml $MYJOB
+sleep 10
+lava-tool job-status https://agl-jenkins-user@porter.automotivelinux.org testjob.yaml $MYJOB
+sleep 10
+lava-tool job-status https://agl-jenkins-user@porter.automotivelinux.org testjob.yaml $MYJOB
+sleep 10
+lava-tool job-details https://agl-jenkins-user@porter.automotivelinux.org testjob.yaml $MYJOB
+
+
 
 # setup 
