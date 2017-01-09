@@ -1,0 +1,61 @@
+- project:
+    name: test-lava
+    jobs:
+        - test-lava
+
+- job-template:
+    name: 'test-lava'
+    project-type: matrix
+    concurrent: false
+    node: master
+
+    parameters:
+      - string:
+          name: GERRIT_PROJECT
+          default: AGL/AGL-repo
+          description: "Project to build"
+      - string:
+          name: GERRIT_BRANCH
+          default: master
+          description: "branch to build"
+      - string:
+          name: GERRIT_REFSPEC
+          default: refs/heads/master
+          description: "refspec to build"
+    axes:
+      - axis:
+          type: user-defined
+          name: MACHINE
+          values:
+            - raspberrypi3
+      - axis:
+          type: slave
+          name: label
+          values:
+            - master
+
+    build-discarder:
+      days-to-keep: 30
+      num-to-keep: 40
+      artifact-days-to-keep: -1
+      artifact-num-to-keep: 5
+
+#    triggers:
+#      - gerrit-trigger-patch-submitted-silent:
+#            name: 'AGL/AGL-repo'
+#            branch: 'refs/tags/chinook/**'
+
+    wrappers:
+      - agl-infra-wrappers:
+          build-timeout: '{build-timeout}'
+      - credentials-binding:
+          - username-password-separated:
+              credential-id: agl_main_lava_instance
+              username: AGLLAVAUSER
+              password: AGLLAVATOKEN
+
+    builders:
+      - shell:
+            !include-raw-escape:
+                - ../common/include-agl-run-test-snapshot.sh
+
