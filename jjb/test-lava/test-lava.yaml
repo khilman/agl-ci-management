@@ -32,7 +32,7 @@
           type: slave
           name: label
           values:
-            - master
+            - agl-test-slave
 
     build-discarder:
       days-to-keep: 30
