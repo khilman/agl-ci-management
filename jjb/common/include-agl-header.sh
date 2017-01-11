@@ -29,7 +29,7 @@ export TARGETPROJECT="AGL/AGL-repo"
 export TARGETBRANCH="master"
 export TARGETREFSPEC="refs/heads/master"
 
-export TARGETFEATURESnogfx="agl-appfw-smack agl-netboot agl-sota agl-devel"
+export TARGETFEATURESnogfx="agl-appfw-smack agl-netboot agl-devel"
 export TARGETFEATURES="agl-demo ${TARGETFEATURESnogfx}"
 
 export TARGETQA=""
