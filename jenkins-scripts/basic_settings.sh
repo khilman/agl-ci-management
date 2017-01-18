@@ -32,8 +32,10 @@ EOFHOSTS
 
 #Increase limits
 cat <<EOF > /etc/security/limits.d/jenkins.conf
-jenkins         soft    nofile          16000
-jenkins         hard    nofile          16000
+jenkins         soft    nofile          64000
+jenkins         hard    nofile          64000
+jenkins         soft    nproc           30654
+jenkins         hard    nproc           30654
 EOF
 
 cat <<EOSSH >> /etc/ssh/ssh_config
