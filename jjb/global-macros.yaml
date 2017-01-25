@@ -83,7 +83,7 @@
           trigger-on:
             - patchset-created-event:
                 exclude-drafts: 'false'
-                exclude-trivial-rebase: 'true'
+                exclude-trivial-rebase: 'false'
                 exclude-no-code-change: 'true'
             - draft-published-event
             - comment-added-contains-event:
@@ -113,7 +113,7 @@
           trigger-on:
             - patchset-created-event:
                 exclude-drafts: 'false'
-                exclude-trivial-rebase: 'true'
+                exclude-trivial-rebase: 'false'
                 exclude-no-code-change: 'true'
             - draft-published-event
             - comment-added-contains-event:
@@ -135,6 +135,38 @@
                 - branch-compare-type: 'ANT'
                   branch-pattern: '**/{branch}'
           silent: 'true'
+
+- trigger:
+    name: gerrit-trigger-patch-submitted-silent-start
+    triggers:
+      - gerrit:
+          server-name: 'gerrit.automotivelinux.org'
+          trigger-on:
+            - patchset-created-event:
+                exclude-drafts: 'false'
+                exclude-trivial-rebase: 'false'
+                exclude-no-code-change: 'true'
+            - draft-published-event
+            - comment-added-contains-event:
+                comment-contains-value: 'recheck'
+            - comment-added-contains-event:
+                comment-contains-value: 'rebuild'
+            - comment-added-contains-event:
+                comment-contains-value: 'reverify'
+            - comment-added-contains-event:
+                comment-contains-value: 'RECHECK'
+            - comment-added-contains-event:
+                comment-contains-value: 'REBUILD'
+            - comment-added-contains-event:
+                comment-contains-value: 'REVERIFY'
+          projects:
+            - project-compare-type: 'ANT'
+              project-pattern: '{name}'
+              branches:
+                - branch-compare-type: 'ANT'
+                  branch-pattern: '**/{branch}'
+          silent-start: 'true'
+
 
 - trigger:
     name: gerrit-trigger-patch-merged
@@ -284,4 +316,4 @@
             - '2d097b8f-bc4a-4222-b496-4ac6332015d7'
       - ansicolor
       - openstack:
-          single-use: True
+          single-use: true

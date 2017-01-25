@@ -1,0 +1,329 @@
+- project:
+    name: sandbox-ci
+    machine:
+        - porter-nogfx
+        - raspberrypi3
+        - intel-corei7-64
+        - dra7xx-evm
+        - qemux86-64
+    project:
+        - meta-agl
+        - meta-agl-demo
+        - meta-agl-devel
+        - meta-agl-extra
+        - AGL-repo
+        - meta-renesas
+    jobs:
+        - sandbox-{project}-verify
+        - sandbox-{project}-verify-CIB-{machine}
+        - sandbox-{project}-verify-CIB-finish
+        - sandbox-{project}-verify-CIBT-{machine}
+        - sandbox-{project}-verify-CIBT-finish
+
+#
+# -verify  = trigger from gerrit and control job
+################################################
+
+- job-template:
+    name: 'sandbox-{project}-verify'
+    project-type: multijob
+    concurrent: true
+    node: control-slave
+    parameters:
+      - string:
+          name: GERRIT_PROJECT
+          default: 'AGL/{project}'
+          description: "Project to build"
+      - string:
+          name: GERRIT_BRANCH
+          default: master
+          description: "branch to build"
+      - string:
+          name: GERRIT_REFSPEC
+          default: refs/heads/master
+          description: "refspec to build"
+      - string:
+          name: GERRIT_CHANGE_NUMBER
+          default: "8313"
+          description: "change # to build"
+      - string:
+          name: GERRIT_PATCHSET_NUMBER
+          default: "2"
+          description: "patchset # to build"
+
+    build-discarder:
+      days-to-keep: 30
+      artifact-days-to-keep: -1
+      artifact-num-to-keep: 5
+
+    triggers:
+      - gerrit-trigger-patch-submitted-silent:
+            name: 'AGL/{project}'
+            branch: '**/**/**'
+
+    wrappers:
+      - agl-infra-wrappers:
+          build-timeout: '{build-timeout}'
+
+    builders:
+      - multijob:
+          name: CIB-{project}
+          condition: COMPLETED
+          projects:
+            - name: 'sandbox-{project}-verify-CIB-porter-nogfx'
+              current-parameters: true
+            - name: 'sandbox-{project}-verify-CIB-intel-corei7-64'
+              current-parameters: true
+            - name: 'sandbox-{project}-verify-CIB-raspberrypi3'
+              current-parameters: true
+            - name: 'sandbox-{project}-verify-CIB-dra7xx-evm'
+              current-parameters: true
+            - name: 'sandbox-{project}-verify-CIB-qemux86-64'
+              current-parameters: true
+      - multijob:
+          name: CIB-{project}-finish
+          condition: COMPLETED
+          projects:
+            - name: 'sandbox-{project}-verify-CIB-finish'
+              current-parameters: true
+      - multijob:
+          name: CIBT-{project}
+          condition: COMPLETED
+          projects:
+            - name: 'sandbox-{project}-verify-CIBT-porter-nogfx'
+              current-parameters: true
+            - name: 'sandbox-{project}-verify-CIBT-intel-corei7-64'
+              current-parameters: true
+            - name: 'sandbox-{project}-verify-CIBT-raspberrypi3'
+              current-parameters: true
+            - name: 'sandbox-{project}-verify-CIBT-dra7xx-evm'
+              current-parameters: true
+            - name: 'sandbox-{project}-verify-CIBT-qemux86-64'
+              current-parameters: true
+      - multijob:
+          name: 'CIBT-{project}-finish'
+          condition: COMPLETED
+          projects:
+            - name: 'sandbox-{project}-verify-CIBT-finish'
+              current-parameters: true
+
+#    publishers:
+
+
+#
+# CIB-{machine}
+###############
+
+- job-template:
+    name: 'sandbox-{project}-verify-CIB-{machine}'
+    project-type: freestyle
+    concurrent: true
+    node: agl-test-slave
+
+    parameters:
+      - string:
+          name: GERRIT_PROJECT
+          default: 'AGL/{project}'
+          description: "Project to build"
+      - string:
+          name: GERRIT_BRANCH
+          default: master
+          description: "branch to build"
+      - string:
+          name: GERRIT_REFSPEC
+          default: refs/heads/master
+          description: "refspec to build"
+      - string:
+          name: GERRIT_CHANGE_NUMBER
+          default: "8313"
+          description: "change # to build"
+      - string:
+          name: GERRIT_PATCHSET_NUMBER
+          default: "2"
+          description: "patchset # to build"
+      - string:
+          name: MACHINE
+          default: '{machine}'
+          description: "Machine to build"
+
+    build-discarder:
+      days-to-keep: 30
+      artifact-days-to-keep: -1
+      artifact-num-to-keep: 5
+
+    wrappers:
+      - agl-infra-wrappers:
+          build-timeout: '{build-timeout}'
+      - openstack:
+          single-use: true
+
+    builders:
+      - shell:
+            !include-raw-escape:
+                - ../common/include-agl-header.sh
+                - ../common/include-agl-repo.sh
+                - ../common/include-agl-select.sh
+                - ../common/include-agl-source-aglsetup.sh
+                - ../common/include-agl-auto-conf.sh
+                - ../common/include-agl-limit-parallelism.sh
+                - ../common/include-agl-cat-auto-conf.sh
+                - ../common/include-agl-bitbake-image.sh
+                - ../common/include-agl-run-test-prepare.sh
+                - ../common/include-agl-run-test-rsync-changeid.sh
+
+#
+# CIB-finish
+############
+
+- job-template:
+    name: 'sandbox-{project}-verify-CIB-finish'
+    project-type: freestyle
+    concurrent: true
+    node: control-slave
+
+    parameters:
+      - string:
+          name: GERRIT_PROJECT
+          default: 'AGL/{project}'
+          description: "Project to build"
+      - string:
+          name: GERRIT_BRANCH
+          default: master
+          description: "branch to build"
+      - string:
+          name: GERRIT_REFSPEC
+          default: refs/heads/master
+          description: "refspec to build"
+      - string:
+          name: GERRIT_CHANGE_NUMBER
+          default: "8313"
+          description: "change # to build"
+      - string:
+          name: GERRIT_PATCHSET_NUMBER
+          default: "2"
+          description: "patchset # to build"
+
+    build-discarder:
+      days-to-keep: 30
+      artifact-days-to-keep: -1
+      artifact-num-to-keep: 5
+
+    wrappers:
+      - agl-infra-wrappers:
+          build-timeout: '{build-timeout}'
+      - openstack:
+          single-use: true
+
+    builders:
+      - shell: "echo YAY"
+#; ssh -p 29418 agl-jobbuilder@gerrit.automotivelinux.org gerrit review ${GERRIT_CHANGE_NUMBER},${GERRIT_PATCHSET_NUMBER} --label=ci-image-build=+1 -n NONE --message='CI-Image-Build '"
+
+
+#
+# CIBT-{machine} 'BOOT TEST'
+############################
+
+- job-template:
+    name: 'sandbox-{project}-verify-CIBT-{machine}'
+    project-type: freestyle
+    concurrent: true
+    node: agl-test-slave
+
+    parameters:
+      - string:
+          name: GERRIT_PROJECT
+          default: 'AGL/{project}'
+          description: "Project to build"
+      - string:
+          name: GERRIT_BRANCH
+          default: master
+          description: "branch to build"
+      - string:
+          name: GERRIT_REFSPEC
+          default: refs/heads/master
+          description: "refspec to build"
+      - string:
+          name: GERRIT_CHANGE_NUMBER
+          default: "8313"
+          description: "change # to build"
+      - string:
+          name: GERRIT_PATCHSET_NUMBER
+          default: "2"
+          description: "patchset # to build"
+      - string:
+          name: MACHINE
+          default: '{machine}'
+          description: "Machine to build"
+
+    build-discarder:
+      days-to-keep: 30
+      artifact-days-to-keep: -1
+      artifact-num-to-keep: 5
+
+    wrappers:
+      - agl-infra-wrappers:
+          build-timeout: '{build-timeout}'
+      - openstack:
+          single-use: true
+      - credentials-binding:
+          - username-password-separated:
+              credential-id: agl_main_lava_instance
+              username: AGLLAVAUSER
+              password: AGLLAVATOKEN
+
+    builders:
+      - shell:
+            !include-raw-escape:
+                - ../common/include-agl-header.sh
+                - ../common/include-agl-repo.sh
+                - ../common/include-agl-select.sh
+                - ../common/include-agl-run-test-prepare.sh
+                - ../common/include-agl-run-test-short.sh
+
+
+#
+# CIBT-finish
+################
+
+- job-template:
+    name: 'sandbox-{project}-verify-CIBT-finish'
+    project-type: freestyle
+    concurrent: true
+    node: control-slave
+
+    parameters:
+      - string:
+          name: GERRIT_PROJECT
+          default: 'AGL/{project}'
+          description: "Project to build"
+      - string:
+          name: GERRIT_BRANCH
+          default: master
+          description: "branch to build"
+      - string:
+          name: GERRIT_REFSPEC
+          default: refs/heads/master
+          description: "refspec to build"
+      - string:
+          name: GERRIT_CHANGE_NUMBER
+          default: "8313"
+          description: "change # to build"
+      - string:
+          name: GERRIT_PATCHSET_NUMBER
+          default: "2"
+          description: "patchset # to build"
+
+    build-discarder:
+      days-to-keep: 30
+      artifact-days-to-keep: -1
+      artifact-num-to-keep: 5
+
+    wrappers:
+      - agl-infra-wrappers:
+          build-timeout: '{build-timeout}'
+      - openstack:
+          single-use: true
+
+    builders:
+      - shell: "echo YAY"
+#; ssh -p 29418 agl-jobbuilder@gerrit.automotivelinux.org gerrit review ${GERRIT_CHANGE_NUMBER},${GERRIT_PATCHSET_NUMBER} --label=ci-image-build=+1 -n NONE --message='CI-Image-Build '"

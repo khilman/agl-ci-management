@@ -16,6 +16,8 @@ mv repoclone repoclone$XTMP || true
 mkdir -p repoclone
 cd repoclone
 
+export REPODIR=`pwd`
+
 repo init --reference=/opt/AGL/preclone -q -b $TARGETBRANCH -u https://gerrit.automotivelinux.org/gerrit/AGL/AGL-repo
 
 # next: repo sync and dump manifest

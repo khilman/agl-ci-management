@@ -12,7 +12,7 @@
     parameters:
       - string:
           name: GERRIT_PROJECT
-          default: AGL/AGL-repo
+          default: AGL/meta-agl
           description: "Project to build"
       - string:
           name: GERRIT_BRANCH
@@ -21,6 +21,14 @@
       - string:
           name: GERRIT_REFSPEC
           default: refs/heads/master
+          description: "refspec to build"
+      - string:
+          name: GERRIT_CHANGE_NUMBER
+          default: "8313"
+          description: "refspec to build"
+      - string:
+          name: GERRIT_PATCHSET_NUMBER
+          default: "2"
           description: "refspec to build"
     axes:
       - axis:
@@ -36,7 +44,7 @@
 
     build-discarder:
       days-to-keep: 30
-      num-to-keep: 40
+      num-to-keep: 2
       artifact-days-to-keep: -1
       artifact-num-to-keep: 5
 
@@ -53,9 +61,21 @@
               credential-id: agl_main_lava_instance
               username: AGLLAVAUSER
               password: AGLLAVATOKEN
+      - openstack:
+          single-use: False
 
     builders:
       - shell:
             !include-raw-escape:
-                - ../common/include-agl-run-test-snapshot.sh
+                - ../common/include-agl-header.sh
+                - ../common/include-agl-repo.sh
+                - ../common/include-agl-select.sh
+                - ../common/include-agl-source-aglsetup.sh
+                - ../common/include-agl-auto-conf.sh
+                - ../common/include-agl-limit-parallelism.sh
+                - ../common/include-agl-cat-auto-conf.sh
+                - ../common/include-agl-bitbake-image.sh
+                - ../common/include-agl-run-test-prepare.sh
+                - ../common/include-agl-run-test-rsync-changeid.sh
+                - ../common/include-agl-run-test-short.sh
 
