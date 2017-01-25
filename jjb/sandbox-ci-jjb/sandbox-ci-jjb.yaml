@@ -211,8 +211,6 @@
     wrappers:
       - agl-infra-wrappers:
           build-timeout: '{build-timeout}'
-      - openstack:
-          single-use: true
 
     builders:
       - shell: "echo YAY"
@@ -321,8 +319,6 @@
     wrappers:
       - agl-infra-wrappers:
           build-timeout: '{build-timeout}'
-      - openstack:
-          single-use: true
 
     builders:
       - shell: "echo YAY"

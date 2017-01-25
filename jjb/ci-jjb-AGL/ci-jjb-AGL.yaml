@@ -7,7 +7,7 @@
     name: 'ci-jjb-AGL'
     project-type: matrix
     concurrent: true
-    node: master
+    node: control-node
 
     parameters:
       - string:
