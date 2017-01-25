@@ -40,6 +40,7 @@
       "destination": "/tmp/packer"
     },
     {
+      "type": "shell",
       "scripts": [
         "provision/baseline.sh",
         "provision/basebuild-no-tmpfs.sh",
