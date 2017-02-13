@@ -1,5 +1,5 @@
 - project:
-    name: sandbox-ci
+    name: ci-platform-AGL
     machine:
         - porter-nogfx
         - raspberrypi3
@@ -14,18 +14,18 @@
         - AGL-repo
         - meta-renesas
     jobs:
-        - sandbox-{project}-verify
-        - sandbox-{project}-verify-CIB-{machine}
-        - sandbox-{project}-verify-CIB-finish
-        - sandbox-{project}-verify-CIBT-{machine}
-        - sandbox-{project}-verify-CIBT-finish
+        - ci-platform-{project}-verify
+        - ci-platform-{project}-verify-CIB-{machine}
+        - ci-platform-{project}-verify-CIB-finish
+        - ci-platform-{project}-verify-CIBT-{machine}
+        - ci-platform-{project}-verify-CIBT-finish
 
 #
 # -verify  = trigger from gerrit and control job
 ################################################
 
 - job-template:
-    name: 'sandbox-{project}-verify'
+    name: 'ci-platform-{project}-verify'
     project-type: multijob
     concurrent: true
     node: control-slave
@@ -70,41 +70,41 @@
           name: CIB-{project}
           condition: COMPLETED
           projects:
-            - name: 'sandbox-{project}-verify-CIB-porter-nogfx'
+            - name: 'ci-platform-{project}-verify-CIB-porter-nogfx'
               current-parameters: true
-            - name: 'sandbox-{project}-verify-CIB-intel-corei7-64'
+            - name: 'ci-platform-{project}-verify-CIB-intel-corei7-64'
               current-parameters: true
-            - name: 'sandbox-{project}-verify-CIB-raspberrypi3'
+            - name: 'ci-platform-{project}-verify-CIB-raspberrypi3'
               current-parameters: true
-            - name: 'sandbox-{project}-verify-CIB-dra7xx-evm'
+            - name: 'ci-platform-{project}-verify-CIB-dra7xx-evm'
               current-parameters: true
-            - name: 'sandbox-{project}-verify-CIB-qemux86-64'
+            - name: 'ci-platform-{project}-verify-CIB-qemux86-64'
               current-parameters: true
       - multijob:
           name: CIB-{project}-finish
           condition: COMPLETED
           projects:
-            - name: 'sandbox-{project}-verify-CIB-finish'
+            - name: 'ci-platform-{project}-verify-CIB-finish'
               current-parameters: true
       - multijob:
           name: CIBT-{project}
           condition: COMPLETED
           projects:
-            - name: 'sandbox-{project}-verify-CIBT-porter-nogfx'
+            - name: 'ci-platform-{project}-verify-CIBT-porter-nogfx'
               current-parameters: true
-            - name: 'sandbox-{project}-verify-CIBT-intel-corei7-64'
+            - name: 'ci-platform-{project}-verify-CIBT-intel-corei7-64'
               current-parameters: true
-            - name: 'sandbox-{project}-verify-CIBT-raspberrypi3'
+            - name: 'ci-platform-{project}-verify-CIBT-raspberrypi3'
               current-parameters: true
-            - name: 'sandbox-{project}-verify-CIBT-dra7xx-evm'
+            - name: 'ci-platform-{project}-verify-CIBT-dra7xx-evm'
               current-parameters: true
-            - name: 'sandbox-{project}-verify-CIBT-qemux86-64'
+            - name: 'ci-platform-{project}-verify-CIBT-qemux86-64'
               current-parameters: true
       - multijob:
           name: 'CIBT-{project}-finish'
           condition: COMPLETED
           projects:
-            - name: 'sandbox-{project}-verify-CIBT-finish'
+            - name: 'ci-platform-{project}-verify-CIBT-finish'
               current-parameters: true
 
 #    publishers:
@@ -115,7 +115,7 @@
 ###############
 
 - job-template:
-    name: 'sandbox-{project}-verify-CIB-{machine}'
+    name: 'ci-platform-{project}-verify-CIB-{machine}'
     project-type: freestyle
     concurrent: true
     node: agl-test-slave
@@ -176,7 +176,7 @@
 ############
 
 - job-template:
-    name: 'sandbox-{project}-verify-CIB-finish'
+    name: 'ci-platform-{project}-verify-CIB-finish'
     project-type: freestyle
     concurrent: true
     node: control-slave
@@ -222,7 +222,7 @@
 ############################
 
 - job-template:
-    name: 'sandbox-{project}-verify-CIBT-{machine}'
+    name: 'ci-platform-{project}-verify-CIBT-{machine}'
     project-type: freestyle
     concurrent: true
     node: agl-test-slave
@@ -284,7 +284,7 @@
 ################
 
 - job-template:
-    name: 'sandbox-{project}-verify-CIBT-finish'
+    name: 'ci-platform-{project}-verify-CIBT-finish'
     project-type: freestyle
     concurrent: true
     node: control-slave
