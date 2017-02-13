@@ -57,7 +57,7 @@
       artifact-num-to-keep: 5
 
     triggers:
-      - gerrit-trigger-patch-submitted-silent:
+      - gerrit-trigger-patch-submitted:
             name: 'AGL/{project}'
             branch: '**/**/**'
 
@@ -214,6 +214,7 @@
 
     builders:
       - shell: "echo YAY"
+      - shell: "ssh -p 29418 agl-jobbuilder@gerrit.automotivelinux.org gerrit review ${{GERRIT_CHANGE_NUMBER}},${{GERRIT_PATCHSET_NUMBER}} --label=ci-image-build=+1 -n NONE --message='CI-Image-Build ' || true"
 #; ssh -p 29418 agl-jobbuilder@gerrit.automotivelinux.org gerrit review ${GERRIT_CHANGE_NUMBER},${GERRIT_PATCHSET_NUMBER} --label=ci-image-build=+1 -n NONE --message='CI-Image-Build '"
 
 
@@ -322,4 +323,5 @@
 
     builders:
       - shell: "echo YAY"
+      - shell: "ssh -p 29418 agl-jobbuilder@gerrit.automotivelinux.org gerrit review ${{GERRIT_CHANGE_NUMBER}},${{GERRIT_PATCHSET_NUMBER}} --label=ci-image-boot-test=+1 -n NONE --message='CI-Image-Boot-Test ' || true"
 #; ssh -p 29418 agl-jobbuilder@gerrit.automotivelinux.org gerrit review ${GERRIT_CHANGE_NUMBER},${GERRIT_PATCHSET_NUMBER} --label=ci-image-build=+1 -n NONE --message='CI-Image-Build '"
