@@ -68,44 +68,68 @@
     builders:
       - multijob:
           name: CIB-{project}
-          condition: COMPLETED
+          condition: SUCCESSFUL
           projects:
             - name: 'ci-platform-{project}-verify-CIB-porter-nogfx'
               current-parameters: true
+              abort-all-job: true
+              kill-phase-on: FAILURE
             - name: 'ci-platform-{project}-verify-CIB-intel-corei7-64'
               current-parameters: true
+              abort-all-job: true
+              kill-phase-on: FAILURE
             - name: 'ci-platform-{project}-verify-CIB-raspberrypi3'
               current-parameters: true
+              abort-all-job: true
+              kill-phase-on: FAILURE
             - name: 'ci-platform-{project}-verify-CIB-dra7xx-evm'
               current-parameters: true
+              abort-all-job: true
+              kill-phase-on: FAILURE
             - name: 'ci-platform-{project}-verify-CIB-qemux86-64'
               current-parameters: true
+              abort-all-job: true
+              kill-phase-on: FAILURE
       - multijob:
           name: CIB-{project}-finish
-          condition: COMPLETED
+          condition: SUCCESSFUL
           projects:
             - name: 'ci-platform-{project}-verify-CIB-finish'
               current-parameters: true
+              abort-all-job: true
+              kill-phase-on: FAILURE
       - multijob:
           name: CIBT-{project}
           condition: COMPLETED
           projects:
             - name: 'ci-platform-{project}-verify-CIBT-porter-nogfx'
               current-parameters: true
+              abort-all-job: true
+              kill-phase-on: FAILURE
             - name: 'ci-platform-{project}-verify-CIBT-intel-corei7-64'
               current-parameters: true
+              abort-all-job: true
+              kill-phase-on: FAILURE
             - name: 'ci-platform-{project}-verify-CIBT-raspberrypi3'
               current-parameters: true
+              abort-all-job: true
+              kill-phase-on: FAILURE
             - name: 'ci-platform-{project}-verify-CIBT-dra7xx-evm'
               current-parameters: true
+              abort-all-job: true
+              kill-phase-on: FAILURE
             - name: 'ci-platform-{project}-verify-CIBT-qemux86-64'
               current-parameters: true
+              abort-all-job: true
+              kill-phase-on: FAILURE
       - multijob:
           name: 'CIBT-{project}-finish'
-          condition: COMPLETED
+          condition: SUCCESSFUL
           projects:
             - name: 'ci-platform-{project}-verify-CIBT-finish'
               current-parameters: true
+              abort-all-job: true
+              kill-phase-on: FAILURE
 
 #    publishers:
 
@@ -213,7 +237,7 @@
           build-timeout: '{build-timeout}'
 
     builders:
-      - shell: "echo YAY"
+      - shell: "echo YAY ; set"
       - shell: "ssh -p 29418 agl-jobbuilder@gerrit.automotivelinux.org gerrit review ${{GERRIT_CHANGE_NUMBER}},${{GERRIT_PATCHSET_NUMBER}} --label ci-image-build=+1 -n NONE --message='CI-Image-Build ' || true"
 #; ssh -p 29418 agl-jobbuilder@gerrit.automotivelinux.org gerrit review ${GERRIT_CHANGE_NUMBER},${GERRIT_PATCHSET_NUMBER} --label=ci-image-build=+1 -n NONE --message='CI-Image-Build '"
 
@@ -322,6 +346,6 @@
           build-timeout: '{build-timeout}'
 
     builders:
-      - shell: "echo YAY"
+      - shell: "echo YAY ; set "
       - shell: "ssh -p 29418 agl-jobbuilder@gerrit.automotivelinux.org gerrit review ${{GERRIT_CHANGE_NUMBER}},${{GERRIT_PATCHSET_NUMBER}} --label ci-image-boot-test=+1 -n NONE --message='CI-Image-Boot-Test ' || true"
 #; ssh -p 29418 agl-jobbuilder@gerrit.automotivelinux.org gerrit review ${GERRIT_CHANGE_NUMBER},${GERRIT_PATCHSET_NUMBER} --label=ci-image-build=+1 -n NONE --message='CI-Image-Build '"
