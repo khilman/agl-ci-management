@@ -6,11 +6,13 @@
 ################################################################################
 set -x
 
-ls -alh
-pwd
-set
+#ls -alh
+#pwd
+#set
 
 cd $REPODIR
+
+ls -alhR meta-agl/templates/machine/${MACHINE}
 
 #### Find out if machine can be tested.
 #### We keep a stamp file in meta-agl/templates/machine/$MACHINE/test
