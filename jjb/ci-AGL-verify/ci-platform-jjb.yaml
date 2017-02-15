@@ -57,17 +57,9 @@
       artifact-num-to-keep: 5
 
     triggers:
-      - gerrit-trigger-patch-submitted:
+      - gerrit-trigger-patch-submitted-manual-verified:
             name: 'AGL/{project}'
             branch: '**/**/**'
-            gerrit-build-started-verified-value: 0
-            gerrit-build-successful-verified-value: 1
-            gerrit-build-failed-verified-value: 0
-            skip-vote:
-                successful: true
-                failed: true
-                unstable: true
-                notbuilt: true
 
     wrappers:
       - agl-infra-wrappers:
