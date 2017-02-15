@@ -300,7 +300,7 @@
     builders:
       - shell: "echo YAY ; set"
       - shell: "ssh -p 29418 agl-jobbuilder@gerrit.automotivelinux.org gerrit review ${{GERRIT_CHANGE_NUMBER}},${{GERRIT_PATCHSET_NUMBER}} --label ci-image-build=+1 -n NONE --message='CI-Image-Build finished' || true"
-      - shell: "ssh -p 29418 agl-jobbuilder@gerrit.automotivelinux.org gerrit review ${{GERRIT_CHANGE_NUMBER}},${{GERRIT_PATCHSET_NUMBER}} --label Verified=+1 -n NONE --message='Label: Verified' || true"
+      - shell: "ssh -p 29418 agl-jobbuilder@gerrit.automotivelinux.org gerrit review ${{GERRIT_CHANGE_NUMBER}},${{GERRIT_PATCHSET_NUMBER}} --verified +1 -n NONE || true"
 
 
 #
