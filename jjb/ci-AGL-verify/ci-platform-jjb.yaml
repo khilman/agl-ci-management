@@ -210,6 +210,14 @@
                 - ../common/include-agl-bitbake-image.sh
                 - ../common/include-agl-run-test-prepare.sh
                 - ../common/include-agl-run-test-rsync-changeid.sh
+    publishers:
+      - naginator:
+          rerun-unstable-builds: true
+          progressive-delay-increment: 5
+          progressive-delay-maximum: 15
+          max-failed-builds: 2
+          regular-expression: "Unexpected termination of the channel"
+
 
 #
 # CIB-start
@@ -367,6 +375,14 @@
                 - ../common/include-agl-select.sh
                 - ../common/include-agl-run-test-prepare.sh
                 - ../common/include-agl-run-test-short.sh
+
+    publishers:
+      - naginator:
+          rerun-unstable-builds: true
+          progressive-delay-increment: 5
+          progressive-delay-maximum: 15
+          max-failed-builds: 2
+          regular-expression: "Unexpected termination of the channel"
 
 
 #
