@@ -227,7 +227,7 @@
     name: 'ci-platform-{project}-verify-CIB-start'
     project-type: freestyle
     concurrent: true
-    node: control-slave
+    node: hwtest-slave
 
     parameters:
       - string:
@@ -259,6 +259,8 @@
     wrappers:
       - agl-infra-wrappers:
           build-timeout: '{build-timeout}'
+      - openstack:
+          single-use: false
 
     builders:
       - shell: |
@@ -273,7 +275,7 @@
     name: 'ci-platform-{project}-verify-CIB-finish'
     project-type: freestyle
     concurrent: true
-    node: control-slave
+    node: hwtest-slave
 
     parameters:
       - string:
@@ -323,7 +325,7 @@
     name: 'ci-platform-{project}-verify-CIBT-{machine}'
     project-type: freestyle
     concurrent: true
-    node: agl-test-slave
+    node: hwtest-slave
 
     parameters:
       - string:
@@ -360,7 +362,7 @@
       - agl-infra-wrappers:
           build-timeout: '{build-timeout}'
       - openstack:
-          single-use: true
+          single-use: false
       - credentials-binding:
           - username-password-separated:
               credential-id: agl_main_lava_instance
@@ -393,7 +395,7 @@
     name: 'ci-platform-{project}-verify-CIBT-start'
     project-type: freestyle
     concurrent: true
-    node: control-slave
+    node: hwtest-slave
 
     parameters:
       - string:
@@ -425,6 +427,8 @@
     wrappers:
       - agl-infra-wrappers:
           build-timeout: '{build-timeout}'
+      - openstack:
+          single-use: false
 
     builders:
       - shell: |
@@ -440,7 +444,7 @@
     name: 'ci-platform-{project}-verify-CIBT-finish'
     project-type: freestyle
     concurrent: true
-    node: control-slave
+    node: hwtest-slave
 
     parameters:
       - string:
@@ -472,6 +476,8 @@
     wrappers:
       - agl-infra-wrappers:
           build-timeout: '{build-timeout}'
+      - openstack:
+          single-use: false
 
     builders:
       - shell: |
