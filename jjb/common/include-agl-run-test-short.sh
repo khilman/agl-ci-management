@@ -27,10 +27,11 @@ rm ~/.local/token
 
 echo "## $TESTJOBFILE ##"
 
-if [ -n $TESTJOBFILE -a -e $TESTJOBFILE ] ; then
-   cp $TESTJOBFILE testjob.yaml
+if [ -e $TESTJOBFILE ] ; then
+    echo "Using $TESTJOBFILE ..."
+    cp $TESTJOBFILE testjob.yaml
 else
-echo "!! NO TESTJOBFILE - trying to continue with a default !!"
+    echo "!! NO TESTJOBFILE - trying to continue with a default !!"
 fi
 
 cat <<EOF > testjob.yaml
@@ -62,7 +63,7 @@ actions:
       url: '@REPLACE_URL_PREFIX@/@REPLACE_DTB@'
     kernel:
       url: '@REPLACE_URL_PREFIX@/@REPLACE_KERNEL@'
-    initramfs:
+    initrd:
       url: '@REPLACE_URL_PREFIX@/@REPLACE_INITRAMFS@'
       allow_modify: false
     nbdroot:
