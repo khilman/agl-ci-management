@@ -264,9 +264,7 @@
 
     builders:
       - shell: |
-          set
-          ssh -p 29418 agl-jobbuilder@gerrit.automotivelinux.org gerrit review ${{GERRIT_CHANGE_NUMBER}},${{GERRIT_PATCHSET_NUMBER}} --label ci-image-build=0 -n NONE --message='CI-Image-Build\ started' || true
-
+          ssh -p 29418 agl-jobbuilder@gerrit.automotivelinux.org gerrit review ${{GERRIT_CHANGE_NUMBER}},${{GERRIT_PATCHSET_NUMBER}} --verified=0 --label ci-image-build=0 --label ci-image-boot-test=0 -n NONE --message='CI-Image-Build\ started' || true
 #
 # CIB-finish
 ############
@@ -311,10 +309,8 @@
     builders:
       - shell: |
           set
-          echo "#### CIB +1 ####"
-          ssh -p 29418 agl-jobbuilder@gerrit.automotivelinux.org gerrit review ${{GERRIT_CHANGE_NUMBER}},${{GERRIT_PATCHSET_NUMBER}} --label ci-image-build=+1 -n NONE --message="CI-Image-Build\ finished" || true
-          echo "#### Verified +1 ####"
-          ssh -p 29418 agl-jobbuilder@gerrit.automotivelinux.org gerrit review ${{GERRIT_CHANGE_NUMBER}},${{GERRIT_PATCHSET_NUMBER}} --verified +1 -n NONE --message="Image\ successful,\ Verified\ +1" || true
+          echo "#### CIB +1 #### Verified +1 ####"
+          ssh -p 29418 agl-jobbuilder@gerrit.automotivelinux.org gerrit review ${{GERRIT_CHANGE_NUMBER}},${{GERRIT_PATCHSET_NUMBER}} --verified +1 --label ci-image-build=+1 -n NONE --message="CI-Image-Build\ finished,\ CIB+1,\ Verified+1" || true
 
 
 #
@@ -432,8 +428,9 @@
 
     builders:
       - shell: |
-          set
-          ssh -p 29418 agl-jobbuilder@gerrit.automotivelinux.org gerrit review ${{GERRIT_CHANGE_NUMBER}},${{GERRIT_PATCHSET_NUMBER}} --label ci-image-boot-test=0 -n NONE --message='CI-Image-Boot-Test\ started' || true
+          echo "CIBT Started"
+          #set
+          #ssh -p 29418 agl-jobbuilder@gerrit.automotivelinux.org gerrit review ${{GERRIT_CHANGE_NUMBER}},${{GERRIT_PATCHSET_NUMBER}} --label ci-image-boot-test=0 -n NONE --message='CI-Image-Boot-Test\ started' || true
 
 
 #
@@ -481,6 +478,6 @@
 
     builders:
       - shell: |
-          set
+          #set
           echo "#### CIBT +1 ####"
           ssh -p 29418 agl-jobbuilder@gerrit.automotivelinux.org gerrit review ${{GERRIT_CHANGE_NUMBER}},${{GERRIT_PATCHSET_NUMBER}} --label ci-image-boot-test=+1 -n NONE --message='CI-Image-Boot-Test\ finished' || true

@@ -142,6 +142,7 @@
             failed: true
             unstable: true
             notbuilt: true
+          silent: 'true'
 
 - trigger:
     name: gerrit-trigger-patch-submitted-silent
