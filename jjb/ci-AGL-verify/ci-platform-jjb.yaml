@@ -15,8 +15,10 @@
         - meta-renesas
     jobs:
         - ci-platform-{project}-verify
+        - ci-platform-{project}-verify-CIB-start
         - ci-platform-{project}-verify-CIB-{machine}
         - ci-platform-{project}-verify-CIB-finish
+        - ci-platform-{project}-verify-CIBT-start
         - ci-platform-{project}-verify-CIBT-{machine}
         - ci-platform-{project}-verify-CIBT-finish
 
