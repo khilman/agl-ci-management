@@ -229,7 +229,7 @@
     name: 'ci-platform-{project}-verify-CIB-start'
     project-type: freestyle
     concurrent: true
-    node: hwtest-slave
+    node: control-slave
 
     parameters:
       - string:
@@ -266,7 +266,7 @@
 
     builders:
       - shell: |
-          ssh -p 29418 agl-jobbuilder@gerrit.automotivelinux.org gerrit review ${{GERRIT_CHANGE_NUMBER}},${{GERRIT_PATCHSET_NUMBER}} --verified=0 --label ci-image-build=0 --label ci-image-boot-test=0 -n NONE --message='CI-Image-Build\ started' || true
+          ssh -p 29418 agl-jobbuilder@gerrit.automotivelinux.org gerrit review ${{GERRIT_CHANGE_NUMBER}},${{GERRIT_PATCHSET_NUMBER}} --verified=0 --label ci-image-build=0 --label ci-image-boot-test=0 -n NONE --message='CI-Image-Build\ started.\ URL:\ ${{BUILD_URL}}/console' || true
 #
 # CIB-finish
 ############
@@ -275,7 +275,7 @@
     name: 'ci-platform-{project}-verify-CIB-finish'
     project-type: freestyle
     concurrent: true
-    node: hwtest-slave
+    node: control-slave
 
     parameters:
       - string:
@@ -393,7 +393,7 @@
     name: 'ci-platform-{project}-verify-CIBT-start'
     project-type: freestyle
     concurrent: true
-    node: hwtest-slave
+    node: control-slave
 
     parameters:
       - string:
@@ -443,7 +443,7 @@
     name: 'ci-platform-{project}-verify-CIBT-finish'
     project-type: freestyle
     concurrent: true
-    node: hwtest-slave
+    node: control-slave
 
     parameters:
       - string:
