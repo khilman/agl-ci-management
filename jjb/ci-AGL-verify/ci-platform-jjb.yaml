@@ -266,7 +266,7 @@
 
     builders:
       - shell: |
-          ssh -p 29418 agl-jobbuilder@gerrit.automotivelinux.org gerrit review ${{GERRIT_CHANGE_NUMBER}},${{GERRIT_PATCHSET_NUMBER}} --verified=0 --label ci-image-build=0 --label ci-image-boot-test=0 -n NONE --message='CI-Image-Build\ started.\ URL:\ ${{BUILD_URL}}' || true
+          ssh -p 29418 agl-jobbuilder@gerrit.automotivelinux.org gerrit review ${{GERRIT_CHANGE_NUMBER}},${{GERRIT_PATCHSET_NUMBER}} --verified=0 --label ci-image-build=0 --label ci-image-boot-test=0 -n NONE --message="CI-Image-Build\ started.\ URL:\ ${{BUILD_URL}}" || true
 #
 # CIB-finish
 ############
