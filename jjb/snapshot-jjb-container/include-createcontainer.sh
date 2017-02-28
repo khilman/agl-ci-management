@@ -12,3 +12,12 @@ make export
 
 ls
 
+echo "###########################"
+
+mkdir ../container
+mv docker_agl_worker*.tar.xz ../container/
+
+ls ../container
+
+echo "###########################"
+
