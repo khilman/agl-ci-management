@@ -106,6 +106,45 @@
                   branch-pattern: '**/{branch}'
 
 - trigger:
+    name: gerrit-trigger-patch-submitted-manual-verified-silent
+    triggers:
+      - gerrit:
+          server-name: 'gerrit.automotivelinux.org'
+          trigger-on:
+            - patchset-created-event:
+                exclude-drafts: 'false'
+                exclude-trivial-rebase: 'false'
+                exclude-no-code-change: 'true'
+            - draft-published-event
+            - comment-added-contains-event:
+                comment-contains-value: 'recheck'
+            - comment-added-contains-event:
+                comment-contains-value: 'rebuild'
+            - comment-added-contains-event:
+                comment-contains-value: 'reverify'
+            - comment-added-contains-event:
+                comment-contains-value: 'RECHECK'
+            - comment-added-contains-event:
+                comment-contains-value: 'REBUILD'
+            - comment-added-contains-event:
+                comment-contains-value: 'REVERIFY'
+          projects:
+            - project-compare-type: 'ANT'
+              project-pattern: '{name}'
+              branches:
+                - branch-compare-type: 'ANT'
+                  branch-pattern: '**/{branch}'
+          gerrit-build-started-verified-value: 0
+          gerrit-build-successful-verified-value: 1
+          gerrit-build-failed-verified-value: 0
+          skip-vote:
+            successful: true
+            failed: true
+            unstable: true
+            notbuilt: true
+          silent: 'true'
+
+- trigger:
     name: gerrit-trigger-patch-submitted-manual-verified
     triggers:
       - gerrit:
