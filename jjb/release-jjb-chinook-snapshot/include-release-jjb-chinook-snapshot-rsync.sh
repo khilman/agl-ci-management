@@ -19,7 +19,8 @@ echo "#######################################"
 
 cd repoclone/output
 
-export RSYNCDST="jenkins-slave@10.30.72.8:/srv/download/AGL/release/${RELEASE_BRANCH}/${RELEASE_VERSION}/"
+export REMOTEDST="/srv/download/AGL/upload/ci/${RELEASE_BRANCH}/${RELEASE_VERSION}/"
+export RSYNCDST="jenkins-slave@10.30.72.8:${REMOTEDST}"
 export RSYNCSRC=$(pwd)/UPLOAD/
 
 # construct upload folder
@@ -46,6 +47,7 @@ ls -alhR $DEST
 echo "would do rsync -avr -e \"ssh -o StrictHostKeyChecking=no\" $RSYNCSRC $RSYNCDST "
 
 if test x"yes" = x"$UPLOAD" ; then
+   ssh -o StrictHostKeyChecking=no jenkins-slave@10.30.72.8 mkdir ${REMOTEDST}
    rsync -avr -e "ssh -o StrictHostKeyChecking=no" $RSYNCSRC $RSYNCDST
 fi
 
