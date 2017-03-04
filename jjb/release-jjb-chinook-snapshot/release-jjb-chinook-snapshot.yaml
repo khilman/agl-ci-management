@@ -76,7 +76,7 @@
                 - ../common/include-agl-limit-parallelism.sh
                 - ../common/include-agl-cat-auto-conf.sh
                 - ../common/include-agl-local-conf-archiver.sh
-                - ../common/include-agl-local-conf-isafw.sh
+#                - ../common/include-agl-local-conf-isafw.sh
                 - ../common/include-agl-local-conf-vmdk.sh
                 - ../common/include-agl-bitbake-image.sh
                 - ../common/include-agl-bitbake-sdk.sh
