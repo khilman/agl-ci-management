@@ -7,7 +7,7 @@
     name: 'release-jjb-chinook-snapshot'
     project-type: matrix
     concurrent: false
-    node: master
+    node: control-slave
 
     parameters:
       - string:
@@ -20,11 +20,11 @@
           description: "branch to build"
       - string:
           name: GERRIT_REFSPEC
-          default: refs/heads/chinook
+          default: refs/tags/chinook_3.0.2
           description: "refspec to build"
       - string:
           name: RELEASE_VERSION
-          default: 2.99.3
+          default: 3.0.2
           description: "release version number for build"
       - string:
           name: RELEASE_BRANCH
