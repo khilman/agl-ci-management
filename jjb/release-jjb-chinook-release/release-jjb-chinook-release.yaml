@@ -1,0 +1,88 @@
+- project:
+    name: release-jjb-chinook-release
+    jobs:
+        - release-jjb-chinook-release
+
+- job-template:
+    name: 'release-jjb-chinook-release'
+    project-type: matrix
+    concurrent: false
+    node: control-slave
+
+    parameters:
+      - string:
+          name: GERRIT_PROJECT
+          default: AGL/AGL-repo
+          description: "Project to build"
+      - string:
+          name: GERRIT_BRANCH
+          default: chinook
+          description: "branch to build"
+      - string:
+          name: GERRIT_REFSPEC
+          default: refs/tags/chinook_3.0.2
+          description: "refspec to build"
+      - string:
+          name: RELEASE_VERSION
+          default: 3.0.2
+          description: "release version number for build"
+      - string:
+          name: RELEASE_BRANCH
+          default: chinook
+          description: "release branch to build"
+      - string:
+          name: UPLOAD
+          default: yes_or_no
+          description: "Upload?"
+    axes:
+      - axis:
+          type: user-defined
+          name: MACHINE
+          values:
+            - qemux86-64
+            - porter-nogfx
+            - intel-corei7-64
+            - raspberrypi3
+            - dra7xx-evm
+      - axis:
+          type: slave
+          name: label
+          values:
+            - agl-test-slave
+
+    build-discarder:
+      days-to-keep: 30
+      num-to-keep: 40
+      artifact-days-to-keep: -1
+      artifact-num-to-keep: 5
+
+    triggers:
+      - gerrit-trigger-patch-submitted-silent:
+            name: 'AGL/AGL-repo'
+            branch: 'refs/tags/chinook/**'
+
+    wrappers:
+      - agl-infra-wrappers:
+          build-timeout: '{build-timeout}'
+
+    builders:
+      - shell:
+            !include-raw-escape:
+                - ../common/include-agl-header.sh
+                - ../common/include-agl-repo.sh
+                - ../common/include-agl-select.sh
+                - ../common/include-agl-source-aglsetup.sh
+                - ../common/include-agl-auto-conf.sh
+                - ../common/include-agl-limit-parallelism.sh
+                - ../common/include-agl-cat-auto-conf.sh
+                - ../common/include-agl-local-conf-archiver.sh
+#                - ../common/include-agl-local-conf-isafw.sh
+                - ../common/include-agl-local-conf-fstypes.sh
+                - ../common/include-agl-local-conf-vmdk.sh
+                - ../common/include-agl-bitbake-image.sh
+                - ../common/include-agl-bitbake-sdk.sh
+                - ../common/include-agl-test-nbd-short.sh
+      - shell:
+            !include-raw-escape:
+                - include-release-jjb-chinook-release-rsync.sh
+
