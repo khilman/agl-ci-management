@@ -1,11 +1,11 @@
 - project:
-    name: release-jjb-chinook-release
+    name: release-jjb-chinook-release-from-snapshot
     jobs:
-        - release-jjb-chinook-release
+        - release-jjb-chinook-release-from-snapshot
 
 - job-template:
-    name: 'release-jjb-chinook-release'
-    project-type: matrix
+    name: 'release-jjb-chinook-release-from-snapshot'
+    project-type: freestyle
     concurrent: false
     node: control-slave
 
@@ -34,32 +34,12 @@
           name: UPLOAD
           default: yes_or_no
           description: "Upload?"
-    axes:
-      - axis:
-          type: user-defined
-          name: MACHINE
-          values:
-            - qemux86-64
-            - porter-nogfx
-            - intel-corei7-64
-            - raspberrypi3
-            - dra7xx-evm
-      - axis:
-          type: slave
-          name: label
-          values:
-            - agl-test-slave
 
     build-discarder:
       days-to-keep: 30
       num-to-keep: 40
       artifact-days-to-keep: -1
       artifact-num-to-keep: 5
-
-    triggers:
-      - gerrit-trigger-patch-submitted-silent:
-            name: 'AGL/AGL-repo'
-            branch: 'refs/tags/chinook/**'
 
     wrappers:
       - agl-infra-wrappers:
@@ -68,21 +48,5 @@
     builders:
       - shell:
             !include-raw-escape:
-                - ../common/include-agl-header.sh
-                - ../common/include-agl-repo.sh
-                - ../common/include-agl-select.sh
-                - ../common/include-agl-source-aglsetup.sh
-                - ../common/include-agl-auto-conf.sh
-                - ../common/include-agl-limit-parallelism.sh
-                - ../common/include-agl-cat-auto-conf.sh
-                - ../common/include-agl-local-conf-archiver.sh
-#                - ../common/include-agl-local-conf-isafw.sh
-                - ../common/include-agl-local-conf-fstypes.sh
-                - ../common/include-agl-local-conf-vmdk.sh
-                - ../common/include-agl-bitbake-image.sh
-                - ../common/include-agl-bitbake-sdk.sh
-                - ../common/include-agl-test-nbd-short.sh
-      - shell:
-            !include-raw-escape:
-                - include-release-jjb-chinook-release-rsync.sh
+                - include-release-jjb-chinook-release-move-sandbox.sh
 
