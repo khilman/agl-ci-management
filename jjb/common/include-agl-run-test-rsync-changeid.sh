@@ -25,10 +25,15 @@ cd output
 pwd
 ls -alhR tmp/deploy/images
 
+export TARGETMACHINE=${MACHINE}
+if test x"porter-nogfx" = x"${MACHINE}" ; then
+export TARGETMACHINE="porter"
+fi
+
 
 # copy files to $DEST
 for i in DEVICE_DTB DEVICE_KERNEL DEVICE_INITRAMFS DEVICE_NBDROOT; do
-    eval cp -avL tmp/deploy/images/${MACHINE}/$(echo "$"${i}) ${DEST}/
+    eval cp -avL tmp/deploy/images/${TARGETMACHINE}/$(echo "$"${i}) ${DEST}/
 done
 
 tree $DEST
