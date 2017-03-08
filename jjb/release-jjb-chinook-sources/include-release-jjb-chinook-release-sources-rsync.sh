@@ -13,7 +13,7 @@ RELVER=${RELEASE_VERSION}
 
 rm -rf release-upload || true
 
-git clone -b ${RELEASE_BRANCH} ssh://jsmoeller@gerrit.automotivelinux.org:29418/staging/release-upload
+git clone -b ${RELEASE_BRANCH} https://gerrit.automotivelinux.org/gerrit/p/staging/release-upload.git
 cd release-upload
 
 gpg --keyserver pgp.mit.edu --recv D6DD2170
