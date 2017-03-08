@@ -276,7 +276,7 @@
     builders:
       - shell: |
           set
-          export TRIGGERURL=$(echo ${{BUILDURL}} | sed -e 's,-CIB-start/,,')
+          export TRIGGERURL=$(echo ${{BUILD_URL}} | sed -e 's,-CIB-start/,,')
           ssh -p 29418 agl-jobbuilder@gerrit.automotivelinux.org gerrit review ${{GERRIT_CHANGE_NUMBER}},${{GERRIT_PATCHSET_NUMBER}} --verified=0 --label ci-image-build=0 --label ci-image-boot-test=0 -n NONE --message="CI-Image-Build\ started.\ URL:\ ${{TRIGGERURL}}" || true
 
 #
