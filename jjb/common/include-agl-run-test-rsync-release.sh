@@ -8,7 +8,7 @@ echo "#########################################"
 echo "\n\n\n"
 
 
-export RSYNCDST="/srv/download/AGL/upload/ci/${GERRIT_CHANGE_NUMBER}/${GERRIT_PATCHSET_NUMBER}"
+export RSYNCDST="/srv/download/AGL/upload/ci/${RELEASE_BRANCH}/${RELEASE_VERSION}"
 export RSYNCSRC=$(pwd)/UPLOAD/
 
 # construct upload folder

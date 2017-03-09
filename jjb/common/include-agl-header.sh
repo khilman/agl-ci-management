@@ -38,6 +38,11 @@ export TARGETIMAGEnogfx="core-image-minimal"
 
 export TARGETSDK="populate_sdk"
 
+export TARGETMACHINE=${MACHINE}
+if test x"porter-nogfx" = x"${MACHINE}" ; then
+  export TARGETMACHINE="porter"
+fi
+
 # apply GERRIT_*
 if test -n "${GERRIT_PROJECT}"; then
 export TARGETPROJECT="${GERRIT_PROJECT}"
