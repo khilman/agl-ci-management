@@ -15,13 +15,13 @@
         - meta-renesas
     jobs:
         - ci-platform-{project}-verify
-        - ci-platform-{project}-verify-CIB-start
+#        - ci-platform-{project}-verify-CIB-start
         - ci-platform-{project}-verify-CIB-{machine}
         - ci-platform-{project}-verify-CIB-finish-success
         - ci-platform-{project}-verify-failure
-        - ci-platform-{project}-verify-CIBT-start
+#        - ci-platform-{project}-verify-CIBT-start
         - ci-platform-{project}-verify-CIBT-{machine}
-        - ci-platform-{project}-verify-CIBT-finish
+        - ci-platform-{project}-verify-CIBT-finish-success
 
 #
 # -verify  = trigger from gerrit and control job
@@ -73,14 +73,14 @@
           set
           #export TRIGGERURL=$(echo ${{BUILD_URL}} | sed -e 's,-CIB-start.*,,')
           ssh -p 29418 agl-jobbuilder@gerrit.automotivelinux.org gerrit review ${{GERRIT_CHANGE_NUMBER}},${{GERRIT_PATCHSET_NUMBER}} --verified=0 --label ci-image-build=0 --label ci-image-boot-test=0 -n NONE --message="CI-cycle\ started.\ URL:\ ${{BUILD_URL}}" || true
-      - multijob:
-          name: CIB-{project}-start
-          condition: SUCCESSFUL
-          projects:
-            - name: 'ci-platform-{project}-verify-CIB-start'
-              current-parameters: true
-              abort-all-job: true
-              kill-phase-on: FAILURE
+#      - multijob:
+#          name: CIB-{project}-start
+#          condition: SUCCESSFUL
+#          projects:
+#            - name: 'ci-platform-{project}-verify-CIB-start'
+#              current-parameters: true
+#              abort-all-job: true
+#              kill-phase-on: FAILURE
       - multijob:
           name: CIB-{project}
           condition: SUCCESSFUL
@@ -113,22 +113,14 @@
               current-parameters: true
               abort-all-job: true
               kill-phase-on: FAILURE
-      - multijob:
-          name: CIB-{project}-finish-failure
-          condition: FAILURE
-          projects:
-            - name: 'ci-platform-{project}-verify-CIB-finish-failure'
-              current-parameters: true
-              abort-all-job: true
-              kill-phase-on: FAILURE
-      - multijob:
-          name: 'CIBT-{project}-start'
-          condition: SUCCESSFUL
-          projects:
-            - name: 'ci-platform-{project}-verify-CIBT-start'
-              current-parameters: true
-              abort-all-job: true
-              kill-phase-on: FAILURE
+#      - multijob:
+#          name: 'CIBT-{project}-start'
+#          condition: SUCCESSFUL
+#          projects:
+#            - name: 'ci-platform-{project}-verify-CIBT-start'
+#              current-parameters: true
+#              abort-all-job: true
+#              kill-phase-on: FAILURE
       - multijob:
           name: CIBT-{project}
           condition: SUCCESSFUL
@@ -154,10 +146,10 @@
               abort-all-job: true
               kill-phase-on: FAILURE
       - multijob:
-          name: 'CIBT-{project}-finish'
+          name: 'CIBT-{project}-finish-success'
           condition: SUCCESSFUL
           projects:
-            - name: 'ci-platform-{project}-verify-CIBT-finish'
+            - name: 'ci-platform-{project}-verify-CIBT-finish-success'
               current-parameters: true
               abort-all-job: true
               kill-phase-on: FAILURE
@@ -506,11 +498,11 @@
 
 
 #
-# CIBT-finish
-################
+# CIBT-finish-success
+#####################
 
 - job-template:
-    name: 'ci-platform-{project}-verify-CIBT-finish'
+    name: 'ci-platform-{project}-verify-CIBT-finish-success'
     project-type: freestyle
     concurrent: true
     node: control-slave
