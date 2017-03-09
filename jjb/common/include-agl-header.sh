@@ -138,3 +138,5 @@ set | grep ^GERRIT || true
 set | grep ^MACHINE || true
 #fi
 
+git config --global user.email "jenkins-dontreply@build.automotivelinux.org"
+git config --global user.name "jenkins @ build.automotivelinux.org"
