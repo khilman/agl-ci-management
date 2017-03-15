@@ -1,7 +1,8 @@
+---
 - project:
     name: release-jjb-chinook-sources
     jobs:
-        - release-jjb-chinook-sources
+      - release-jjb-chinook-sources
 
 - job-template:
     name: 'release-jjb-chinook-sources'
@@ -35,6 +36,5 @@
 
     builders:
       - shell:
-            !include-raw-escape:
-                 - include-release-jjb-chinook-release-sources-rsync.sh
-
+          !include-raw-escape:
+          - include-release-jjb-chinook-release-sources-rsync.sh
