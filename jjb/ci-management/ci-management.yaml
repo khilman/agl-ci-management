@@ -29,12 +29,12 @@
     wrappers:
       - ssh-agent-credentials:
           users:
-              - '{ssh-credentials}'
+            - '{ssh-credentials}'
 
     triggers:
-        - gerrit-trigger-patch-submitted:
-            name: '{project}'
-            branch: '{branch}'
+      - gerrit-trigger-patch-submitted:
+          name: '{project}'
+          branch: '{branch}'
 
     builders:
       - shell: |
@@ -70,8 +70,8 @@
 
     triggers:
       - gerrit-trigger-patch-merged:
-            name: '{project}'
-            branch: '{branch}'
+          name: '{project}'
+          branch: '{branch}'
 
     builders:
       - shell:
