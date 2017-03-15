@@ -1,7 +1,8 @@
+---
 - project:
     name: pre-fetch-mirror
     jobs:
-        - pre-fetch-mirror-weekly
+      - pre-fetch-mirror-weekly
 
 - job-template:
     name: 'pre-fetch-mirror-weekly'
@@ -24,7 +25,6 @@
 
     builders:
       - shell:
-            !include-raw-escape: include-prefetch.sh
+          !include-raw-escape: include-prefetch.sh
       - shell:
-            !include-raw-escape: include-rsync-prefetch.sh
-
+          !include-raw-escape: include-rsync-prefetch.sh
