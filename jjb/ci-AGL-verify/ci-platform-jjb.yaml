@@ -154,12 +154,12 @@
               abort-all-job: true
               kill-phase-on: FAILURE
 
-    publishers:
-      - trigger-parameterized-builds:
-        - project:
-          - ci-platform-{project}-verify-failure
-          condition: FAILED
-          current-parameters: true
+    #publishers:
+    #  - trigger-parameterized-builds:
+    #    - project:
+    #      - ci-platform-{project}-verify-failure
+    #      condition: FAILED
+    #      current-parameters: true
 
 #
 # -verify-failure
