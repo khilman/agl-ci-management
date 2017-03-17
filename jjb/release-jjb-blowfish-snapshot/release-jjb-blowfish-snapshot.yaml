@@ -1,7 +1,8 @@
+---
 - project:
     name: release-jjb-blowfish-snapshot
     jobs:
-        - release-jjb-blowfish-snapshot
+      - release-jjb-blowfish-snapshot
 
 - job-template:
     name: 'release-jjb-blowfish-snapshot'
@@ -52,7 +53,6 @@
 
     builders:
       - shell:
-            !include-raw-escape: include-release-jjb-blowfish-snapshot-build.sh
+          !include-raw-escape: include-release-jjb-blowfish-snapshot-build.sh
       - shell:
-            !include-raw-escape: include-release-jjb-blowfish-snapshot-rsync.sh
-
+          !include-raw-escape: include-release-jjb-blowfish-snapshot-rsync.sh

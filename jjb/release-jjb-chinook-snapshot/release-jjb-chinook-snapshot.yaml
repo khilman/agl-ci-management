@@ -1,7 +1,8 @@
+---
 - project:
     name: release-jjb-chinook-snapshot
     jobs:
-        - release-jjb-chinook-snapshot
+      - release-jjb-chinook-snapshot
 
 - job-template:
     name: 'release-jjb-chinook-snapshot'
@@ -58,8 +59,8 @@
 
     triggers:
       - gerrit-trigger-patch-submitted-silent:
-            name: 'AGL/AGL-repo'
-            branch: 'refs/tags/chinook/**'
+          name: 'AGL/AGL-repo'
+          branch: 'refs/tags/chinook/**'
 
     wrappers:
       - agl-infra-wrappers:
@@ -67,23 +68,22 @@
 
     builders:
       - shell:
-            !include-raw-escape:
-                - ../common/include-agl-header.sh
-                - ../common/include-agl-repo.sh
-                - ../common/include-agl-select.sh
-                - ../common/include-agl-source-aglsetup.sh
-                - ../common/include-agl-auto-conf.sh
-                - ../common/include-agl-limit-parallelism.sh
-                - ../common/include-agl-cat-auto-conf.sh
-                - ../common/include-agl-local-conf-archiver.sh
-                - ../common/include-agl-local-conf-isafw.sh
-                - ../common/include-agl-local-conf-fstypes.sh
-                - ../common/include-agl-local-conf-vmdk.sh
-                - ../common/include-agl-bitbake-image.sh
-                - ../common/include-agl-bitbake-sdk.sh
-                - ../common/include-agl-run-test-prepare.sh
-                - ../common/include-agl-run-test-rsync-release.sh
-                - ../common/include-agl-run-test-short-release.sh
+          !include-raw-escape:
+          - ../common/include-agl-header.sh
+          - ../common/include-agl-repo.sh
+          - ../common/include-agl-select.sh
+          - ../common/include-agl-source-aglsetup.sh
+          - ../common/include-agl-auto-conf.sh
+          - ../common/include-agl-limit-parallelism.sh
+          - ../common/include-agl-cat-auto-conf.sh
+          - ../common/include-agl-local-conf-archiver.sh
+          - ../common/include-agl-local-conf-isafw.sh
+          - ../common/include-agl-local-conf-fstypes.sh
+          - ../common/include-agl-local-conf-vmdk.sh
+          - ../common/include-agl-bitbake-image.sh
+          - ../common/include-agl-bitbake-sdk.sh
+          - ../common/include-agl-run-test-prepare.sh
+          - ../common/include-agl-run-test-rsync-release.sh
+          - ../common/include-agl-run-test-short-release.sh
       - shell:
-            !include-raw-escape: include-release-jjb-chinook-snapshot-rsync.sh
-
+          !include-raw-escape: include-release-jjb-chinook-snapshot-rsync.sh

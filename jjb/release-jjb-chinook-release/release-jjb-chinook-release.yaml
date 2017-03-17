@@ -1,7 +1,8 @@
+---
 - project:
     name: release-jjb-chinook-release-from-snapshot
     jobs:
-        - release-jjb-chinook-release-from-snapshot
+      - release-jjb-chinook-release-from-snapshot
 
 - job-template:
     name: 'release-jjb-chinook-release-from-snapshot'
@@ -47,6 +48,5 @@
 
     builders:
       - shell:
-            !include-raw-escape:
-                - include-release-jjb-chinook-release-move-sandbox.sh
-
+          !include-raw-escape:
+          - include-release-jjb-chinook-release-move-sandbox.sh
