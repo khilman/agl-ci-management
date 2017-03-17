@@ -544,4 +544,4 @@
       - shell: |
           #set
           echo "#### CIBT +1 ####"
-          ssh -p 29418 agl-jobbuilder@gerrit.automotivelinux.org gerrit review ${{GERRIT_CHANGE_NUMBER}},${{GERRIT_PATCHSET_NUMBER}} --label ci-image-boot-test=+1 -n NONE --message='CI-Image-Boot-Test\ finished' || true
+          ssh -p 29418 agl-jobbuilder@gerrit.automotivelinux.org gerrit review ${{GERRIT_CHANGE_NUMBER}},${{GERRIT_PATCHSET_NUMBER}} --verified +1 --label ci-image-build=+1 --label ci-image-boot-test=+1 -n NONE --message='CI-Image-Boot-Test\ finished' || true
