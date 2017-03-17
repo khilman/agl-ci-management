@@ -1,7 +1,8 @@
+---
 - project:
     name: snapshot-jjb-container
     jobs:
-        - snapshot-jjb-container-weekly
+      - snapshot-jjb-container-weekly
 
 - job-template:
     name: 'snapshot-jjb-container-weekly'
@@ -24,7 +25,6 @@
 
     builders:
       - shell:
-            !include-raw-escape: include-createcontainer.sh
+          !include-raw-escape: include-createcontainer.sh
       - shell:
-            !include-raw-escape: include-rsync-container.sh
-
+          !include-raw-escape: include-rsync-container.sh
