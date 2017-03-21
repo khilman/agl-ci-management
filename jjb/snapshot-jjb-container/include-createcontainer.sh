@@ -4,8 +4,11 @@
 set -e
 #
 
-git clone https://github.com/iotbzh/agl-docker-worker.git
-cd agl-docker-worker/
+git clone https://gerrit.automotivelinux.org/gerrit/AGL/docker-worker-generator
+cd docker-worker-generator/
+
+# dump where we are in jenkins log :)
+git log -n 1
 
 make build
 make export
