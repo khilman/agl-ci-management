@@ -23,7 +23,7 @@ $AGLLAVATOKEN
 EOF
 
 lava-tool auth-add --token-file ~/.local/token https://agl-jenkins-user@porter.automotivelinux.org
-rm ~/.local/token
+rm -rf ~/.local/token || true
 
 echo "## $TESTJOBFILE ##"
 
