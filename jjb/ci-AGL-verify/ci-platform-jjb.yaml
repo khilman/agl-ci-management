@@ -14,6 +14,7 @@
       - meta-agl-extra
       - AGL-repo
       - meta-renesas
+      - meta-renesas-rcar-gen3
     jobs:
       - ci-platform-{project}-verify
       # - ci-platform-{project}-verify-CIB-start
