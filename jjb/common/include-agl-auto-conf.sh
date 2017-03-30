@@ -16,9 +16,11 @@ https://.*/.* ${DLHOST}/AGL/mirror/ \n \
              "
 
 SSTATE_MIRRORS = "\
-file://.* file:///opt/AGL/sstate-mirror/\${MACHINE}/PATH    \n \
 file://.* ${DLHOST}/sstate-mirror/\${MACHINE}/PATH \n \
                  "
+#
+#file://.* file:///opt/AGL/sstate-mirror/\${MACHINE}/PATH    \n 
+#
 
 IMAGE_FSTYPES_remove = "ext3"
 SSTATE_DIR = "\${TOPDIR}/sstate-cache/\${MACHINE}/"
