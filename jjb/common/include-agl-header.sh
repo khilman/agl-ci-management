@@ -140,9 +140,10 @@ set | grep ^MACHINE || true
 
 set -x
 
-rm -rf ~/.gitconfig || true
+rm -rf ~/.gitconfi* || true
 
 git config --global user.email "jenkins-dontreply@build.automotivelinux.org"
+sync
 sleep 1
 git config --global user.name "jenkins-dontreply@build.automotivelinux.org"
 
