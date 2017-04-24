@@ -145,6 +145,8 @@ rm -rf ~/.gitconfi* || true
 git config --global user.email "jenkins-dontreply@build.automotivelinux.org"
 sync
 sleep 1
+ls -alh ~/.gitconfi*
+rm -rf ~/.gitconfig.lock || true
 git config --global user.name "jenkins-dontreply@build.automotivelinux.org"
 
 set +x
