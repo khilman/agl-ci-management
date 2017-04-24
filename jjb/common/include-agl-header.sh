@@ -140,7 +140,7 @@ set | grep ^MACHINE || true
 
 set -x
 
-rm -rf ~/.gitconfi* || true
+#rm -rf ~/.gitconfi* || true
 
 if test ! -f ~/.gitconfig ; then 
   git config --global --replace-all user.email "jenkins-dontreply@build.automotivelinux.org"
