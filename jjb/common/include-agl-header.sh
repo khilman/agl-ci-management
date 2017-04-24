@@ -140,12 +140,11 @@ set | grep ^MACHINE || true
 
 set -x
 
-#rm -rf ~/.gitconfi* || true
+rm -rf ~/.gitconfi* || true
 
-git config --help
-
-git config --global --replace-all user.email "jenkins-dontreply@build.automotivelinux.org"
-git config --global --replace-all user.name "jenkins-dontreply@build.automotivelinux.org"
+if test ! -f ~/.gitconfig ; then 
+  git config --global --add user.email "jenkins-dontreply@build.automotivelinux.org" --add user.name "jenkins-dontreply@build.automotivelinux.org"
+fi
 
 #git config --global user.email "jenkins-dontreply@build.automotivelinux.org"
 #sync
