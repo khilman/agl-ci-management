@@ -143,8 +143,8 @@ set -x
 #rm -rf ~/.gitconfi* || true
 
 if test ! -f ~/.gitconfig ; then 
-  git config --global --replace-all user.email "jenkins-dontreply@build.automotivelinux.org"
-  git config --global --replace-all user.name "jenkins-dontreply@build.automotivelinux.org"
+  git config --global user.email "jenkins-dontreply@build.automotivelinux.org"
+  git config --global user.name "jenkins-dontreply@build.automotivelinux.org"
 fi
 
 #git config --global user.email "jenkins-dontreply@build.automotivelinux.org"
