@@ -67,8 +67,11 @@ git clone https://github.com/automotive-grade-linux/docs-agl
 
 cd ./docs-agl/doctools/webdocs/
 npm install
-gem install --no-user-install -V kramdown
-gem install --no-user-install -V jekyll-plantuml
+#gem install --no-user-install -V kramdown
+#gem install --no-user-install -V jekyll-plantuml
+
+gem install --no-user-install -V --version 3.1.6 jekyll
+gem install --no-user-install -V --version 1.13.1 kramdown
 
 ### hope that is enough
 
