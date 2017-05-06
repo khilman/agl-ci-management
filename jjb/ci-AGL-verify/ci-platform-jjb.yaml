@@ -443,11 +443,7 @@
 
     publishers:
       - naginator:
-          rerun-unstable-builds: true
-          progressive-delay-increment: 5
-          progressive-delay-maximum: 15
           max-failed-builds: 2
-          #regular-expression: "Unexpected termination of the channel"
 
 
 #
