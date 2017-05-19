@@ -57,6 +57,20 @@ vm.dirty_writeback_centisecs = 0
 EOFSYSCTL
 
 ### webdocs
+# taken from container setup script. not documented in readme.
+# install node.js and tools (npm, gulp, bower) if needed
+#
+if [[ -z $(which node) ]]; then
+    curl -sL https://deb.nodesource.com/setup_6.x | bash -
+    apt-get install -y nodejs
+    npm install --global gulp bower
+fi
+
+# tools used to generate developer website (https://github.com/automotive-grade-linux/docs-agl)
+gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 \
+    && curl -sSL https://get.rvm.io | bash -s stable --ruby --gems=jekyll
+
+
 mkdir -p /opt/AGL
 cd /opt/AGL/
 #mkdir webdocs
@@ -70,9 +84,11 @@ npm install
 #gem install --no-user-install -V kramdown
 #gem install --no-user-install -V jekyll-plantuml
 
-gem install --no-user-install -V --version 3.1.6 jekyll
-gem install --no-user-install -V --version 1.13.1 kramdown
+#gem install --no-user-install -V --version 3.1.6 jekyll
+#gem install --no-user-install -V --version 1.13.1 kramdown
 
 ### hope that is enough
+
+
 
 exit 0
