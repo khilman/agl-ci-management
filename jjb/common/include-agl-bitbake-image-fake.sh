@@ -26,7 +26,7 @@ mkdir -p tmp/deploy/images/${MACHINE}/
 pushd tmp/deploy/images/${MACHINE}/
 
 for i in DEVICE_DTB DEVICE_KERNEL DEVICE_INITRAMFS DEVICE_NBDROOT ; do
-    eval curl -o "$(echo "$"${i})" "http://download-new.automotivelinux.org/AGL/snapshots/master/2017-01-08-b241/${MACHINE}/deploy/images/${MACHINE}/$(echo "$"${i})"
+    eval curl -o "$(echo "$"${i})" "http://download.automotivelinux.org/AGL/snapshots/master/2017-01-08-b241/${MACHINE}/deploy/images/${MACHINE}/$(echo "$"${i})"
     ls -alh 
 done
 

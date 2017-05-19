@@ -32,14 +32,14 @@ sudo usermod -a -G docker ubuntu
 
 cat <<EOFHOSTS >> /etc/hosts
 
-# workaround for download-new
-10.30.72.8 download-new.automotivelinux.org
+# workaround for download
+10.30.72.8 download.automotivelinux.org
 10.30.72.8 download-internal.automotivelinux.org
 
 EOFHOSTS
 
 # install newer version of jjb ... fixes issues with rendering
-sudo pip install --upgrade --force-reinstall -v jenkins-job-builder 
+sudo pip install --upgrade --force-reinstall -v jenkins-job-builder
 
 cat <<EOFSYSCTL >> /etc/sysctl.conf
 # we have a lot of make jobs, this helps a lot

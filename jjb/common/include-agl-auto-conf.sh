@@ -5,7 +5,7 @@
 ## auto.conf inclusion of mirrors
 ################################################################################
 
-export DLHOST="http://download-new.automotivelinux.org/"
+export DLHOST="http://download.automotivelinux.org/"
 #limit parallel number of bitbake jobs and parallel jobs in make
 cat << EOF >> conf/auto.conf
 PREMIRRORS = "\

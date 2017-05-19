@@ -25,8 +25,8 @@ FQDN=$(facter fqdn)
 echo "${IPADDR} ${HOSTNAME} ${FQDN}" >> /etc/hosts
 
 cat <<EOFHOSTS >> /etc/hosts
-# workaround for download-new
-199.19.213.77 download-new.automotivelinux.org
+# workaround for download
+199.19.213.77 download.automotivelinux.org
 EOFHOSTS
 
 
