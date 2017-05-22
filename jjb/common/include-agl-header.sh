@@ -37,6 +37,7 @@ export TARGETIMAGE="agl-demo-platform\${TARGETQA}"
 export TARGETIMAGEnogfx="core-image-minimal"
 
 export TARGETSDK="populate_sdk"
+export TARGETSDKIMAGE="agl-demo-platform-crosssdk"
 
 export TARGETMACHINE=${MACHINE}
 if test x"porter-nogfx" = x"${MACHINE}" ; then
