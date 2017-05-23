@@ -432,7 +432,7 @@
               username: AGLLAVAUSER
               password: AGLLAVATOKEN
           - username-password-separated:
-              credential-id: lab_main_lava_instance
+              credential-id: agl_main_lava_instance
               username: LAB_AGL_USER
               password: LAB_AGL_TOKEN
           - username-password-separated:
