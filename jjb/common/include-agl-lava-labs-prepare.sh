@@ -8,7 +8,7 @@
 #
 declare -A labs
 labs=(
-    [agl]="https://porter.automotivelinux.org/;$LAB_AGL_USER;$LAB_AGL_TOKEN"
+    [agl]="https://lava.automotivelinux.org/;$LAB_AGL_USER;$LAB_AGL_TOKEN"
     [baylibre]="http://lava.baylibre.com:10080/;$LAB_BAYLIBRE_USER;$LAB_BAYLIBRE_TOKEN"
     [baylibre_seattle]="http://lava.ished.com/;$LAB_BAYLIBRE_SEATTLE_USER;$LAB_BAYLIBRE_SEATTLE_TOKEN"
     )
