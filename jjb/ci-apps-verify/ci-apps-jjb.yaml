@@ -98,23 +98,7 @@
           name: CIB-{project}
           condition: SUCCESSFUL
           projects:
-            - name: 'ci-apps-{project}-verify-CIB-porter-nogfx'
-              current-parameters: true
-              abort-all-job: true
-              kill-phase-on: FAILURE
-            - name: 'ci-apps-{project}-verify-CIB-intel-corei7-64'
-              current-parameters: true
-              abort-all-job: true
-              kill-phase-on: FAILURE
-            - name: 'ci-apps-{project}-verify-CIB-raspberrypi3'
-              current-parameters: true
-              abort-all-job: true
-              kill-phase-on: FAILURE
-            - name: 'ci-apps-{project}-verify-CIB-dra7xx-evm'
-              current-parameters: true
-              abort-all-job: true
-              kill-phase-on: FAILURE
-            - name: 'ci-apps-{project}-verify-CIB-qemux86-64'
+            - name: 'ci-apps-{project}-verify-CIB-arm'
               current-parameters: true
               abort-all-job: true
               kill-phase-on: FAILURE
@@ -324,8 +308,9 @@
       - shell:
           # including from ../common into ci-apps-{project}-verify-CIB-{architecture}
           !include-raw-escape:
-          - ../common/include-apps-fetch-install-sdk.sh
           - ../common/include-apps-header.sh
+          - ../common/include-apps-fetch-install-sdk.sh
+          - ../common/include-apps-build-app.sh
 
     publishers:
       - naginator:
