@@ -4,9 +4,19 @@
     jobs:
       - 'ci-management-verify-jjb'
       - 'ci-management-merge'
+      - 'ci-management-verify-packer'
+      - 'ci-management-merge-packer-{platforms}-{templates}'
 
     project: 'ci-management'
     branch: master
+
+    platforms:
+        - ubuntu-16.04
+
+    templates:
+        - basebuild-agl-test-slave
+        - basebuild-control-slave
+        - basebuild
 
 - job-template:
     name: ci-management-verify-jjb
@@ -35,6 +45,7 @@
       - gerrit-trigger-patch-submitted:
           name: '{project}'
           branch: '{branch}'
+          files: '**/**'
 
     builders:
       - shell: |
@@ -65,7 +76,7 @@
           choosing-strategy: 'default'
 
     wrappers:
-      - agl-infra-wrappers:
+        - agl-infra-wrappers:
           build-timeout: '{build-timeout}'
 
     triggers:
@@ -76,3 +87,122 @@
     builders:
       - shell:
           !include-raw-escape: include-raw-jjb-update.sh
+
+
+- job-template:
+    name: 'ci-management-verify-packer'
+    project-type: freestyle
+    node: control-slave
+    concurrent: true
+
+    properties:
+      - agl-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          build-num-to-keep: '{build-num-to-keep}'
+
+
+    parameters:
+      - agl-infra-parameters:
+          project: '{project}'
+          branch: 'master'
+          refspec: 'refs/heads/master'
+
+    scm:
+      - gerrit-trigger-scm:
+          refspec: '$GERRIT_REFSPEC'
+          choosing-strategy: 'gerrit'
+
+    wrappers:
+      - agl-infra-wrappers:
+          build-timeout: '{build-timeout}'
+
+    triggers:
+      - gerrit-trigger-patch-submitted:
+          name: 'AGL/AGL-repo'
+          branch: '{branch}'
+          files: 'packer/**'
+
+    builders:
+      - packer-validate:
+
+    publishers:
+      - archive:
+          artifacts: 'packer/*.log'
+          allow-empty: 'true'
+          only-if-success: 'true'
+
+- job-template:
+    name: 'ci-management-merge-packer-{platforms}-{templates}'
+    project-type: freestyle
+    node: control-slave
+
+    properties:
+      - agl-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          build-num-to-keep: '{build-num-to-keep}'
+
+    parameters:
+      - agl-infra-parameters:
+          project: '{project}'
+          branch: 'master'
+          refspec: 'refs/heads/master'
+
+    scm:
+      - gerrit-trigger-scm:
+          refspec: '$GERRIT_REFSPEC'
+          choosing-strategy: 'gerrit'
+
+    wrappers:
+      - ssh-agent-credentials:
+          users:
+              - '{ssh-credentials}'
+      - agl-infra-wrappers:
+          build-timeout: '{build-timeout}'
+
+    triggers:
+      - timed: '00 10 1 * *'
+      - gerrit:
+          trigger-on:
+            - change-merged-event
+            - comment-added-contains-event:
+                comment-contains-value: 'remerge'
+          projects:
+            - project-compare-type: 'ANT'
+              project-pattern: 'ci-management'
+              branches:
+                - branch-compare-type: 'ANT'
+                  branch-pattern: '**/{branch}'
+              file-paths:
+                - compare-type: ANT
+                  pattern: 'packer/vars/{platforms}.json'
+                - compare-type: ANT
+                  pattern: 'packer/templates/{templates}.json'
+                - compare-type: ANT
+                  pattern: 'packer/provision/{templates}.sh'
+                - compare-type: ANT
+                  pattern: 'packer/provision/system_reseal.sh'
+                - compare-type: ANT
+                  pattern: 'packer/provision/rh-user_data.sh'
+                - compare-type: ANT
+                  pattern: 'packer/provision/baseline.sh'
+                - compare-type: ANT
+                  pattern: 'packer/provision/null_data.sh'
+                - compare-type: ANT
+                  pattern: 'packer/provision/agl_dependencies.sh'
+                - compare-type: ANT
+                  pattern: 'packer/provision/agl_mirror.sh'
+                - compare-type: ANT
+                  pattern: 'packer/provision/basebuild-no-tmpfs.sh'
+
+
+    builders:
+      - packer-validate:
+      - packer-build:
+          platform: '{platforms}'
+          template: '{templates}'
+
+    publishers:
+      - archive:
+          artifacts: 'packer/*.log'
+          allow-empty: 'true'
+          only-if-success: 'true'

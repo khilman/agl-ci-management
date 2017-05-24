@@ -104,6 +104,9 @@
               branches:
                 - branch-compare-type: 'ANT'
                   branch-pattern: '**/{branch}'
+              file-paths:
+                - compare-type: ANT
+                  pattern: '{files}'
 
 - trigger:
     name: gerrit-trigger-patch-submitted-manual-verified-silent
@@ -431,3 +434,55 @@
       - ansicolor
       - openstack:
           single-use: false
+
+- property:
+    name: agl-infra-properties
+    properties:
+        - build-discarder:
+            days-to-keep: '{build-days-to-keep}'
+            num-to-keep: '{build-num-to-keep}'
+
+- builder:
+    name: packer-validate
+    builders:
+      - config-file-provider:
+          files:
+            - file-id: 'packer-cloud-env'
+              variable: 'CLOUDENV'
+      - shell: |
+          #!/bin/bash -x
+          cd packer
+          varfiles="../packer/vars/*"
+          templates="../packer/templates/*"
+          provision="../packer/provision/*.sh"
+          for v in $varfiles; do
+              [[ "${v##*/}" =~ ^(cloud-env.*|README.*)$ ]] && continue
+              for t in $templates; do
+                  export PACKER_LOG="yes" && \
+                  export PACKER_LOG_PATH="packer-validate-${v##*/}-${t##*/}.log" && \
+                              packer.io validate -var-file=$CLOUDENV \
+                              -var-file=$v $t
+                  if [ $? -ne 0 ]; then
+                      break
+                  fi
+              done
+          done
+          for p in $provision; do
+              /bin/bash -n $p > provision-validate-${p##*/}.log 2>&1
+          done
+
+- builder:
+    name: packer-build
+    builders:
+      - config-file-provider:
+          files:
+            - file-id: 'packer-cloud-env'
+              variable: 'CLOUDENV'
+      - shell: |
+          cd packer
+          export PACKER_LOG="yes" && \
+          export PACKER_LOG_PATH="packer-build.log" && \
+                      packer.io build -color=false -var-file=$CLOUDENV \
+                       -var-file=../packer/vars/{platform}.json \
+                       -parallel=false \
+                       ../packer/templates/{template}.json
