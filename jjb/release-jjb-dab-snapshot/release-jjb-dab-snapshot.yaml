@@ -45,6 +45,7 @@
             - intel-corei7-64
             - raspberrypi3
             - dra7xx-evm
+            - m3ulcb-nogfx
       - axis:
           type: slave
           name: label

@@ -43,6 +43,9 @@ export TARGETMACHINE=${MACHINE}
 if test x"porter-nogfx" = x"${MACHINE}" ; then
   export TARGETMACHINE="porter"
 fi
+if test x"m3ulcb-nogfx" = x"${MACHINE}" ; then
+  export TARGETMACHINE="m3ulcb"
+fi
 
 # apply GERRIT_*
 if test -n "${GERRIT_PROJECT}"; then
@@ -129,6 +132,11 @@ if $NOGFX; then
     export TARGETFEATURES="${TARGETFEATURESnogfx}"
 fi
 if test x"porter-nogfx" = x"$MACHINE"; then
+    export TARGETIMAGE=${TARGETIMAGEnogfx}
+    export TARGETFEATURES="${TARGETFEATURESnogfx}"
+fi
+
+if test x"m3ulcb-nogfx" = x"$MACHINE"; then
     export TARGETIMAGE=${TARGETIMAGEnogfx}
     export TARGETFEATURES="${TARGETFEATURESnogfx}"
 fi
