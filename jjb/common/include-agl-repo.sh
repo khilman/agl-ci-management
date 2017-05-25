@@ -18,7 +18,12 @@ cd repoclone
 
 export REPODIR=`pwd`
 
-repo init --reference=/opt/AGL/preclone -q -b $TARGETBRANCH -u https://gerrit.automotivelinux.org/gerrit/AGL/AGL-repo
+if test x"" = x"${RELEASE_VERSION}" -a x"" = x"${RELEASE_BRANCH}" ; then
+  repo init --reference=/opt/AGL/preclone -q -b $TARGETBRANCH -u https://gerrit.automotivelinux.org/gerrit/AGL/AGL-repo
+else
+  repo init --reference=/opt/AGL/preclone -q -b $TARGETBRANCH -m ${RELEASE_BRANCH}_${RELEASE_VERSION}.xml -u https://gerrit.automotivelinux.org/gerrit/AGL/AGL-repo
+fi
+
 
 # next: repo sync and dump manifest
 repo sync --force-sync --detach --no-clone-bundle
