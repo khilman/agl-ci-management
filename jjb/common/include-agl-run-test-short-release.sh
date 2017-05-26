@@ -85,18 +85,18 @@ sed -i -e "s#@REPLACE_URL_PREFIX@#${DEVICE_URL_PREFIX}#g" testjob.yaml
 
 cat testjob.yaml
 
-lava-tool submit-job --block https://agl-jenkins-user@porter.automotivelinux.org testjob.yaml | tee .myjob
+lava-tool submit-job --block https://agl-jenkins-user@lava.automotivelinux.org testjob.yaml | tee .myjob
 
 MYJOB=`cat .myjob | grep "submitted as job" | sed -e "s#submitted as job id: ##g"`
 
 echo "#### JOBID: $MYJOB #####"
 
-( lava-tool job-status https://agl-jenkins-user@porter.automotivelinux.org $MYJOB | tee .status ) || true
+( lava-tool job-status https://agl-jenkins-user@lava.automotivelinux.org $MYJOB | tee .status ) || true
 STATUS=`grep "Job Status:" .status | sed -e "s#Job Status: ##g"`
 
 if [ x"Complete" = x"$STATUS"  ] ; then
     echo "YAY! $STATUS"
-    curl -o plain_output.yaml https://porter.automotivelinux.org/scheduler/job/$MYJOB/log_file/plain
+    curl -o plain_output.yaml https://lava.automotivelinux.org/scheduler/job/$MYJOB/log_file/plain
     cat plain_output.yaml | grep '"target",' | sed -e 's#- {"dt".*"lvl".*"msg":."##g' -e 's#"}$##g'
 
     # cleanup
@@ -105,7 +105,7 @@ if [ x"Complete" = x"$STATUS"  ] ; then
     exit 0
 else
     echo "Nooooooooo! $STATUS"
-    curl -o plain_output.yaml https://porter.automotivelinux.org/scheduler/job/$MYJOB/log_file/plain
+    curl -o plain_output.yaml https://lava.automotivelinux.org/scheduler/job/$MYJOB/log_file/plain
     cat plain_output.yaml | grep '"target",' | sed -e 's#- {"dt".*"lvl".*"msg":."##g' -e 's#"}$##g'
 
     # cleanup
