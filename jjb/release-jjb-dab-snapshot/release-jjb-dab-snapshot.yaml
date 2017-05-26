@@ -85,6 +85,7 @@
           - ../common/include-agl-bitbake-sdk.sh
           - ../common/include-agl-run-test-prepare.sh
           - ../common/include-agl-run-test-rsync-release.sh
+          - ../common/include-agl-lava-labs-prepare.sh
           - ../common/include-agl-run-test-short-release.sh
       - shell:
           !include-raw-escape: include-release-jjb-dab-snapshot-rsync.sh

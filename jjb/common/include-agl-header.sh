@@ -36,26 +36,18 @@ export TARGETQA=""
 export TARGETIMAGE="agl-demo-platform\${TARGETQA}"
 export TARGETIMAGEnogfx="core-image-minimal"
 
-export TARGETSDK="populate_sdk"
 export TARGETSDKIMAGE="agl-demo-platform-crosssdk"
 
-export TARGETMACHINE=${MACHINE}
-if test x"porter-nogfx" = x"${MACHINE}" ; then
-  export TARGETMACHINE="porter"
-fi
-if test x"m3ulcb-nogfx" = x"${MACHINE}" ; then
-  export TARGETMACHINE="m3ulcb"
-fi
 
 # apply GERRIT_*
 if test -n "${GERRIT_PROJECT}"; then
-export TARGETPROJECT="${GERRIT_PROJECT}"
+    export TARGETPROJECT="${GERRIT_PROJECT}"
 fi
 if test -n "${GERRIT_BRANCH}"; then
     export TARGETBRANCH="${GERRIT_BRANCH}"
 fi
 if test -n "${GERRIT_REFSPEC}"; then
-export TARGETREFSPEC="${GERRIT_REFSPEC}"
+    export TARGETREFSPEC="${GERRIT_REFSPEC}"
 fi
 
 if test x"" = x"${MACHINE}"; then
@@ -127,18 +119,27 @@ done
 eval TARGETIMAGE="$TARGETIMAGE"
 eval TARGETIMAGEnogfx="$TARGETIMAGEnogfx"
 
+# The 'real' machine name
+export TARGETMACHINE=${MACHINE}
+
+# The exceptions
 if $NOGFX; then
     export TARGETIMAGE=${TARGETIMAGEnogfx}
     export TARGETFEATURES="${TARGETFEATURESnogfx}"
 fi
+# porter-nogfx means no graphic drivers
 if test x"porter-nogfx" = x"$MACHINE"; then
     export TARGETIMAGE=${TARGETIMAGEnogfx}
     export TARGETFEATURES="${TARGETFEATURESnogfx}"
+    export TARGETMACHINE="porter"
+    export TARGETSDKIMAGE="agl-image-ivi-crosssdk"
 fi
-
+# m3ulcb-nogfx means no graphic drivers
 if test x"m3ulcb-nogfx" = x"$MACHINE"; then
     export TARGETIMAGE=${TARGETIMAGEnogfx}
     export TARGETFEATURES="${TARGETFEATURESnogfx}"
+    export TARGETMACHINE="m3ulcb"
+    export TARGETSDKIMAGE="agl-image-ivi-crosssdk"
 fi
 
 #if $DEBUG; then
@@ -147,20 +148,7 @@ set | grep ^GERRIT || true
 set | grep ^MACHINE || true
 #fi
 
-set -x
-
-#rm -rf ~/.gitconfi* || true
-
 if test ! -f ~/.gitconfig ; then 
   git config --global user.email "jenkins-dontreply@build.automotivelinux.org"
   git config --global user.name "jenkins-dontreply@build.automotivelinux.org"
 fi
-
-#git config --global user.email "jenkins-dontreply@build.automotivelinux.org"
-#sync
-#sleep 1
-#ls -alh ~/.gitconfi*
-#rm -rf ~/.gitconfig.lock || true
-#git config --global user.name "jenkins-dontreply@build.automotivelinux.org"
-
-set +x

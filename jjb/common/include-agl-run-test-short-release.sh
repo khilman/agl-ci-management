@@ -11,20 +11,6 @@ set -x
 echo "## ${MACHINE} ##"
 cd $REPODIR
 
-echo "default keyring config"
-mkdir -p ~/.local/share/python_keyring/
-cat <<EOF >  ~/.local/share/python_keyring/keyringrc.cfg
-[backend]
-default-keyring=keyring.backends.file.PlaintextKeyring
-EOF
-
-cat <<EOF > ~/.local/token
-$AGLLAVATOKEN
-EOF
-
-lava-tool auth-add --token-file ~/.local/token https://agl-jenkins-user@porter.automotivelinux.org
-rm ~/.local/token
-
 echo "## $TESTJOBFILE ##"
 
 if [ -e $TESTJOBFILE ] ; then
