@@ -78,4 +78,6 @@
           - ../common/include-agl-bitbake-image.sh
           - ../common/include-agl-run-test-prepare.sh
           - ../common/include-agl-run-test-rsync-changeid.sh
+          - ../common/include-agl-lava-labs-prepare.sh
           - ../common/include-agl-run-test-short.sh
+          - ../common/include-agl-lava-jobs-submit.sh

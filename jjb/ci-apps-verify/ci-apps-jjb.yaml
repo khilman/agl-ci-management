@@ -394,7 +394,9 @@
           - ../common/include-agl-repo.sh
           - ../common/include-agl-select.sh
           - ../common/include-agl-run-test-prepare.sh
+          - ../common/include-agl-lava-labs-prepare.sh
           - ../common/include-agl-run-test-short.sh
+          - ../common/include-agl-lava-jobs-submit.sh
 
     publishers:
       - naginator:
