@@ -66,6 +66,23 @@
     wrappers:
       - agl-infra-wrappers:
           build-timeout: '{build-timeout}'
+      - credentials-binding:
+          - username-password-separated:
+              credential-id: agl_main_lava_instance
+              username: AGLLAVAUSER
+              password: AGLLAVATOKEN
+          - username-password-separated:
+              credential-id: agl_main_lava_instance
+              username: LAB_AGL_USER
+              password: LAB_AGL_TOKEN
+          - username-password-separated:
+              credential-id: lab_baylibre_lava_instance
+              username: LAB_BAYLIBRE_USER
+              password: LAB_BAYLIBRE_TOKEN
+          - username-password-separated:
+              credential-id: lab_baylibre_seattle_lava_instance
+              username: LAB_BAYLIBRE_SEATTLE_USER
+              password: LAB_BAYLIBRE_SEATTLE_TOKEN
 
     builders:
       - shell:
