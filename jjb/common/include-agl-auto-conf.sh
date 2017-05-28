@@ -15,8 +15,8 @@ http://.*/.* ${DLHOST}/AGL/mirror/  \n \
 https://.*/.* ${DLHOST}/AGL/mirror/ \n \
              "
 
-SSTATE_MIRRORS = "\
-file://.* ${DLHOST}/sstate-mirror/\${MACHINE}/PATH \n \
+SSTATE_MIRRORS = " \
+  file://.* ${DLHOST}/sstate-mirror/\${DEFAULTTUNE}/PATH \n \
                  "
 #
 #file://.* file:///opt/AGL/sstate-mirror/\${MACHINE}/PATH    \n 
