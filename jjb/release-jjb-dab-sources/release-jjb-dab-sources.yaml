@@ -1,0 +1,40 @@
+---
+- project:
+    name: release-jjb-dab-sources
+    jobs:
+      - release-jjb-dab-sources
+
+- job-template:
+    name: 'release-jjb-dab-sources'
+    project-type: freestyle
+    concurrent: false
+    node: agl-test-slave
+
+    parameters:
+      - string:
+          name: RELEASE_VERSION
+          default: 3.99.1
+          description: "release version number for build"
+      - string:
+          name: RELEASE_BRANCH
+          default: dab
+          description: "release branch to build"
+      - string:
+          name: UPLOAD
+          default: yes_or_no
+          description: "Upload?"
+
+    build-discarder:
+      days-to-keep: 30
+      num-to-keep: 40
+      artifact-days-to-keep: -1
+      artifact-num-to-keep: 5
+
+    wrappers:
+      - agl-infra-wrappers:
+          build-timeout: '{build-timeout}'
+
+    builders:
+      - shell:
+          !include-raw-escape:
+          - include-release-jjb-dab-release-sources-rsync.sh

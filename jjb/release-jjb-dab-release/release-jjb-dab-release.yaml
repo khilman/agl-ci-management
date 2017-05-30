@@ -1,0 +1,52 @@
+---
+- project:
+    name: release-jjb-dab-release-from-snapshot
+    jobs:
+      - release-jjb-dab-release-from-snapshot
+
+- job-template:
+    name: 'release-jjb-dab-release-from-snapshot'
+    project-type: freestyle
+    concurrent: false
+    node: control-slave
+
+    parameters:
+      - string:
+          name: GERRIT_PROJECT
+          default: AGL/AGL-repo
+          description: "Project to build"
+      - string:
+          name: GERRIT_BRANCH
+          default: master
+          description: "branch to build"
+      - string:
+          name: GERRIT_REFSPEC
+          default: refs/tags/dab_3.99.1
+          description: "refspec to build"
+      - string:
+          name: RELEASE_VERSION
+          default: 3.99.1
+          description: "release version number for build"
+      - string:
+          name: RELEASE_BRANCH
+          default: dab
+          description: "release branch to build"
+      - string:
+          name: UPLOAD
+          default: yes_or_no
+          description: "Upload?"
+
+    build-discarder:
+      days-to-keep: 30
+      num-to-keep: 40
+      artifact-days-to-keep: -1
+      artifact-num-to-keep: 5
+
+    wrappers:
+      - agl-infra-wrappers:
+          build-timeout: '{build-timeout}'
+
+    builders:
+      - shell:
+          !include-raw-escape:
+          - include-release-jjb-dab-release-move-sandbox.sh
