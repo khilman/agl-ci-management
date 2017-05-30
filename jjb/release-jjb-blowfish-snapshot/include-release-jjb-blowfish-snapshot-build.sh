@@ -207,7 +207,7 @@ https://.*/.* ${DLHOST}/AGL/mirror/ \n \
 
 SSTATE_MIRRORS = "\
 file://.* file:///opt/AGL/sstate-mirror/\${MACHINE}/PATH    \n \
-file://.* ${DLHOST}/sstate-mirror/\${MACHINE}/PATH \n \
+file://.* ${DLHOST}/sstate-mirror/${GERRIT_BRANCH}/\${DEFAULTTUNE}/PATH \n \
                  "
 
 SSTATE_DIR = "\${TOPDIR}/sstate-cache/\${MACHINE}/"

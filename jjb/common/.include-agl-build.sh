@@ -210,7 +210,7 @@ file://.* file:///opt/AGL/sstate-mirror/\${MACHINE}/PATH    \n \
 file://.* ${DLHOST}/sstate-mirror/\${MACHINE}/PATH \n \
                  "
 
-SSTATE_DIR = "\${TOPDIR}/sstate-cache/\${MACHINE}/"
+SSTATE_DIR = "\${TOPDIR}/sstate-cache/${GERRIT_BRANCH}/\${DEFAULTTUNE}/"
 EOF
 
 cat conf/auto.conf
