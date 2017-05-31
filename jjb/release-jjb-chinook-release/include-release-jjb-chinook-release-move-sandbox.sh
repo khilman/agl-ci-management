@@ -14,7 +14,7 @@ if test x"" = x"${RELEASE_VERSION}"; then
 fi
 
 
-export REMOTESRC="/src/download/AGL/upload/ci/${RELEASE_BRANCH}/${RELEASE_VERSION}/"
+export REMOTESRC="/srv/download/AGL/upload/ci/${RELEASE_BRANCH}/${RELEASE_VERSION}/"
 export REMOTEDST="/srv/download/AGL/release/${RELEASE_BRANCH}/${RELEASE_VERSION}/"
 
 if test x"yes" = x"$UPLOAD" ; then
