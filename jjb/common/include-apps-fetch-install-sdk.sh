@@ -11,6 +11,7 @@ SDKHOSTDIR="~/agl-sdk"
 ## apps-fetch-install-sdk.sh
 ################################################################################
 
+# should probably switch to release ... or multiple (release/snapshot) fwiw
 SDKBASEURL="https://download.automotivelinux.org/AGL/snapshots/master/latest/${TARGETSDKMACHINE}/deploy/sdk/"
 export TARGETSDKNAME=$(curl -s "$SDKBASEURL" | grep -e "crosssdk.*\.sh<" | sed -e "s#.*<a href=\"##g" -e "s#\">poky-agl.*##g")
 

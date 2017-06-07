@@ -2,28 +2,28 @@
 - project:
     name: ci-apps-AGL
     architecture:
-      #- aarch64
-      #- x86-64
-        #- intel-corei7-64
-        #- qemux86-64
+      - aarch64
+      - x86-64
+        #= intel-corei7-64
+        #= qemux86-64
       - arm
-        #- porter-nogfx
-        #- raspberrypi3
-        #- dra7xx-evm
+        #= porter-nogfx
+        #= raspberrypi3
+        #= dra7xx-evm
     project:
       - controls
-#      - dashboard
-#      - home
-#      - homescreen
-#      - hvac
-#      - low-level-can-service
-#      - mediaplayer
-#      - mixer
-#      - phone
-#      - radio
-#      - settings
-#      - settings-bluetooth
-#      - settings-wifi
+      - dashboard
+      - home
+      - homescreen
+      - hvac
+      - low-level-can-service
+      - mediaplayer
+      - mixer
+      - phone
+      - radio
+      - settings
+      - settings-bluetooth
+      - settings-wifi
     jobs:
       - ci-apps-{project}-verify
       # - ci-apps-{project}-verify-CIB-start
@@ -46,7 +46,7 @@
     parameters:
       - string:
           name: GERRIT_PROJECT
-          default: 'AGL/{project}'
+          default: 'apps/{project}'
           description: "Project to build"
       - string:
           name: GERRIT_BRANCH
@@ -72,7 +72,7 @@
 
     triggers:
       - gerrit-trigger-patch-submitted-manual-verified:
-          name: 'AGL/{project}'
+          name: 'apps/{project}'
           branch: '**/**/**'
           silent: 'true'
 
@@ -171,7 +171,7 @@
     parameters:
       - string:
           name: GERRIT_PROJECT
-          default: 'AGL/{project}'
+          default: 'apps/{project}'
           description: "Project to build"
       - string:
           name: GERRIT_BRANCH
@@ -219,7 +219,7 @@
     parameters:
       - string:
           name: GERRIT_PROJECT
-          default: 'AGL/{project}'
+          default: 'apps/{project}'
           description: "Project to build"
       - string:
           name: GERRIT_BRANCH
@@ -270,7 +270,7 @@
     parameters:
       - string:
           name: GERRIT_PROJECT
-          default: 'AGL/{project}'
+          default: 'apps/{project}'
           description: "Project to build"
       - string:
           name: GERRIT_BRANCH
@@ -335,7 +335,7 @@
     parameters:
       - string:
           name: GERRIT_PROJECT
-          default: 'AGL/{project}'
+          default: 'apps/{project}'
           description: "Project to build"
       - string:
           name: GERRIT_BRANCH
@@ -382,7 +382,7 @@
     parameters:
       - string:
           name: GERRIT_PROJECT
-          default: 'AGL/{project}'
+          default: 'apps/{project}'
           description: "Project to build"
       - string:
           name: GERRIT_BRANCH
@@ -449,7 +449,7 @@
     parameters:
       - string:
           name: GERRIT_PROJECT
-          default: 'AGL/{project}'
+          default: 'apps/{project}'
           description: "Project to build"
       - string:
           name: GERRIT_BRANCH
@@ -499,7 +499,7 @@
     parameters:
       - string:
           name: GERRIT_PROJECT
-          default: 'AGL/{project}'
+          default: 'apps/{project}'
           description: "Project to build"
       - string:
           name: GERRIT_BRANCH
