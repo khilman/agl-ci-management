@@ -24,7 +24,7 @@
       # - ci-platform-{project}-verify-CIBT-start            #unused
       - ci-platform-{project}-verify-CIBT-{machine}
       - ci-platform-{project}-verify-CIBT-finish-success
-      - ci-platform-{project}-merge
+      - ci-platform-{project}-remove-artifacts
 
 
 ################################################################################################################################################################
@@ -543,10 +543,10 @@
 
 ################################################################################
 ################################################################################
-# -merge = merge, remove artifacts and later trigger sstate refresh
+# -remove-artifacts = merge/abandon, remove artifacts and later trigger sstate
 ################################################################################
 - job-template:
-    name: 'ci-platform-{project}-merge'
+    name: 'ci-platform-{project}-remove-artifacts'
     project-type: freestyle
     concurrent: true
     node: control-slave
@@ -582,6 +582,9 @@
           single-use: false
     triggers:
       - gerrit-trigger-patch-merged:
+          name: 'AGL/{project}'
+          branch: '**/**/**'
+      - gerrit-trigger-patch-abandoned:
           name: 'AGL/{project}'
           branch: '**/**/**'
     builders:
