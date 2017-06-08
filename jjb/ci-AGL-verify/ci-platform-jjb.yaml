@@ -17,18 +17,23 @@
       - meta-renesas-rcar-gen3
     jobs:
       - ci-platform-{project}-verify
-      # - ci-platform-{project}-verify-CIB-start
+      # - ci-platform-{project}-verify-CIB-start             #unused
       - ci-platform-{project}-verify-CIB-{machine}
       - ci-platform-{project}-verify-CIB-finish-success
       - ci-platform-{project}-verify-failure
-      # - ci-platform-{project}-verify-CIBT-start
+      # - ci-platform-{project}-verify-CIBT-start            #unused
       - ci-platform-{project}-verify-CIBT-{machine}
       - ci-platform-{project}-verify-CIBT-finish-success
+      - ci-platform-{project}-merge
 
-#
-# -verify  = trigger from gerrit and control job
-# ###############################################
 
+################################################################################################################################################################
+################################################################################################################################################################
+
+################################################################################
+################################################################################
+# -verify  = trigger from gerrit and control job, multijob order
+################################################################################
 - job-template:
     name: 'ci-platform-{project}-verify'
     project-type: multijob
@@ -55,21 +60,17 @@
           name: GERRIT_PATCHSET_NUMBER
           default: "2"
           description: "patchset # to build"
-
     build-discarder:
       days-to-keep: 30
       artifact-days-to-keep: -1
       artifact-num-to-keep: 5
-
     triggers:
       - gerrit-trigger-patch-submitted-manual-verified:
           name: 'AGL/{project}'
           branch: '**/**/**'
-
     wrappers:
       - agl-infra-wrappers:
           build-timeout: '{build-timeout}'
-
     builders:
       - shell: |
           set
@@ -156,7 +157,6 @@
               current-parameters: true
               abort-all-job: true
               kill-phase-on: FAILURE
-
 #    publishers:
 #      - trigger-parameterized-builds:
 #        - project:
@@ -164,16 +164,19 @@
 #          condition: FAILED
 #          current-parameters: true
 
-#
-# -verify-failure
-# ###################
 
+################################################################################################################################################################
+################################################################################################################################################################
+
+################################################################################
+################################################################################
+# -verify-CIB-start  = start message (message back to gerrit)
+################################################################################
 - job-template:
-    name: 'ci-platform-{project}-verify-failure'
+    name: 'ci-platform-{project}-verify-CIB-start'
     project-type: freestyle
     concurrent: true
     node: control-slave
-
     parameters:
       - string:
           name: GERRIT_PROJECT
@@ -195,34 +198,32 @@
           name: GERRIT_PATCHSET_NUMBER
           default: "2"
           description: "patchset # to build"
-
     build-discarder:
       days-to-keep: 30
       artifact-days-to-keep: -1
       artifact-num-to-keep: 5
-
     wrappers:
       - agl-infra-wrappers:
           build-timeout: '{build-timeout}'
-
+      - openstack:
+          single-use: false
     builders:
       - shell: |
-          set
-          echo "#### Verified -1 ####"
-          #ssh -p 29418 agl-jobbuilder@gerrit.automotivelinux.org gerrit review ${{GERRIT_CHANGE_NUMBER}},${{GERRIT_PATCHSET_NUMBER}} --verified -1 -n NONE --message="CI-cycle\ failed.\ URL:\ ${{BUILD_URL}}" || true
-          ssh -p 29418 agl-jobbuilder@gerrit.automotivelinux.org gerrit review ${{GERRIT_CHANGE_NUMBER}},${{GERRIT_PATCHSET_NUMBER}} -n NONE --message="CI-cycle\ failed.\ URL:\ ${{BUILD_URL}}" || true
+          #set
+          export TRIGGERURL=$(echo ${{BUILD_URL}} | sed -e 's,-CIB-start.*,,')
+          # ssh -p 29418 agl-jobbuilder@gerrit.automotivelinux.org gerrit review ${{GERRIT_CHANGE_NUMBER}},${{GERRIT_PATCHSET_NUMBER}} --verified=0 --label ci-image-build=0 --label ci-image-boot-test=0 -n NONE --message="CI-Image-Build\ started.\ URL:\ ${{BUILD_URL}}" || true
+          ssh -p 29418 agl-jobbuilder@gerrit.automotivelinux.org gerrit review ${{GERRIT_CHANGE_NUMBER}},${{GERRIT_PATCHSET_NUMBER}} --verified=0 -n NONE --message="CI-Image-Build\ started.\ URL:\ \$TRIGGERURL" || true
 
 
-#
-# CIB-{machine}
-# ##############
-
+################################################################################
+################################################################################
+# -verify-CIB-{machine}  = build for machine
+################################################################################
 - job-template:
     name: 'ci-platform-{project}-verify-CIB-{machine}'
     project-type: freestyle
     concurrent: true
     node: agl-test-slave
-
     parameters:
       - string:
           name: GERRIT_PROJECT
@@ -248,18 +249,15 @@
           name: MACHINE
           default: '{machine}'
           description: "Machine to build"
-
     build-discarder:
       days-to-keep: 30
       artifact-days-to-keep: -1
       artifact-num-to-keep: 5
-
     wrappers:
       - agl-infra-wrappers:
           build-timeout: '{build-timeout}'
       - openstack:
           single-use: true
-
     builders:
       - shell:
           !include-raw-escape:
@@ -283,66 +281,15 @@
           #regular-expression: "Unexpected termination of the channel"
 
 
-#
-# CIB-start
-# ###########
-
-- job-template:
-    name: 'ci-platform-{project}-verify-CIB-start'
-    project-type: freestyle
-    concurrent: true
-    node: control-slave
-
-    parameters:
-      - string:
-          name: GERRIT_PROJECT
-          default: 'AGL/{project}'
-          description: "Project to build"
-      - string:
-          name: GERRIT_BRANCH
-          default: master
-          description: "branch to build"
-      - string:
-          name: GERRIT_REFSPEC
-          default: refs/heads/master
-          description: "refspec to build"
-      - string:
-          name: GERRIT_CHANGE_NUMBER
-          default: "8313"
-          description: "change # to build"
-      - string:
-          name: GERRIT_PATCHSET_NUMBER
-          default: "2"
-          description: "patchset # to build"
-
-    build-discarder:
-      days-to-keep: 30
-      artifact-days-to-keep: -1
-      artifact-num-to-keep: 5
-
-    wrappers:
-      - agl-infra-wrappers:
-          build-timeout: '{build-timeout}'
-      - openstack:
-          single-use: false
-
-    builders:
-      - shell: |
-          #set
-          export TRIGGERURL=$(echo ${{BUILD_URL}} | sed -e 's,-CIB-start.*,,')
-          # ssh -p 29418 agl-jobbuilder@gerrit.automotivelinux.org gerrit review ${{GERRIT_CHANGE_NUMBER}},${{GERRIT_PATCHSET_NUMBER}} --verified=0 --label ci-image-build=0 --label ci-image-boot-test=0 -n NONE --message="CI-Image-Build\ started.\ URL:\ ${{BUILD_URL}}" || true
-          ssh -p 29418 agl-jobbuilder@gerrit.automotivelinux.org gerrit review ${{GERRIT_CHANGE_NUMBER}},${{GERRIT_PATCHSET_NUMBER}} --verified=0 -n NONE --message="CI-Image-Build\ started.\ URL:\ \$TRIGGERURL" || true
-
-#
-# CIB-finish-success
-# ###################
-
+################################################################################
+################################################################################
+# -verify-CIB-finish-success = build succeeded, message to gerrit
+################################################################################
 - job-template:
     name: 'ci-platform-{project}-verify-CIB-finish-success'
     project-type: freestyle
     concurrent: true
     node: control-slave
-
     parameters:
       - string:
           name: GERRIT_PROJECT
@@ -364,32 +311,123 @@
           name: GERRIT_PATCHSET_NUMBER
           default: "2"
           description: "patchset # to build"
-
     build-discarder:
       days-to-keep: 30
       artifact-days-to-keep: -1
       artifact-num-to-keep: 5
-
     wrappers:
       - agl-infra-wrappers:
           build-timeout: '{build-timeout}'
-
     builders:
       - shell: |
           set
           echo "#### CIB +1 #### Verified +1 ####"
           ssh -p 29418 agl-jobbuilder@gerrit.automotivelinux.org gerrit review ${{GERRIT_CHANGE_NUMBER}},${{GERRIT_PATCHSET_NUMBER}} --verified +1 --label ci-image-build=+1 -n NONE --message="CI-Image-Build\ finished,\ CIB+1,\ Verified+1" || true
 
-#
-# CIBT-{machine} 'BOOT TEST'
-# ###########################
 
+################################################################################
+################################################################################
+# -verify-failure = CI check failed, -1 message to gerrit
+################################################################################
+- job-template:
+    name: 'ci-platform-{project}-verify-failure'
+    project-type: freestyle
+    concurrent: true
+    node: control-slave
+    parameters:
+      - string:
+          name: GERRIT_PROJECT
+          default: 'AGL/{project}'
+          description: "Project to build"
+      - string:
+          name: GERRIT_BRANCH
+          default: master
+          description: "branch to build"
+      - string:
+          name: GERRIT_REFSPEC
+          default: refs/heads/master
+          description: "refspec to build"
+      - string:
+          name: GERRIT_CHANGE_NUMBER
+          default: "8313"
+          description: "change # to build"
+      - string:
+          name: GERRIT_PATCHSET_NUMBER
+          default: "2"
+          description: "patchset # to build"
+    build-discarder:
+      days-to-keep: 30
+      artifact-days-to-keep: -1
+      artifact-num-to-keep: 5
+    wrappers:
+      - agl-infra-wrappers:
+          build-timeout: '{build-timeout}'
+    builders:
+      - shell: |
+          set
+          echo "#### Verified -1 ####"
+          #ssh -p 29418 agl-jobbuilder@gerrit.automotivelinux.org gerrit review ${{GERRIT_CHANGE_NUMBER}},${{GERRIT_PATCHSET_NUMBER}} --verified -1 -n NONE --message="CI-cycle\ failed.\ URL:\ ${{BUILD_URL}}" || true
+          ssh -p 29418 agl-jobbuilder@gerrit.automotivelinux.org gerrit review ${{GERRIT_CHANGE_NUMBER}},${{GERRIT_PATCHSET_NUMBER}} -n NONE --message="CI-cycle\ failed.\ URL:\ ${{BUILD_URL}}" || true
+
+
+################################################################################################################################################################
+################################################################################################################################################################
+
+################################################################################
+################################################################################
+# -verify-CIBT-start = CI BOOT TEST start
+################################################################################
+- job-template:
+    name: 'ci-platform-{project}-verify-CIBT-start'
+    project-type: freestyle
+    concurrent: true
+    node: control-slave
+    parameters:
+      - string:
+          name: GERRIT_PROJECT
+          default: 'AGL/{project}'
+          description: "Project to build"
+      - string:
+          name: GERRIT_BRANCH
+          default: master
+          description: "branch to build"
+      - string:
+          name: GERRIT_REFSPEC
+          default: refs/heads/master
+          description: "refspec to build"
+      - string:
+          name: GERRIT_CHANGE_NUMBER
+          default: "8313"
+          description: "change # to build"
+      - string:
+          name: GERRIT_PATCHSET_NUMBER
+          default: "2"
+          description: "patchset # to build"
+    build-discarder:
+      days-to-keep: 30
+      artifact-days-to-keep: -1
+      artifact-num-to-keep: 5
+    wrappers:
+      - agl-infra-wrappers:
+          build-timeout: '{build-timeout}'
+      - openstack:
+          single-use: false
+    builders:
+      - shell: |
+          echo "CIBT Started"
+          # set
+          # ssh -p 29418 agl-jobbuilder@gerrit.automotivelinux.org gerrit review ${{GERRIT_CHANGE_NUMBER}},${{GERRIT_PATCHSET_NUMBER}} --label ci-image-boot-test=0 -n NONE --message='CI-Image-Boot-Test\ started' || true
+
+
+################################################################################
+################################################################################
+# -verify-CIBT-{machine} = CI BOOT TEST on machine
+################################################################################
 - job-template:
     name: 'ci-platform-{project}-verify-CIBT-{machine}'
     project-type: freestyle
     concurrent: true
     node: hwtest-slave
-
     parameters:
       - string:
           name: GERRIT_PROJECT
@@ -415,12 +453,10 @@
           name: MACHINE
           default: '{machine}'
           description: "Machine to build"
-
     build-discarder:
       days-to-keep: 30
       artifact-days-to-keep: -1
       artifact-num-to-keep: 5
-
     wrappers:
       - agl-infra-wrappers:
           build-timeout: '{build-timeout}'
@@ -443,7 +479,6 @@
               credential-id: lab_baylibre_seattle_lava_instance
               username: LAB_BAYLIBRE_SEATTLE_USER
               password: LAB_BAYLIBRE_SEATTLE_TOKEN
-
     builders:
       - shell:
           !include-raw-escape:
@@ -453,72 +488,19 @@
           - ../common/include-agl-run-test-prepare.sh
           - ../common/include-agl-lava-labs-prepare.sh
           - ../common/include-agl-run-test-short.sh
-
     publishers:
       - naginator:
           max-failed-builds: 2
 
-
-#
-# CIBT-start
-# ###############
-
-- job-template:
-    name: 'ci-platform-{project}-verify-CIBT-start'
-    project-type: freestyle
-    concurrent: true
-    node: control-slave
-
-    parameters:
-      - string:
-          name: GERRIT_PROJECT
-          default: 'AGL/{project}'
-          description: "Project to build"
-      - string:
-          name: GERRIT_BRANCH
-          default: master
-          description: "branch to build"
-      - string:
-          name: GERRIT_REFSPEC
-          default: refs/heads/master
-          description: "refspec to build"
-      - string:
-          name: GERRIT_CHANGE_NUMBER
-          default: "8313"
-          description: "change # to build"
-      - string:
-          name: GERRIT_PATCHSET_NUMBER
-          default: "2"
-          description: "patchset # to build"
-
-    build-discarder:
-      days-to-keep: 30
-      artifact-days-to-keep: -1
-      artifact-num-to-keep: 5
-
-    wrappers:
-      - agl-infra-wrappers:
-          build-timeout: '{build-timeout}'
-      - openstack:
-          single-use: false
-
-    builders:
-      - shell: |
-          echo "CIBT Started"
-          # set
-          # ssh -p 29418 agl-jobbuilder@gerrit.automotivelinux.org gerrit review ${{GERRIT_CHANGE_NUMBER}},${{GERRIT_PATCHSET_NUMBER}} --label ci-image-boot-test=0 -n NONE --message='CI-Image-Boot-Test\ started' || true
-
-
-#
-# CIBT-finish-success
-# ####################
-
+################################################################################
+################################################################################
+# -verify-CIBT-finish-success = CI BOOT TEST succeeded, CIBT+1 to gerrit
+################################################################################
 - job-template:
     name: 'ci-platform-{project}-verify-CIBT-finish-success'
     project-type: freestyle
     concurrent: true
     node: control-slave
-
     parameters:
       - string:
           name: GERRIT_PROJECT
@@ -540,20 +522,70 @@
           name: GERRIT_PATCHSET_NUMBER
           default: "2"
           description: "patchset # to build"
-
     build-discarder:
       days-to-keep: 30
       artifact-days-to-keep: -1
       artifact-num-to-keep: 5
-
     wrappers:
       - agl-infra-wrappers:
           build-timeout: '{build-timeout}'
       - openstack:
           single-use: false
-
     builders:
       - shell: |
           # set
           echo "#### CIBT +1 ####"
           ssh -p 29418 agl-jobbuilder@gerrit.automotivelinux.org gerrit review ${{GERRIT_CHANGE_NUMBER}},${{GERRIT_PATCHSET_NUMBER}} --verified +1 --label ci-image-build=+1 --label ci-image-boot-test=+1 -n NONE --message='CI-Image-Boot-Test\ finished' || true
+
+
+################################################################################################################################################################
+################################################################################################################################################################
+
+################################################################################
+################################################################################
+# -merge = merge, remove artifacts and later trigger sstate refresh
+################################################################################
+- job-template:
+    name: 'ci-platform-{project}-merge'
+    project-type: freestyle
+    concurrent: true
+    node: control-slave
+    parameters:
+      - string:
+          name: GERRIT_PROJECT
+          default: 'AGL/{project}'
+          description: "Project to build"
+      - string:
+          name: GERRIT_BRANCH
+          default: master
+          description: "branch to build"
+      - string:
+          name: GERRIT_REFSPEC
+          default: refs/heads/master
+          description: "refspec to build"
+      - string:
+          name: GERRIT_CHANGE_NUMBER
+          default: "8313"
+          description: "change # to build"
+      - string:
+          name: GERRIT_PATCHSET_NUMBER
+          default: "2"
+          description: "patchset # to build"
+    build-discarder:
+      days-to-keep: 30
+      artifact-days-to-keep: -1
+      artifact-num-to-keep: 5
+    wrappers:
+      - agl-infra-wrappers:
+          build-timeout: '{build-timeout}'
+      - openstack:
+          single-use: false
+    triggers:
+      - gerrit-trigger-patch-merged:
+          name: 'AGL/{project}'
+          branch: '**/**/**'
+    builders:
+      - shell:
+          !include-raw-escape:
+          - ../common/include-agl-remove-artifacts-changeid.sh
+
