@@ -40,7 +40,7 @@ HANDLED="no"
 
 # Projects in apps/*
 ###################
-if [[ ! x"yes" = x"$HANDLED" ]] && $(echo "$TARGETPROJECT" | grep -q "^apps/"); then
+if [[ ! x"yes" = x"$HANDLED" ]] && $(echo "$TARGETPROJECT" | grep -q "apps/"); then
 
     MYPROJECT=`echo $TARGETPROJECT | sed -e "s#apps/##g"`
 
@@ -50,7 +50,8 @@ if [[ ! x"yes" = x"$HANDLED" ]] && $(echo "$TARGETPROJECT" | grep -q "^apps/"); 
     git clone https://${GERRIT_HOST}/gerrit/${GERRIT_PROJECT}.git
     pushd ${MYPROJECT}
         git log -1
-        git reset --hard ${GERRIT_REFSPEC}
+        git fetch ${TARGET_REFSPEC}
+        git reset --hard FETCH_HEAD
         git log -1
         if test -f Makefile ; then
           make
