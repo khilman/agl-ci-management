@@ -224,7 +224,7 @@
       - shell: |
           set
           echo "#### CIB +1 #### Verified +1 ####"
-          ssh -p 29418 agl-jobbuilder@gerrit.automotivelinux.org gerrit review ${{GERRIT_CHANGE_NUMBER}},${{GERRIT_PATCHSET_NUMBER}} --verified +1 --label ci-image-build=+1 -n NONE --message="CI-Image-Build\ finished,\ CIB+1,\ Verified+1.\ Artifacts\ available\ at\ https://download.automotivelinux.org/AGL/upload/ci/common/${{GERRIT_CHANGE_NUMBER}}/${{GERRIT_PATCHSET_NUMBER}}/\ ." || true
+          ssh -p 29418 agl-jobbuilder@gerrit.automotivelinux.org gerrit review ${{GERRIT_CHANGE_NUMBER}},${{GERRIT_PATCHSET_NUMBER}} --verified +1 --label ci-image-build=+1 -n NONE --message="CI-Image-Build\ finished,\ CIB+1,\ Verified+1.\ Artifacts\ available\ at\ https://download.automotivelinux.org/AGL/upload/ci/${{GERRIT_CHANGE_NUMBER}}/${{GERRIT_PATCHSET_NUMBER}}/\ ." || true
 
 
 ################################################################################
