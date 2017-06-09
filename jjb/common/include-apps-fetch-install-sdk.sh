@@ -28,23 +28,22 @@ fi
 
 chmod a+x ${TARGETSDKNAME}
 
-eval export TARGETSDKENVSCRIPT="${SDKHOSTDIR}/environment-setup-${TARGETSDKARCH}-agl-linux-gnueabi"
-
-if test ! -f ${TARGETSDKENVSCRIPT} ; then
+if test x"" = x"$(eval ls ${SDKHOSTDIR}/environment-setup* | grep "agl-" | grep ${TARGETSDKARCH} 2>/dev/null)" ; then
   bash ${TARGETSDKNAME} -d ${SDKHOSTDIR}/ -y
 fi
+#set -x 
+
+# find out the env setup script
+export TARGETSDKENVSCRIPT="$(eval ls ${SDKHOSTDIR}/environment-setup* | grep "agl-" | grep ${TARGETSDKARCH} 2>/dev/null)"
+
 if test ! -f ${TARGETSDKENVSCRIPT} ; then
   echo "Script not there after extracting sdk ?!"
   echo "Abort."
   exit 1
 fi
 
+echo "About to source ${TARGETSDKENVSCRIPT}"
 source "${TARGETSDKENVSCRIPT}"
+#set | grep -i sysroots || true 
+#set +x
 
-echo "###############################################################################"
-ls -alh ~/
-echo "###############################################################################"
-ls -alh
-echo "###############################################################################"
-set
-echo "###############################################################################"

@@ -46,13 +46,26 @@ if [[ ! x"yes" = x"$HANDLED" ]] && $(echo "$TARGETPROJECT" | grep -q "apps/"); t
 
     # clone git
     rm -rf ${MYPROJECT}
-
     git clone https://${GERRIT_HOST}/gerrit/${GERRIT_PROJECT}.git
     pushd ${MYPROJECT}
-        git log -1
-        git fetch ${TARGET_REFSPEC}
-        git reset --hard FETCH_HEAD
-        git log -1
+        git log -1 --pretty=oneline
+        if test x"" != x"${TARGETREFSPEC}" ; then
+          git fetch origin ${TARGETREFSPEC}
+          git reset --hard FETCH_HEAD
+        else
+          # try 
+          # GERRIT_CHANGE_NUMBER="9551"
+          # GERRIT_PATCHSET_NUMBER="2"
+          if ( test x"" != x"${GERRIT_CHANGE_NUMBER}" -a x"" != x"${GERRIT_PATCHSET_NUMBER}" ) ; then
+            pip install --user git-review
+            git review -d ${GERRIT_CHANGE_NUMBER},${GERRIT_PATCHSET_NUMBER}
+          fi
+          sleep 2
+          # if not reset, we leave it to master
+        fi
+        git log -1 --pretty=oneline
+
+        # Fixme: use aglbuild script
         if test -f Makefile ; then
           make
           make package

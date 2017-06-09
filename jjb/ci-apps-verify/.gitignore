@@ -1,3 +1,5 @@
 mediaplayer
 controls
 poky-agl-*.sh
+env*
+UPLOAD

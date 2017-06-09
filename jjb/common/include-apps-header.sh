@@ -25,12 +25,17 @@ function dprint() {
 }
 
 #export TARGETARCHALL="arm aarch64 x86-64"
+#set | grep arm
+#set | grep aarch64
+#set | grep x86-64
 
-if test x"" = x"${architecture}"; then
-    export TARGETARCH="arm"
-else
-    export TARGETARCH="${architecture}"
-fi
+echo "################################################################################"
+set | grep TARGETARCH
+echo "################################################################################"
+#if test x"" = x"${TARGETARCH}"; then
+#    export TARGETARCH="arm"
+#fi
+#set +x
 
 # finally cmdline arguments
 while getopts ":b:a:p:r:dvx" opt; do
@@ -126,3 +131,8 @@ if test x"" = x"$TARGETSDKMACHINE" ; then
   echo "No TARGETSDKMACHINE variable. Exiting."
   exit 1
 fi
+
+
+echo "################################################################################"
+set | grep ^TARGET
+echo "################################################################################"

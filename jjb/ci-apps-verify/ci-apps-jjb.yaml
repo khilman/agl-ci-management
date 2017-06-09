@@ -29,7 +29,7 @@
       - ci-apps-{project}-verify-CIB-{architecture}
       - ci-apps-{project}-verify-CIB-finish-success
       - ci-apps-{project}-verify-failure
-
+      - ci-apps-{project}-remove-artifacts
       # - ci-apps-{project}-verify-CIB-start
       # - ci-apps-{project}-verify-CIBT-start
       #- ci-apps-{project}-verify-CIBT-{architecture}
@@ -144,14 +144,14 @@
           description: "refspec to build"
       - string:
           name: GERRIT_CHANGE_NUMBER
-          default: "8313"
+          default: ""
           description: "change # to build"
       - string:
           name: GERRIT_PATCHSET_NUMBER
-          default: "2"
+          default: ""
           description: "patchset # to build"
       - string:
-          name: MACHINE
+          name: TARGETARCH
           default: '{architecture}'
           description: "Machine to build"
 
@@ -497,3 +497,55 @@
           # set
           echo "#### CIBT +1 ####"
           ssh -p 29418 agl-jobbuilder@gerrit.automotivelinux.org gerrit review ${{GERRIT_CHANGE_NUMBER}},${{GERRIT_PATCHSET_NUMBER}} --verified +1 --label ci-image-build=+1 --label ci-image-boot-test=+1 -n NONE --message='CI-Image-Boot-Test\ finished' || true
+
+################################################################################
+################################################################################
+# -remove-artifacts = merge/abandon, remove artifacts and later trigger sstate
+################################################################################
+- job-template:
+    name: 'ci-apps-{project}-remove-artifacts'
+    project-type: freestyle
+    concurrent: true
+    node: control-slave
+    parameters:
+      - string:
+          name: GERRIT_PROJECT
+          default: 'apps/{project}'
+          description: "Project to build"
+      - string:
+          name: GERRIT_BRANCH
+          default: master
+          description: "branch to build"
+      - string:
+          name: GERRIT_REFSPEC
+          default: refs/heads/master
+          description: "refspec to build"
+      - string:
+          name: GERRIT_CHANGE_NUMBER
+          default: "9551"
+          description: "change # to build"
+      - string:
+          name: GERRIT_PATCHSET_NUMBER
+          default: "2"
+          description: "patchset # to build"
+    build-discarder:
+      days-to-keep: 30
+      artifact-days-to-keep: -1
+      artifact-num-to-keep: 5
+    wrappers:
+      - agl-infra-wrappers:
+          build-timeout: '{build-timeout}'
+      - openstack:
+          single-use: false
+    triggers:
+      - gerrit-trigger-patch-merged:
+          name: 'apps/{project}'
+          branch: '**/**/**'
+      - gerrit-trigger-patch-abandoned:
+          name: 'apps/{project}'
+          branch: '**/**/**'
+    builders:
+      - shell:
+          !include-raw-escape:
+          - ../common/include-agl-remove-artifacts-changeid.sh
+
