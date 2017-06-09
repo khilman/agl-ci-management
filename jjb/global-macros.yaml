@@ -335,6 +335,26 @@
           silent-start: 'true'
 
 - trigger:
+    name: gerrit-trigger-silent-patch-merged-abandoned
+    triggers:
+      - gerrit:
+          server-name: 'gerrit.automotivelinux.org'
+          trigger-on:
+            - change-merged-event
+            - change-abandoned-event
+            - comment-added-contains-event:
+                comment-contains-value: 'remove-artifacts'
+            - comment-added-contains-event:
+                comment-contains-value: 'remerge'
+          projects:
+            - project-compare-type: 'ANT'
+              project-pattern: '{name}'
+              branches:
+                - branch-compare-type: 'ANT'
+                  branch-pattern: '**/{branch}'
+          silent-start: 'true'
+
+- trigger:
     name: gerrit-trigger-tag
     triggers:
       - gerrit:

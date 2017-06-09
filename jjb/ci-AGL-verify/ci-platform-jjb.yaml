@@ -581,10 +581,7 @@
       - openstack:
           single-use: false
     triggers:
-      - gerrit-trigger-patch-merged:
-          name: 'AGL/{project}'
-          branch: '**/**/**'
-      - gerrit-trigger-patch-abandoned:
+      - gerrit-trigger-silent-patch-merged-abandoned:
           name: 'AGL/{project}'
           branch: '**/**/**'
     builders:
