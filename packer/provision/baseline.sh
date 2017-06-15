@@ -137,6 +137,15 @@ Defaults:jenkins !requiretty
 jenkins ALL = NOPASSWD: /usr/bin/update-alternatives
 EOF
 
+    # The following installs hashicorp's packer binary which is required  for
+    # ci-management-{verify,merge}-packer jobs
+    mkdir /tmp/packer
+    cd /tmp/packer
+    wget https://releases.hashicorp.com/packer/1.0.0/packer_1.0.0_linux_amd64.zip
+    unzip packer_1.0.0_linux_amd64.zip -d /usr/local/bin/
+    # rename packer to avoid conflict with binary in cracklib
+    mv /usr/local/bin/packer /usr/local/bin/packer.io
+
     # Do any Distro specific installations here
     echo "Checking distribution"
     FACTER_OS=$(/usr/bin/facter operatingsystem)
