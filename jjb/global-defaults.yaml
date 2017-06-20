@@ -11,3 +11,6 @@
     # Timeout in minutes
     build-timeout: 420
     ssh-credentials: 'agl-jobbuilder'
+
+    # AGL branch defaults
+    branch: master
