@@ -14,11 +14,20 @@ JOB_BASE=$(basename $JOB_FILE .yaml)
 
 # find device_type from job file
 line=$(grep ^device_type: $JOB_FILE | tr -d '[:space:]')
-device_type=${line/device_type:/}
-echo "Found device_type $device_type in LAVA job $JOB_FILE"
+__device_type=${line/device_type:/}
+echo "Found device_type $__device_type in LAVA job $JOB_FILE"
+
+declare -A dt_aliases
+dt_aliases=(
+    [raspberrypi3-uboot]="bcm2837-rpi-3-b"
+)
+device_types=$__device_type
+device_types+=" "
+device_types+=${dt_aliases[$__device_type]}
 
 # iterate over available labs
 for lab in "${!labs[@]}"; do
+  for device_type in $device_types; do
     val=${labs[$lab]}
     OFS=${IFS}
     IFS=';'
@@ -56,12 +65,16 @@ for lab in "${!labs[@]}"; do
     else
 	echo " Found and available.  Status: $device_status"
     fi
+    
+    # Need to hack the real device-type name in the job file
+    JOB_FILE_NEW="${JOB_BASE}_${lab}.yaml"
+    cat $JOB_FILE | sed "s/device_type: $__device_type/device_type: $device_type/" > $JOB_FILE_NEW
 
     #
     # LAVA job submit, get job ID and status from lava-tool output
     #
     JOB_STATUS="${JOB_BASE}_${lab}.status"
-    lava-tool submit-job --block $full_url $JOB_FILE |tee $JOB_STATUS
+    lava-tool submit-job --block $full_url $JOB_FILE_NEW |tee $JOB_STATUS
 
     IFS=':'
     line=$(grep "job id" $JOB_STATUS | tr -d '[:space:]')
@@ -93,7 +106,9 @@ for lab in "${!labs[@]}"; do
     else
 	continue
     fi
+  done
 done
 
 # if we get here, none of the labs had a successful completion
 exit 1
+
