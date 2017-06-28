@@ -6,6 +6,7 @@
       - raspberrypi3
       - intel-corei7-64
       - dra7xx-evm
+      - m3ulcb-nogfx
       - qemux86-64
     project:
       - meta-agl
