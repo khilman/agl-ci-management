@@ -62,7 +62,7 @@ export DEVICE_URL_PREFIX='https://download.automotivelinux.org/AGL/upload/ci/'
 
 
 # import device defaults. Format 'a=b'
-for i in DEVICE_TYPE DEVICE_NAME DEVICE_DTB DEVICE_KERNEL DEVICE_INITRAMFS DEVICE_NBDROOT DEVICE_NBDROOT_COMPRESSION DEVICE_BOOT_METHOD DEVICE_BOOT_TYPE; do
+for i in DEVICE_TYPE DEVICE_NAME DEVICE_DTB DEVICE_KERNEL DEVICE_INITRAMFS DEVICE_NBDROOT DEVICE_NBDROOT_COMPRESSION DEVICE_BOOT_METHOD DEVICE_BOOT_TYPE DEVICE_URL_PREFIX; do
     if grep -q $i $ENVFILE ; then
         X=$(grep $i $ENVFILE | sed -e "s#${i}=##g" -e "s#;.*##g")
         eval export ${i}=${X}
