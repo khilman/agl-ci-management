@@ -110,6 +110,10 @@
               current-parameters: true
               abort-all-job: true
               kill-phase-on: FAILURE
+            - name: 'ci-platform-{project}-verify-CIB-m3ulcb-nogfx'
+              current-parameters: true
+              abort-all-job: true
+              kill-phase-on: FAILURE
       - multijob:
           name: CIB-{project}-finish-success
           condition: SUCCESSFUL
@@ -147,6 +151,10 @@
               abort-all-job: true
               kill-phase-on: FAILURE
             - name: 'ci-platform-{project}-verify-CIBT-qemux86-64'
+              current-parameters: true
+              abort-all-job: true
+              kill-phase-on: FAILURE
+            - name: 'ci-platform-{project}-verify-CIBT-m3ulcb-nogfx'
               current-parameters: true
               abort-all-job: true
               kill-phase-on: FAILURE
