@@ -6,7 +6,7 @@
 ################################################################################
 
 
-set +x
+set -x
 
 echo "## ${MACHINE} ##"
 cd $REPODIR
@@ -90,7 +90,6 @@ lava-tool submit-job --block https://agl-jenkins-user@lava.automotivelinux.org t
 MYJOB=`cat .myjob | grep "submitted as job" | sed -e "s#submitted as job id: ##g"`
 
 echo "#### JOBID: $MYJOB #####"
-set -x
 
 ( lava-tool job-status https://agl-jenkins-user@lava.automotivelinux.org $MYJOB | tee .status ) || true
 STATUS=`grep "Job Status:" .status | sed -e "s#Job Status: ##g"`
