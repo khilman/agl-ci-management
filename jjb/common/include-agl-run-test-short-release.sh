@@ -11,15 +11,6 @@
 echo "## ${MACHINE} ##"
 cd $REPODIR
 
-echo "## $TESTJOBFILE ##"
-
-if [ -e $TESTJOBFILE ] ; then
-    echo "Using $TESTJOBFILE ..."
-    cp $TESTJOBFILE testjob.yaml
-else
-    echo "!! NO TESTJOBFILE - trying to continue with a default !!"
-fi
-
 cat <<EOF > testjob.yaml
 # Your first LAVA JOB definition for a $MACHINE board
 device_type: @REPLACE_DEVICE_TYPE@

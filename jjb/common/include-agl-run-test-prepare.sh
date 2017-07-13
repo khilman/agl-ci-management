@@ -33,18 +33,11 @@ if [ ! -f meta-agl/templates/machine/${MACHINE}/test/hwtest.short.enable ] ; the
   echo "Add meta-agl/templates/machine/${MACHINE}/test/hwtest.enable.short to enable"
 else
   eval export ENVFILE=meta-agl/templates/machine/${MACHINE}/test/hwtest.short.environment
-  eval export TESTJOBFILE=meta-agl/templates/machine/${MACHINE}/test/testjob_short.yaml
 fi
 
 if [ ! -f $ENVFILE ] ; then
   echo "No short HW test environment file available for ${MACHINE}."
   echo "Add ${ENVFILE} to enable."
-  exit 1
-fi
-
-if [ ! -e $TESTJOBFILE ] ; then
-  echo "No short HW test environment file available for ${MACHINE}."
-  echo "Add ${TESTJOBFILE} to enable."
   exit 1
 fi
 
