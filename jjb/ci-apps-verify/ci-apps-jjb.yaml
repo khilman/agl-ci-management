@@ -11,6 +11,8 @@
         #= raspberrypi3
         #= dra7xx-evm
     project:
+      - agl-service-bluetooth
+      - agl-service-wifi
       - controls
       - dashboard
       - home
