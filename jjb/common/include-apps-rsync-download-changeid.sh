@@ -18,8 +18,13 @@ mkdir -p UPLOAD/${TARGETARCH}
 export DEST=$(pwd)/UPLOAD/${TARGETARCH}
 
 pushd ${MYPROJECT}
+pwd
+
+ls -alh
+
 ls
-ls package
+
+ls package || true
 
 cp package/*.wgt $DEST
 ls -alh $DEST

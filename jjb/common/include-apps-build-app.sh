@@ -66,6 +66,7 @@ if [[ ! x"yes" = x"$HANDLED" ]] && $(echo "$TARGETPROJECT" | grep -q "apps/"); t
         git log -1 --pretty=oneline
 
         # Fixme: use aglbuild script
+        set -x
         export DONE=false
         if test ! $DONE -a -f conf.d/autobuild/agl/autobuild ; then
             mkdir -p $(pwd)/package/
