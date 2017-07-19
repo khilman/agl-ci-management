@@ -3,9 +3,9 @@
 #set -x
 set -e
 
-echo "\n\n\n"
+echo -e "\n\n\n"
 echo "#########################################"
-echo "\n\n\n"
+echo -e "\n\n\n"
 
 
 export RSYNCDST="/srv/download/AGL/upload/ci/${GERRIT_CHANGE_NUMBER}/${GERRIT_PATCHSET_NUMBER}"

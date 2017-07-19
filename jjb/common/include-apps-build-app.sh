@@ -46,7 +46,7 @@ if [[ ! x"yes" = x"$HANDLED" ]] && $(echo "$TARGETPROJECT" | grep -q "apps/"); t
 
     # clone git
     rm -rf ${MYPROJECT}
-    git clone https://${GERRIT_HOST}/gerrit/${GERRIT_PROJECT}.git
+    git clone --recursive https://${GERRIT_HOST}/gerrit/${GERRIT_PROJECT}.git
     pushd ${MYPROJECT}
         git log -1 --pretty=oneline
         if test x"" != x"${TARGETREFSPEC}" ; then
@@ -66,14 +66,22 @@ if [[ ! x"yes" = x"$HANDLED" ]] && $(echo "$TARGETPROJECT" | grep -q "apps/"); t
         git log -1 --pretty=oneline
 
         # Fixme: use aglbuild script
-        if test -f Makefile ; then
-          make
-          make package
+        export DONE=false
+        if test ! $DONE -a -f conf.d/autobuild/agl/autobuild ; then
+            mkdir -p $(pwd)/package/
+            conf.d/autobuild/agl/autobuild package DEST=$(pwd)/package/
+            export DONE=true
         fi
-        if test -f ${MYPROJECT}.pro; then
-          qmake
-          make
-          make package
+        if test ! $DONE -a -f Makefile ; then
+            make
+            make package
+            export DONE=true
+        fi
+        if test ! $DONE -a -f ${MYPROJECT}.pro; then
+            qmake
+            make
+            make package
+            export DONE=true
         fi
     popd
 
