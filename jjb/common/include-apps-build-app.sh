@@ -67,22 +67,22 @@ if [[ ! x"yes" = x"$HANDLED" ]] && $(echo "$TARGETPROJECT" | grep -q "apps/"); t
 
         # Fixme: use aglbuild script
         set -x
-        export DONE=false
-        if test ! $DONE -a -f conf.d/autobuild/agl/autobuild ; then
+        export DONE=0
+        if test x"0" = x"$DONE" -a -f conf.d/autobuild/agl/autobuild ; then
             mkdir -p $(pwd)/package/
             conf.d/autobuild/agl/autobuild package DEST=$(pwd)/package/
-            export DONE=true
+            export DONE=1
         fi
-        if test ! $DONE -a -f Makefile ; then
+        if test x"0" = x"$DONE" -a -f Makefile ; then
             make
             make package
-            export DONE=true
+            export DONE=1
         fi
-        if test ! $DONE -a -f ${MYPROJECT}.pro; then
+        if test x"0" = x"$DONE" -a -f ${MYPROJECT}.pro; then
             qmake
             make
             make package
-            export DONE=true
+            export DONE=1
         fi
     popd
 
