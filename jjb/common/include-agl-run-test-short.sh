@@ -89,6 +89,8 @@ actions:
           compression: @REPLACE_INITRAMFS_COMPRESSION@
 
 - boot:
+    timeout:
+      minutes: 5
     method: @REPLACE_BOOT_METHOD@
     media: tmpfs
     prompts: ["root@@REPLACE_MACHINE@:~"]
