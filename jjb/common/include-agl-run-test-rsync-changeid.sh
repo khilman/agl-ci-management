@@ -25,9 +25,12 @@ cd output
 pwd
 ls -alhR tmp/deploy/images
 
-# copy files to $DEST
+# copy files to $DEST (only if variable is non-empty)
 for i in DEVICE_DTB DEVICE_KERNEL DEVICE_INITRAMFS DEVICE_NBDROOT; do
-    eval cp -avL tmp/deploy/images/${TARGETMACHINE}/$(echo "$"${i}) ${DEST}/
+    FILE=$(eval echo \$${i})
+    if [ -n "$FILE" ]; then
+      cp -avL tmp/deploy/images/${TARGETMACHINE}/${FILE} ${DEST}/
+    fi
 done
 
 tree $DEST
