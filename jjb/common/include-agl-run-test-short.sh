@@ -69,7 +69,7 @@ fi
 if [ ${DEVICE_BOOT_METHOD} = "qemu" ]; then
 cat <<EOF >>testjob.yaml
 context:
-  no_kvm: true
+  no_kvm: false
   arch: @REPLACE_DEVICE_ARCH@
   extra_options: [@REPLACE_QEMU_ARGS@]
  
