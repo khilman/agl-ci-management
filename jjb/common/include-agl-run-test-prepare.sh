@@ -53,7 +53,7 @@ fi
 #export DEVICE_NBDROOT_COMPRESSION=false
 #export DEVICE_BOOT_METHOD=u-boot
 #export DEVICE_BOOT_TYPE=bootm
-#export DEVICE_URL_PREFIX='https://download.automotivelinux.org/AGL/upload/ci/'
+export DEVICE_URL_PREFIX='https://download.automotivelinux.org/AGL/upload/ci/'
 
 
 # import device defaults. Format 'a=b'
