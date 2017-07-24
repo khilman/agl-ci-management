@@ -42,18 +42,18 @@ if [ ! -f $ENVFILE ] ; then
 fi
 
 # some defaults
-export DEVICE_ARCH=arm
-export DEVICE_TYPE=raspberrypi3-uboot
-export DEVICE_NAME=raspberrypi3
-export DEVICE_DTB=uImage-bcm2710-rpi-3-b.dtb
-export DEVICE_KERNEL=uImage
-export DEVICE_INITRAMFS=initramfs-netboot-image-raspberrypi3.ext4
-export DEVICE_INITRAMFS_COMPRESSION=false
-export DEVICE_NBDROOT=agl-demo-platform-raspberrypi3.ext4
-export DEVICE_NBDROOT_COMPRESSION=false
-export DEVICE_BOOT_METHOD=u-boot
-export DEVICE_BOOT_TYPE=bootm
-export DEVICE_URL_PREFIX='https://download.automotivelinux.org/AGL/upload/ci/'
+#export DEVICE_ARCH=arm
+#export DEVICE_TYPE=raspberrypi3-uboot
+#export DEVICE_NAME=raspberrypi3
+#export DEVICE_DTB=uImage-bcm2710-rpi-3-b.dtb
+#export DEVICE_KERNEL=uImage
+#export DEVICE_INITRAMFS=initramfs-netboot-image-raspberrypi3.ext4
+#export DEVICE_INITRAMFS_COMPRESSION=false
+#export DEVICE_NBDROOT=agl-demo-platform-raspberrypi3.ext4
+#export DEVICE_NBDROOT_COMPRESSION=false
+#export DEVICE_BOOT_METHOD=u-boot
+#export DEVICE_BOOT_TYPE=bootm
+#export DEVICE_URL_PREFIX='https://download.automotivelinux.org/AGL/upload/ci/'
 
 
 # import device defaults. Format 'a=b'
@@ -61,6 +61,8 @@ for i in DEVICE_ARCH DEVICE_TYPE DEVICE_NAME DEVICE_DTB DEVICE_KERNEL DEVICE_INI
     if grep -q ^$i $ENVFILE ; then
         X=$(grep $i $ENVFILE | sed -e "s#${i}=##g" -e "s#;.*##g")
         eval export ${i}=${X}
+    else
+        echo "Variable ${i} missing in environment file $ENVFILE"
     fi
 done
 
