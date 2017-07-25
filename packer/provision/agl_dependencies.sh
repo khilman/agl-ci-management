@@ -89,6 +89,10 @@ npm install
 
 ### hope that is enough
 
+# ruby markdown linter
+sudo gem install mdl
 
+# python markdown linter
+sudo pip install mdlint
 
 exit 0
