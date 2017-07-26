@@ -38,7 +38,7 @@ protocols:
 actions:
 - deploy:
     timeout:
-      minutes: 10
+      minutes: 15
     to: nbd
     dtb:
       url: '@REPLACE_URL_PREFIX@/@REPLACE_DTB@'
@@ -78,7 +78,7 @@ context:
 actions:
 - deploy:
     timeout:
-      minutes: 10
+      minutes: 15
     to: tmpfs
     os: oe
     images:

@@ -34,7 +34,7 @@ visibility: public
 actions:
 - deploy:
     timeout:
-      minutes: 10
+      minutes: 15
     to: nbd
     dtb:
       url: '@REPLACE_URL_PREFIX@/@REPLACE_DTB@'
