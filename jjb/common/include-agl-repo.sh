@@ -19,7 +19,7 @@ cd repoclone
 export REPODIR=`pwd`
 
 if test x"" = x"${RELEASE_VERSION}" -a x"" = x"${RELEASE_BRANCH}" ; then
-  if test x"meta-renesas-rcar-gen3" = x"${TARGETPROJECT}" ; then
+  if test x"AGL/meta-renesas-rcar-gen3" = x"${TARGETPROJECT}" ; then
     repo init --reference=/opt/AGL/preclone -q -b master -u https://gerrit.automotivelinux.org/gerrit/AGL/AGL-repo
   else
     repo init --reference=/opt/AGL/preclone -q -b $TARGETBRANCH -u https://gerrit.automotivelinux.org/gerrit/AGL/AGL-repo
