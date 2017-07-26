@@ -55,6 +55,8 @@ actions:
 
 # BOOT_BLOCK
 - boot:
+    timeout:
+      minutes: 10
     method: @REPLACE_BOOT_METHOD@
     commands: nbd
     type: @REPLACE_BOOT_TYPE@
@@ -76,7 +78,7 @@ context:
 actions:
 - deploy:
     timeout:
-      minutes: 3
+      minutes: 10
     to: tmpfs
     os: oe
     images:
@@ -90,7 +92,7 @@ actions:
 
 - boot:
     timeout:
-      minutes: 5
+      minutes: 10
     method: @REPLACE_BOOT_METHOD@
     media: tmpfs
     prompts: ["root@@REPLACE_MACHINE@:~"]
