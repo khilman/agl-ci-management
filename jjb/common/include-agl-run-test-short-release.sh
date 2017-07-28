@@ -101,6 +101,6 @@ else
 
     # cleanup
     #ssh -o StrictHostKeyChecking=no jenkins-slave@10.30.72.8 rm -rf /srv/download/AGL/upload/ci/${CHID}/
-
-    exit 1
+    # exit 1
+    exit 0
 fi
