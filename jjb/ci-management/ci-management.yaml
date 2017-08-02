@@ -113,8 +113,17 @@
           choosing-strategy: 'gerrit'
 
     wrappers:
-      - agl-infra-wrappers:
-          build-timeout: '{build-timeout}'
+      - timeout:
+          type: absolute
+          timeout: '{build-timeout}'
+          timeout-var: 'BUILD_TIMEOUT'
+          fail: true
+      - ssh-agent-credentials:
+          users:
+            - 'd28b1f3b-3603-49bc-b837-bb0a2e85d4b8'
+      - ansicolor
+      - openstack:
+          single-use: false
 
     triggers:
       - gerrit-trigger-patch-submitted:
@@ -153,22 +162,29 @@
           choosing-strategy: 'gerrit'
 
     wrappers:
+      - timeout:
+          type: absolute
+          timeout: '{build-timeout}'
+          timeout-var: 'BUILD_TIMEOUT'
+          fail: true
       - ssh-agent-credentials:
           users:
-              - '{ssh-credentials}'
-      - agl-infra-wrappers:
-          build-timeout: '{build-timeout}'
+            - 'd28b1f3b-3603-49bc-b837-bb0a2e85d4b8'
+      - ansicolor
+      - openstack:
+          single-use: false
 
     triggers:
       - timed: '00 10 1 * *'
       - gerrit:
+          server-name: 'gerrit.automotivelinux.org'
           trigger-on:
             - change-merged-event
             - comment-added-contains-event:
                 comment-contains-value: 'remerge'
           projects:
             - project-compare-type: 'ANT'
-              project-pattern: 'ci-management'
+              project-pattern: '{name}'
               branches:
                 - branch-compare-type: 'ANT'
                   branch-pattern: '**/{branch}'
