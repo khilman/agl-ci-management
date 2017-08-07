@@ -1,0 +1,17 @@
+{% block metadata %}
+metadata:
+  image.type: 'AGL'
+{% endblock %}
+{% block main %}
+device_type: {{ device_type }}
+
+job_name: {{ name }}
+timeouts:
+  job:
+    minutes: 30
+  action:
+    minutes: 15
+priority: {{ priority }}
+visibility: public
+{% endblock %}
+{% block actions %}{% endblock %}

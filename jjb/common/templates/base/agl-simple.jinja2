@@ -1,0 +1,44 @@
+{% extends 'base/agl-base.jinja2' %}
+{% block metadata %}
+{{ super() }}
+{% endblock %}
+{% block main %}
+{{ super() }}
+{% endblock %}
+{% block deploy %}
+actions:
+- deploy:
+    to: {{ deploy_to|default("tftp") }}
+    kernel:
+      url: {{ kernel_url }}
+      type: {{ kernel_image.lower() }}
+{%- if nfsrootfs_url %}
+    nfsrootfs:
+      url: {{ nfsrootfs_url }}
+      compression: xz
+{%- endif %}
+{%- if initrd_url %}
+    ramdisk:
+      url: {{ initrd_url }}
+      compression: gz
+{%- endif %}
+{%- if modules_url %}
+    modules:
+      url: {{ modules_url }}
+      compression: xz
+{%- endif %}
+{%- if dtb_url %}
+    dtb:
+      url: {{ dtb_url }}
+{%- endif %}
+{%- if nbdroot_url %}
+    initrd:
+      url: {{ nbd_initrd_url }}
+      allow_modify: false
+    nbdroot:
+      url: {{ nbdroot_url }}
+      compression: xz
+{%- endif %}
+    os: {{ deploy_os|default("oe") }}
+    failure_retry: 2
+{% endblock %}

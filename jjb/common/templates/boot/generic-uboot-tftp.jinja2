@@ -1,0 +1,31 @@
+{% extends 'base/agl-simple.jinja2' %}
+{% block metadata %}
+{{ super() }}
+{% endblock %}
+{% block main %}
+{{ super() }}
+{%- if use_nbd %}
+protocols:
+  lava-xnbd:
+    port: auto
+{%- endif %}
+{% endblock %}
+{% block actions %}
+{%- block deploy %}
+{{ super () }}
+{%- endblock %}
+
+- boot:
+    timeout:
+      minutes: 10
+    method: {{ boot_method|default("u-boot") }}
+    type: {{ boot_type|default("booti") }}
+    commands: {{ boot_commands|default("ramdisk") }}
+    prompts:
+      - 'root@{{ yocto_machine }}:~'
+      - 'root@debian:~#'
+      - '/ #'
+    auto_login:
+      login_prompt: "login:"
+      username: root
+{% endblock %}
