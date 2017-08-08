@@ -21,7 +21,7 @@
 
       "disk_size": 20000,
       "format": "qcow2",
-      "headless": false,
+      "headless": true,
       "accelerator": "kvm",
 
       "http_directory": "httpdir",
