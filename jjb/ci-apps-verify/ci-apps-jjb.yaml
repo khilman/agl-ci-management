@@ -12,6 +12,7 @@
         #= dra7xx-evm
     project:
       - agl-service-bluetooth
+      - agl-service-steering-wheel
       - agl-service-wifi
       - controls
       - dashboard
