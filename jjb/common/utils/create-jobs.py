@@ -33,6 +33,12 @@ job['kernel_image'] = kernel_image
 job['kernel_url'] = url_base + kernel_image
 job['boot_type'] = "bootm"
 
+# Tests to iclude
+job['test_templates'] = [
+    os.path.join("tests", "test1.jinja2"),
+    os.path.join("tests", "test2.jinja2"),
+]
+
 # NBD jobs
 if nbd:
     job['use_nbd'] = True

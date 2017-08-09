@@ -28,4 +28,9 @@ protocols:
     auto_login:
       login_prompt: "login:"
       username: root
+
+{% for test_template in test_templates %}
+{% include test_template %}
+{%- endfor %}
+
 {% endblock %}
