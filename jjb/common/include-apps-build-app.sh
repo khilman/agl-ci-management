@@ -73,6 +73,12 @@ if [[ ! x"yes" = x"$HANDLED" ]] && $(echo "$TARGETPROJECT" | grep -q "apps/"); t
             conf.d/autobuild/agl/autobuild package DEST=$(pwd)/package/
             export DONE=1
         fi
+        if test x"0" = x"$DONE" -a -f CMakeLists.txt; then
+            cmake .
+            make
+            make package || true
+            export DONE=1
+        fi
         if test x"0" = x"$DONE" -a -f Makefile ; then
             make
             make package
