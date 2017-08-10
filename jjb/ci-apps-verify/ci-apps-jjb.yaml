@@ -75,6 +75,10 @@
           name: GERRIT_PATCHSET_NUMBER
           default: "2"
           description: "patchset # to build"
+      - string:
+          name: AGLBRANCH
+          default: '{aglbranch}'
+          description: "AGL release branch to use"
     build-discarder:
       days-to-keep: 30
       artifact-days-to-keep: -1
@@ -105,15 +109,27 @@
           name: CIB-{project}
           condition: SUCCESSFUL
           projects:
-            - name: 'ci-apps-{project}-verify-CIB-arm'
+            - name: 'ci-apps-{project}-verify-master-CIB-arm'
               current-parameters: true
               #abort-all-job: true
               kill-phase-on: FAILURE
-            - name: 'ci-apps-{project}-verify-CIB-aarch64'
+            - name: 'ci-apps-{project}-verify-master-CIB-aarch64'
               current-parameters: true
               #abort-all-job: true
               kill-phase-on: FAILURE
-            - name: 'ci-apps-{project}-verify-CIB-x86-64'
+            - name: 'ci-apps-{project}-verify-master-CIB-x86-64'
+              current-parameters: true
+              #abort-all-job: true
+              kill-phase-on: FAILURE
+            - name: 'ci-apps-{project}-verify-dab-CIB-arm'
+              current-parameters: true
+              #abort-all-job: true
+              kill-phase-on: FAILURE
+            - name: 'ci-apps-{project}-verify-dab-CIB-aarch64'
+              current-parameters: true
+              #abort-all-job: true
+              kill-phase-on: FAILURE
+            - name: 'ci-apps-{project}-verify-dab-CIB-x86-64'
               current-parameters: true
               #abort-all-job: true
               kill-phase-on: FAILURE
@@ -509,6 +525,11 @@
           # set
           echo "#### CIBT +1 ####"
           ssh -p 29418 agl-jobbuilder@gerrit.automotivelinux.org gerrit review ${{GERRIT_CHANGE_NUMBER}},${{GERRIT_PATCHSET_NUMBER}} --verified +1 --label ci-image-build=+1 --label ci-image-boot-test=+1 -n NONE --message='CI-Image-Boot-Test\ finished' || true
+
+
+
+
+
 
 ################################################################################
 ################################################################################
