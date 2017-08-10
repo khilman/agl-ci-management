@@ -58,6 +58,9 @@ while getopts ":b:a:p:r:dvx" opt; do
 	r)
 	    export TARGETREFSPEC="$OPTARG"
 	    ;;
+	t)
+	    export AGLBRANCH="$OPTARG"
+	    ;;
 	v)
 	    VERBOSE=true
 	    function vprint() {
@@ -79,6 +82,7 @@ while getopts ":b:a:p:r:dvx" opt; do
 	    echo "                 -- aarch64"
 	    echo "  -p <project> - project to use                     (default=AGL/AGL-repo)"
 	    echo "  -r <refspec> - refspec to use                     (default=refs/heads/master)"
+	    echo "  -t <branch>  - AGL release branch to use          (default=master , e.g. dab)"
 	    echo "  -v           - verbose"
 	    echo "  -x           - set -x"
 	    echo "--------------------------------------------------------------------------------"

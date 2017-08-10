@@ -11,8 +11,23 @@ SDKHOSTDIR="~/agl-sdk"
 ## apps-fetch-install-sdk.sh
 ################################################################################
 
-# should probably switch to release ... or multiple (release/snapshot) fwiw
+# default to master
 SDKBASEURL="https://download.automotivelinux.org/AGL/snapshots/master/latest/${TARGETSDKMACHINE}/deploy/sdk/"
+
+# should probably switch to release ... or multiple (release/snapshot) fwiw
+if test x"" = x"$AGLBRANCH"; then echo "AGLBRANCH not set, quitting" ; exit 1 ; fi
+
+if test x"master" = x"$AGLBRANCH" ; then
+  SDKBASEURL="https://download.automotivelinux.org/AGL/snapshots/master/latest/${TARGETSDKMACHINE}/deploy/sdk/"
+fi
+if test x"chinook" = x"$AGLBRANCH" ; then
+  SDKBASEURL="https://download.automotivelinux.org/AGL/release/chinook/latest/${TARGETSDKMACHINE}/deploy/sdk/"
+fi
+if test x"dab" = x"$AGLBRANCH" ; then
+  SDKBASEURL="https://download.automotivelinux.org/AGL/release/dab/latest/${TARGETSDKMACHINE}/deploy/sdk/"
+fi
+
+
 export TARGETSDKNAME=$(curl -s "$SDKBASEURL" | grep -e "crosssdk.*\.sh<" | sed -e "s#.*<a href=\"##g" -e "s#\">poky-agl.*##g")
 
 if test x"" = x"${TARGETSDKNAME}" ; then
@@ -31,7 +46,6 @@ chmod a+x ${TARGETSDKNAME}
 if test x"" = x"$(eval ls ${SDKHOSTDIR}/environment-setup* | grep "agl-" | grep ${TARGETSDKARCH} 2>/dev/null)" ; then
   bash ${TARGETSDKNAME} -d ${SDKHOSTDIR}/ -y
 fi
-#set -x 
 
 # find out the env setup script
 export TARGETSDKENVSCRIPT="$(eval ls ${SDKHOSTDIR}/environment-setup* | grep "agl-" | grep ${TARGETSDKARCH} 2>/dev/null)"
@@ -44,6 +58,4 @@ fi
 
 echo "About to source ${TARGETSDKENVSCRIPT}"
 source "${TARGETSDKENVSCRIPT}"
-#set | grep -i sysroots || true 
-#set +x
 

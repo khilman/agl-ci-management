@@ -13,9 +13,15 @@ export RSYNCSRC=$(pwd)/UPLOAD/
 
 # construct upload folder
 #mv UPLOAD UPLOAD2 || true
-rm -rf UPLOAD/${TARGETARCH} || true
-mkdir -p UPLOAD/${TARGETARCH}
-export DEST=$(pwd)/UPLOAD/${TARGETARCH}
+if test x"" = x"${AGLBRANCH}" ; then
+  rm -rf UPLOAD/${TARGETARCH} || true
+  mkdir -p UPLOAD/${TARGETARCH}
+  export DEST=$(pwd)/UPLOAD/${TARGETARCH}
+else
+  rm -rf UPLOAD/${AGLBRANCH}/${TARGETARCH} || true
+  mkdir -p UPLOAD/${AGLBRANCH}/${TARGETARCH}
+  export DEST=$(pwd)/UPLOAD/${AGLBRANCH}/${TARGETARCH}
+fi
 
 pushd ${MYPROJECT}
 pwd

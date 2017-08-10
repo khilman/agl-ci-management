@@ -1,6 +1,9 @@
 ---
 - project:
     name: ci-apps-AGL
+    aglbranch:
+      - master
+      - dab
     architecture:
       - aarch64
       - x86-64
@@ -29,7 +32,7 @@
       - settings-wifi
     jobs:
       - ci-apps-{project}-verify
-      - ci-apps-{project}-verify-CIB-{architecture}
+      - ci-apps-{project}-verify-{aglbranch}-CIB-{architecture}
       - ci-apps-{project}-verify-CIB-finish-success
       - ci-apps-{project}-verify-failure
       - ci-apps-{project}-remove-artifacts
@@ -128,7 +131,7 @@
 # ci-apps-{project}-verify-CIB-{architecture}  =  build job per arch
 ################################################################################
 - job-template:
-    name: 'ci-apps-{project}-verify-CIB-{architecture}'
+    name: 'ci-apps-{project}-verify-{aglbranch}-CIB-{architecture}'
     project-type: freestyle
     concurrent: true
     node: agl-test-slave
@@ -157,6 +160,10 @@
           name: TARGETARCH
           default: '{architecture}'
           description: "Machine to build"
+      - string:
+          name: AGLBRANCH
+          default: '{aglbranch}'
+          description: "AGL release branch to use"
 
     build-discarder:
       days-to-keep: 30
@@ -171,7 +178,7 @@
 
     builders:
       - shell:
-          # including from ../common into ci-apps-{project}-verify-CIB-{architecture}
+          # including from ../common into ci-apps-{project}-verify-{aglbranch}-CIB-{architecture}
           !include-raw-escape:
           - ../common/include-apps-header.sh
           - ../common/include-apps-fetch-install-sdk.sh
