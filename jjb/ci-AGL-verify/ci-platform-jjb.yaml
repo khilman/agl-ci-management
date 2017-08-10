@@ -502,6 +502,10 @@
     publishers:
       - naginator:
           max-failed-builds: 2
+          rerun-unstable-builds: true
+          progressive-delay-increment: 2
+          progressive-delay-maximum: 6
+          regular-expression: "/.*Timed out waiting for device dev-tty.*/"
 
 ################################################################################
 ################################################################################
