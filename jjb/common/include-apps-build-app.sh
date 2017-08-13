@@ -46,7 +46,7 @@ if [[ ! x"yes" = x"$HANDLED" ]] && $(echo "$TARGETPROJECT" | grep -q "apps/"); t
 
     # clone git
     rm -rf ${MYPROJECT}
-    git clone --recursive https://${GERRIT_HOST}/gerrit/${GERRIT_PROJECT}.git
+    git clone --recurse-submodules --recursive https://${GERRIT_HOST}/gerrit/${GERRIT_PROJECT}.git
     pushd ${MYPROJECT}
         git log -1 --pretty=oneline
         if test x"" != x"${TARGETREFSPEC}" ; then
